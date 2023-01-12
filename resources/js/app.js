@@ -1,3 +1,7 @@
 import './bootstrap';
 
-//Here I'll put my vanilla js global methos. In the welcome page
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+
+Alpine.start();
