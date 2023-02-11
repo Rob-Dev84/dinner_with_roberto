@@ -38,7 +38,7 @@
                         </div>
 
                        
-                        <h3>{{ __('ingredients inserted:') }}</h3>
+                        <h3>{{ __('ingredients available:') }}</h3>
                         <div class="pb-6">
                             
                             <ul class="">
@@ -51,10 +51,11 @@
                                                 {{ $ingredient->unit }}
                                                 {{ $ingredient->name }}
                                             </div>
-                
+                                            
                                             <div class="mr-6">
                                                 {{-- <x-input-label for="ingredient" :value="__('Title')" /> --}}
-                                                <x-text-input id="" class="" type="checkbox" name="ingredient[]" :value="$ingredient->ingredient_groups_id ? 'checked' : ''" />
+                                                <x-text-input id="" class="" type="checkbox" name="ingredient[]" :value="$ingredient->id" />
+                                                    {{-- <input type="checkbox" name="ingredient[]" :value="$ingredient->ingredient_groups_id"> --}}
                                                 <x-input-error :messages="$errors->get('ingredient')" class="mt-2" />
                                             </div>   
                                         </li>
@@ -90,8 +91,8 @@
                     @if (count($ingredients->where("post_ingredient_group_id", null)))
                         
                     <h3>{{ __('Add Ingredients to existing Group') }}</h3>
-                    {{-- //TODO add route and controller logic (update post_ingredient_group_id from null to value id $group->id) --}}
-                    <form method="POST" action="{{ route('posts.ingredients.groups.store', [auth()->user(), $post]) }}">
+                    
+                    <form method="POST" action="{{ route('posts.ingredients.groups.update', [auth()->user(), $post]) }}">
                         @csrf
                         @method('PUT')
 
@@ -100,21 +101,22 @@
                            
 
                             <div class="mt-4">
-                                <x-input-label for="groups" :value="__('Select group')" />
-                                <select name="groups" id="groups">
+                                <x-input-label for="group_title" :value="__('Select group')" />
+                                <select name="group_title" id="group_title">
                                     <option value="">{{ __('Select group') }}</option>
 
                                     @foreach ($ingredientsGroups as $group)
-                                        <option :value="{{ $group->id }}">{{ $group->title }}</option>
+                                    {{-- //TODO make selected working) --}}
+                                        <option :value="{{ $group->id }}" @selected(old('group_title', $group->title))">{{ $group->title }}</option>
                                     @endforeach
                                     
                                 </select>
-                                <x-input-error :messages="$errors->get('unit')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('group_title')" class="mt-2" />
                             </div>
                         </div>
 
                        
-                        <h3>{{ __('ingredients not grouped:') }}</h3>
+                        <h3>{{ __('ingredients not grouped yet:') }}</h3>
                         <div class="pb-6">
                             
                             <ul class="">
@@ -130,8 +132,8 @@
                 
                                             <div class="mr-6">
                                                 {{-- <x-input-label for="ingredient" :value="__('Title')" /> --}}
-                                                <x-text-input id="" class="" type="checkbox" name="ingredient[]" :value="$ingredient->ingredient_groups_id ? 'checked' : ''" />
-                                                <x-input-error :messages="$errors->get('ingredient')" class="mt-2" />
+                                                <x-text-input id="" class="" type="checkbox" name="group_ingredient[]" :value="$ingredient->id" />
+                                                <x-input-error :messages="$errors->get('group_ingredient')" class="mt-2" />
                                             </div>   
                                         </li>
                                     @endif
@@ -143,11 +145,21 @@
                             <x-primary-button class="ml-4">
                                 {{ __('Add Existing Group') }}
                             </x-primary-button>
+
+                            {{-- <form method="POST" action="{{ route('post.ingredients.groups.destroy', [$ingredientGrouped, auth()->user(), $post]) }}">
+                                @csrf
+                                @method('PUT')
+                                <div class="flex items-center justify-end mt-4">
+                                    <x-primary-button class="ml-4">
+                                        {{ __('Add Existing Group') }}
+                                    </x-primary-button>
+                                </div>
+                            </form> --}}
                         </div>
                     </form>
 
                     @else
-                        {{ __('You don\'t have ingredients to group') }}
+                        <p>{{ __('You don\'t have ingredients to group') }}</p>
                     @endif
                 
                 </div>

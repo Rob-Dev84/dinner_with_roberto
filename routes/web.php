@@ -40,7 +40,7 @@ Route::controller(PostController::class)->group(function () {
 
     Route::get('/posts/{user:name}/{post:slug}', 'edit')->name('posts.edit');//form to modify post title
     Route::put('/posts/{user:name}/{post:slug}', 'update')->name('posts.update');
-    // Route::put('/posts/{user:name}/{post:title}/softDelete', 'softDelete')->name('posts.softDelete');
+    Route::put('/posts/{user:name}/{post:title}/softDelete', 'softDelete')->name('posts.softDelete');
 
 
     // Route::delete('/posts/{user:name}/{post:title}', 'destroy')->name('posts.destroy');
@@ -50,12 +50,14 @@ Route::controller(PostIngredientController::class)->group(function () {
 
                 //TODO use -> user:username (because will be unique)
     Route::get('/posts/ingredients/{user:name}/{post:slug}', 'index')->name('posts.ingredients');
-  
-    // Route::get('/posts/ingredients/{user:name}/{post:slug}', 'edit')->name('posts.ingredients.edit');//form to modify post intro
-    Route::post('/posts/ingredients/{user:name}/{post:slug}/store', 'store')->name('posts.ingredients.store');
+    Route::post('/posts/ingredients/{user:name}/{post:slug}/store', 'store')->name('posts.ingredients.store');//add new ingredient in a post
 
+    Route::get('/posts/ingredients/{ingredient:id}/{user:name}/{post:slug}/edit', 'edit')->name('posts.ingredients.edit');//todo form to modify ingredient inserted (available from )
+    Route::put('/posts/ingredients/{ingredient:id}/{user:name}/{post:slug}/update', 'update')->name('posts.ingredients.update');
 
-    // Route::put('/posts/ingredients/{user:name}/{post:slug}', 'update')->name('posts.ingredients.update');
+    Route::put('/posts/ingredients/{post_ingredients:id}/{user:name}/{post:slug}', 'ungroup')->name('posts.ingredients.ungroup');
+
+    Route::delete('/posts/ingredients/{ingredient:id}/{user:name}/{post:slug}/delete', 'destroy')->name('posts.ingredients.delete');
     // Route::put('/posts/ingredients/{user:name}/{post:slug}', 'softDelete')->name('invitation.ingredients.softDelete');
 
     
@@ -65,12 +67,13 @@ Route::controller(PostIngredientController::class)->group(function () {
 Route::controller(PostIngredientGroupController::class)->group(function () {
 
     //TODO use -> user:username (because will be unique)
-Route::get('/posts/ingredients/groups/{user:name}/{post:slug}', 'index')->name('posts.ingredients.groups'); //Show all ingredients to group
+Route::get('/posts/ingredients/groups/{user:name}/{post:slug}', 'index')->name('posts.ingredients.groups'); //Here we show: all ingredients, ingredients grouped, ingredients not grouped
 Route::post('/posts/ingredients/groups/{user:name}/{post:slug}/store', 'store')->name('posts.ingredients.groups.store');
-
-
-Route::put('/posts/ingredients/groups/{user:name}/{post:slug}', 'update')->name('posts.ingredients.groups.update');
-// Route::put('/posts/ingredients/groups/{user:name}/{post:slug}', 'softDelete')->name('invitation.ingredients.groups.softDelete');
+Route::put('/posts/ingredients/groups/{post_ingredient_groups:id}/{user:name}/{post:slug}/editTitle', 'editTitle')->name('posts.ingredients.groups.editTitle');
+Route::put('/posts/ingredients/groups/{post_ingredient_groups:id}/{user:name}/{post:slug}/updateTitle', 'updateTitle')->name('posts.ingredients.groups.updateTitle');
+Route::put('/posts/ingredients/groups/{user:name}/{post:slug}/update', 'update')->name('posts.ingredients.groups.update');
+// Route::put('/posts/ingredients/groups/{user:name}/{post:slug}', 'softDelete')->name('ingredients.ingredients.groups.softDelete');
+Route::delete('/posts/ingredients/groups/{post_ingredient_groups:id}/{user:name}/{post:slug}', 'destroy')->name('post.ingredients.groups.destroy');
 
 
 // Route::delete('/posts/{user:name}/{post:title}/intro', 'destroy')->name('posts.intro.destroy');

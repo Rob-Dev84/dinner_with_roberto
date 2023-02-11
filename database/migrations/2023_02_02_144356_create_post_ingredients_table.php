@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('post_ingredients', function (Blueprint $table) {
             $table->id();
             $table->foreignId('post_id')->constrained();
-            $table->foreignId('post_ingredient_group_id')->nullable()->constrained();
+            $table->foreignId('post_ingredient_group_id')->nullable()->constrained()->onDelete('cascade');
             $table->smallInteger('quantity')->nullable();
             $table->string('unit', 10)->nullable();// gr / ml 
             $table->string('name', 25);

@@ -31,5 +31,6 @@ class Post extends Model
     public function postIngredientsGroups() {
         return $this->hasMany(PostIngredientGroup::class);
     }
+    
 
 }

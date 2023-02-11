@@ -17,21 +17,36 @@
                             <h3>{{ __('Total ingredients inserted:') }}</h3>
 
                             <ul>
-                                @foreach ($ingredientsInserted as $ingredient)
+                                @forelse ($ingredientsInserted as $ingredient)
                                     <li class="flex justify-between odd:bg-gray-200">
-                                        <div>
-                                            
+                                        <div class="flex justify-center items-center">
                                             {{ $ingredient->quantity }}
                                             {{ $ingredient->unit }}
                                             {{ $ingredient->name }}
                                         </div>
 
-                                        <div>
-                                            {{ __('Mod') }}
-                                            {{ __('Del') }}
+                                        <div class="flex justify-center items-center">
+                                            <x-nav-link :href="route('posts.ingredients.edit', [$ingredient, auth()->user(), $post->slug])" :active="request()->routeIs('posts.ingredients.edit')">
+                                                {{ __('Mod') }}
+                                            </x-nav-link>
+
+                                            <form method="POST" action="{{ route('posts.ingredients.delete', [$ingredient, auth()->user(), $post]) }}">
+                                                @csrf
+                                                @method('DELETE')
+                        
+                                                
+                        
+                                                {{-- <div class="flex items-center justify-end mt-4"> --}}
+                                                    <x-danger-button class="ml-4">
+                                                        {{ __('Del') }}
+                                                    </x-danger-button>
+                                                {{-- </div> --}}
+                                            </form>
                                         </div>   
                                     </li>
-                                @endforeach
+                                @empty
+                                    <p>{{ __('This recipe doesn\'t have ingredients yet') }}</p>
+                                @endforelse
                             </ul>
                         </div>
                     </div>
@@ -49,42 +64,35 @@
                             <h3>{{ __('Ingredients not grouped:') }}</h3>
 
                             <ul>
-                                @if ($ingredientsNotGruoped->count() > 0)
-                                <li class="flex justify-between odd:bg-gray-200">
-                                    <div>
-                                        
-                                        {{ $ingredient->quantity }}
-                                        {{ $ingredient->unit }}
-                                        {{ $ingredient->name }}
-                                    </div>
 
-                                    <div>
-                                        {{ __('Mod') }}
-                                        {{ __('Del') }}
-                                    </div>   
-                                </li>
+                                @forelse ($ingredientsInserted as $ingredient)
+                                    @if (is_null($ingredient->post_ingredient_group_id))
+                                        <li class="flex justify-between odd:bg-gray-200">
+                                            <div>
+                                                
+                                                {{ $ingredient->quantity }}
+                                                {{ $ingredient->unit }}
+                                                {{ $ingredient->name }}
+                                            </div>
+                                        </li>
+
+                                       
+                                    @endif
+                                    
+                                    
+                                @empty
+                                    <p>{{ __('This recipe doesn\'t have ingredients yet') }}</p>
+                                @endforelse
+
+                                {{-- //TODO improve if statement --}}
+                                @if ($ingredientsInserted->where('post_ingredient_group_id', NULL)->count() > 0)
+                                    <x-nav-link :href="route('posts.ingredients.groups', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.create')">
+                                        {{ __('Group ingredients') }}
+                                    </x-nav-link>
                                 @else
-                                    <p>{{ __('You don\'heve not grouped ingredients') }}</p>
+                                    <span class="opacity-20" title="You need at least two ingredients to group them">{{ __('Group ingredients') }}</span>
+                                    
                                 @endif
-                            </ul>
-
-                            @if ($ingredientsNotGruoped->count() > 0)
-                                <x-nav-link :href="route('posts.ingredients.groups', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.create')">
-                                    {{ __('Group ingredients') }}
-                                </x-nav-link>
-                            @else
-                                <span class="opacity-20" title="You need at least two ingredients to group them">{{ __('Group ingredients') }}</span>
-                            @endif
-                                
-                            
-                            {{-- @if ($ingredientsGroups->where('post_ingredient_group_id', NULL)->count() > 1)
-                                <x-nav-link :href="route('posts.ingredients.groups', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.create')">
-                                    {{ __('Group ingredients') }}
-                                </x-nav-link>
-                            @else
-                                <span class="opacity-20" title="You need at least two ingredients to group them">{{ __('Group ingredients') }}</span>
-                                
-                            @endif --}}
 
                         </div>
                     </div>
@@ -103,32 +111,62 @@
 
                         <div class="pb-6 flex flex-col">
                             <h3>{{ __('Ingredients grouped:') }}</h3>
-                            <ul>
+                        
+                                @forelse ($ingredientsGrouped as $ingredientGrouped)
 
-                                @forelse ($ingredientsInserted as $index => $ingredient)
+                                    <div class="flex justify-between items-center border-t-2 border-black mt-1">
+                                        <h3><b>{{ $ingredientGrouped->title }}</b></h3>
 
-                                    @if ($index === 0)
-                                        <h3><b>{{ $ingredient->postIngredientsGroups[0]->title }}</b></h3>
-                                    @endif
-                                
-                                    <li class="flex justify-between odd:bg-gray-200">
-                                        <div>
-                                            
-                                            {{ $ingredient->quantity }}
-                                            {{ $ingredient->unit }}
-                                            {{ $ingredient->name }}
+                                        <div class="flex justify-center items-center">
+                                            <form method="POST" action="{{ route('posts.ingredients.groups.updateTitle', [$ingredientGrouped, auth()->user(), $post]) }}">
+                                                @csrf
+                                                @method('PUT')
+                                                    <x-primary-button class="ml-4 bg-orange-500" title="{{ __('Modify title group') }}">
+                                                        {{ __('Mod') }}
+                                                    </x-primary-button>
+                                            </form>
+
+                                            <form method="POST" action="{{ route('post.ingredients.groups.destroy', [$ingredientGrouped, auth()->user(), $post]) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                    <x-danger-button class="ml-4">
+                                                        {{ __('Del') }}
+                                                    </x-danger-button>
+                                            </form>
                                         </div>
+                                    </div>
 
-                                        <div>
-                                            {{ __('Mod') }}
-                                            {{ __('Del') }}
-                                        </div>   
-                                    </li>
+                                    <ul>
 
+                                    @foreach ($ingredientsInserted as $ingredient)
+                                        @if ($ingredient->post_ingredient_group_id === $ingredientGrouped->id)
+                                        <li class="flex justify-between odd:bg-gray-200">
+                                            <div>
+                                                {{ $ingredient->quantity }}
+                                                {{ $ingredient->unit }}
+                                                {{ $ingredient->name }}
+                                            </div>
+
+                                            <div class="ml-4">
+                                                <form method="POST" action="{{ route('posts.ingredients.ungroup', [$ingredient, auth()->user(), $post]) }}">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="flex items-center justify-end mt-4">
+                                                        <x-primary-button class="ml-4">
+                                                            {{ __('Ungroup') }}
+                                                        </x-primary-button>
+                                                    </div>
+                                                </form>
+                                                
+                                                 {{-- //TODO Ungroup ingredient --}}
+                                                 {{-- {{ __('Ungroup') }} --}}
+                                            </div>   
+                                        </li>
+                                        @endif
+                                    @endforeach
                                 @empty
                                     <p>{{ __('This recipe doesn\'t contain grouped ingredients') }}</p>
                                 @endforelse
-
                                 
                             </ul>
                         </div>

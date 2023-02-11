@@ -53,26 +53,27 @@ class PostIngredientGroupController extends Controller
      */
     public function store(Request $request, User $user, Post $post)//here we group the ingredients, if needed
     {
+        // dd($request->ingredient);
 
         $request->validate([
             'title' => 'required|max:50|regex:/^[\pL\s]+$/u',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
-            'ingredient' => 'required|min:2',//todo minimum two, but we need to check (query) if already has two into the table
+            'ingredient' => 'required|min:1',//todo minimum one, ?????? but we need to check (query) if already has one into the table
         ]);
 
-        $post->postIngredientsGroups()->create([ //add title
+        $groupCreated = $post->postIngredientsGroups()->create([ //add title
             'title' => $request->title,
          ]);
 
-        $ingredientsGroups = PostIngredientGroup::where('post_id', $post->id)->where('title', $request->title)->get();
+         // last id inserted ($groupCreated->id)                     
 
-        foreach ($ingredientsGroups as $ingredientGroup) {
-            
-            $post->postIngredients()->update([ //add id each ingredient
-                'post_ingredient_group_id' => $ingredientGroup->id,
-             ]);
+        foreach ($request->ingredient as $ingredient) {
+
+            $post->postIngredients()->where('id', $ingredient)->update([ //add id each ingredient
+                'post_ingredient_group_id' => $groupCreated->id,
+                ]);
         }
 
-         return back();
+        return redirect()->route('posts.ingredients', [$user, $post]);
     }
 
     /**
@@ -101,6 +102,27 @@ class PostIngredientGroupController extends Controller
         ]);
     }
 
+    public function updateTitle(Request $request, $ingredientGrouped, User $user, Post $post)
+    {
+
+        //TODO policy -> only admin can do it
+        //TODO policy -> check if the "id title" is the one belonging to the post
+
+        dd($request->title);
+        $request->validate([
+            'group_title' => 'required|max:50|regex:/^[\pL\s]+$/u',
+        ]);
+
+        $post->postIngredients()->where('id', $ingredientGrouped)->update([ //add id each ingredient
+            'title' => $request->group_title,
+            ]);
+        
+
+        
+
+        return back();
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -108,9 +130,35 @@ class PostIngredientGroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user, Post $post)
     {
-        //
+
+        //TODO policy -> only admin can do it
+        //TODO policy -> check if the "id title" is the one belonging to the post
+        //TODO policy -> check if the ingredient is already inserted
+
+        $request->validate([
+            'group_title' => 'required|max:50|regex:/^[\pL\s]+$/u',
+            'group_ingredient' => 'required|min:1',
+        ]);
+
+        //find title id
+        $ingredientsGroup = PostIngredientGroup::where('title', $request->group_title)
+                                                ->where('post_id', $post->id)
+                                                ->first();
+
+        //update ingredients grouped
+
+        foreach ($request->group_ingredient as $ingredient) {
+
+            $post->postIngredients()->where('id', $ingredient)->update([ //add id each ingredient
+                'post_ingredient_group_id' => $ingredientsGroup->id,
+                ]);
+        }
+
+        
+
+        return back();
     }
 
     /**
@@ -119,8 +167,29 @@ class PostIngredientGroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $group_id, User $user, Post $post)
     {
-        //
+        //TODO policy - check if deleteing the group from relative post
+        
+        $ingredientsToUngroup = PostIngredient::where('post_id', $post->id)
+                                            ->where('post_ingredient_group_id', $group_id)
+                                            ->get();
+
+        //if deleted loop and ungroup the ingredients in it
+        foreach ($ingredientsToUngroup as $ingredient) {
+            
+            $post->postIngredients()->where('id', $ingredient->id)
+                                ->update([ //add id each ingredient
+                'post_ingredient_group_id' => NULL,
+             ]);
+        }
+
+        $post->postIngredientsGroups()->delete();
+
+        return back();
+
+
     }
+
+    
 }
