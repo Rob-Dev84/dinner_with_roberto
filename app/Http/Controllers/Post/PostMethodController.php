@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Post;
 
-use App\Http\Controllers\Controller;
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PostMethodController extends Controller
 {
@@ -12,9 +14,16 @@ class PostMethodController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user, Post $post)
     {
-        //
+        // dd($post);
+
+        return view('posts.methods.index', 
+                    compact('post',
+                            // 'ingredientsGrouped',
+                            // 'ingredientsInserted',
+                            ) 
+                );
     }
 
     /**

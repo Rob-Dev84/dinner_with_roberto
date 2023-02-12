@@ -40,7 +40,7 @@
                     <x-nav-link :href="route('posts.ingredients', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.ingredients')">
                         {{ __('Edit ingredients') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('posts.edit', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.create')">
+                    <x-nav-link :href="route('posts.methods', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.methods')">
                         {{ __('Edit methos') }}
                     </x-nav-link>
 

@@ -91,7 +91,7 @@ class PostIngredientController extends Controller
     {   
       
 
-        // dd($ingredient);
+        // dd($user);
         return view('posts.ingredients.edit', 
                     compact('post',
                             'ingredient',

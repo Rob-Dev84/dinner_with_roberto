@@ -93,34 +93,33 @@ class PostIngredientGroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user, Post $post)
+    public function edit(PostIngredientGroup $ingredientGrouped, $user, Post $post)
     {
-        // dd($post);
 
-        return view('posts.ingredients.edit', [
-            // 'posts' => $posts 
-        ]);
+        return view('posts.ingredients.groups.edit',
+        compact('post',
+                'ingredientGrouped',
+                ) 
+        );
     }
 
-    public function updateTitle(Request $request, $ingredientGrouped, User $user, Post $post)
+    public function updateTitle(Request $request, PostIngredientGroup $ingredientGrouped, $user, Post $post)
     {
 
         //TODO policy -> only admin can do it
         //TODO policy -> check if the "id title" is the one belonging to the post
 
-        dd($request->title);
         $request->validate([
-            'group_title' => 'required|max:50|regex:/^[\pL\s]+$/u',
+            'title' => 'required|max:50|regex:/^[\pL\s]+$/u',
         ]);
 
-        $post->postIngredients()->where('id', $ingredientGrouped)->update([ //add id each ingredient
-            'title' => $request->group_title,
+        $post->postIngredientsGroups()->where('id', $ingredientGrouped->id)
+                                    ->first()
+                                    ->update([ //add id each ingredient
+            'title' => $request->title,
             ]);
-        
 
-        
-
-        return back();
+            return redirect()->route('posts.ingredients', [$user, $post]);
     }
 
     /**

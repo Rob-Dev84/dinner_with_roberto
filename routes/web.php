@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Post\PostController;
+use App\Http\Controllers\Post\PostMethodController;
 use App\Http\Controllers\Post\PostIngredientController;
 use App\Http\Controllers\Post\PostIngredientGroupController;
 // use App\Http\Controllers\Post\PostIngredientGroupController;
@@ -60,8 +61,6 @@ Route::controller(PostIngredientController::class)->group(function () {
     Route::delete('/posts/ingredients/{ingredient:id}/{user:name}/{post:slug}/delete', 'destroy')->name('posts.ingredients.delete');
     // Route::put('/posts/ingredients/{user:name}/{post:slug}', 'softDelete')->name('invitation.ingredients.softDelete');
 
-    
-    // Route::delete('/posts/{user:name}/{post:title}/intro', 'destroy')->name('posts.intro.destroy');
 })->middleware(['auth', 'verified']);
 
 Route::controller(PostIngredientGroupController::class)->group(function () {
@@ -69,20 +68,45 @@ Route::controller(PostIngredientGroupController::class)->group(function () {
     //TODO use -> user:username (because will be unique)
 Route::get('/posts/ingredients/groups/{user:name}/{post:slug}', 'index')->name('posts.ingredients.groups'); //Here we show: all ingredients, ingredients grouped, ingredients not grouped
 Route::post('/posts/ingredients/groups/{user:name}/{post:slug}/store', 'store')->name('posts.ingredients.groups.store');
-Route::put('/posts/ingredients/groups/{post_ingredient_groups:id}/{user:name}/{post:slug}/editTitle', 'editTitle')->name('posts.ingredients.groups.editTitle');
-Route::put('/posts/ingredients/groups/{post_ingredient_groups:id}/{user:name}/{post:slug}/updateTitle', 'updateTitle')->name('posts.ingredients.groups.updateTitle');
+Route::get('/posts/ingredients/groups/{ingredientGrouped:id}/{user:name}/{post:slug}/edit', 'edit')->name('posts.ingredients.groups.edit');
+Route::put('/posts/ingredients/groups/{ingredientGrouped:id}/{user:name}/{post:slug}/updateTitle', 'updateTitle')->name('posts.ingredients.groups.updateTitle');
 Route::put('/posts/ingredients/groups/{user:name}/{post:slug}/update', 'update')->name('posts.ingredients.groups.update');
 // Route::put('/posts/ingredients/groups/{user:name}/{post:slug}', 'softDelete')->name('ingredients.ingredients.groups.softDelete');
 Route::delete('/posts/ingredients/groups/{post_ingredient_groups:id}/{user:name}/{post:slug}', 'destroy')->name('post.ingredients.groups.destroy');
 
-
-// Route::delete('/posts/{user:name}/{post:title}/intro', 'destroy')->name('posts.intro.destroy');
 })->middleware(['auth', 'verified']);
 
 
-// Route::get('/posts', function () {
-//     return view('posts');
-// })->middleware(['auth', 'verified'])->name('posts');
+Route::controller(PostMethodController::class)->group(function () {
+
+    //TODO use -> user:username (because will be unique)
+Route::get('/posts/methods/{user:name}/{post:slug}', 'index')->name('posts.methods');
+Route::post('/posts/methods/{user:name}/{post:slug}/store', 'store')->name('posts.methods.store');//add new ingredient in a post
+
+Route::get('/posts/methods/{method:id}/{user:name}/{post:slug}/edit', 'edit')->name('posts.methods.edit');//todo form to modify ingredient inserted (available from )
+Route::put('/posts/methods/{method:id}/{user:name}/{post:slug}/update', 'update')->name('posts.methods.update');
+
+Route::put('/posts/methods/{method:id}/{user:name}/{post:slug}', 'ungroup')->name('posts.methods.ungroup');
+
+Route::delete('/posts/methods/{method:id}/{user:name}/{post:slug}/delete', 'destroy')->name('posts.methods.delete');
+// Route::put('/posts/ingredients/{user:name}/{post:slug}', 'softDelete')->name('invitation.ingredients.softDelete');
+
+})->middleware(['auth', 'verified']);
+
+
+Route::controller(PostMethodGroupController::class)->group(function () {
+
+    //TODO use -> user:username (because will be unique)
+Route::get('/posts/methods/groups/{user:name}/{post:slug}', 'index')->name('posts.methods.groups'); //Here we show: all ingredients, ingredients grouped, ingredients not grouped
+Route::post('/posts/methods/groups/{user:name}/{post:slug}/store', 'store')->name('posts.methods.groups.store');
+Route::get('/posts/methods/groups/{methodGrouped:id}/{user:name}/{post:slug}/edit', 'edit')->name('posts.methods.groups.edit');
+Route::put('/posts/methods/groups/{methodGrouped:id}/{user:name}/{post:slug}/updateTitle', 'updateTitle')->name('posts.methods.groups.updateTitle');
+Route::put('/posts/methods/groups/{user:name}/{post:slug}/update', 'update')->name('posts.methods.groups.update');
+Route::delete('/posts/methods/groups/{post_ingredient_groups:id}/{user:name}/{post:slug}', 'destroy')->name('post.methods.groups.destroy');
+
+})->middleware(['auth', 'verified']);
+
+
 
 Route::get('/hint', function () {
     return view('hint');
