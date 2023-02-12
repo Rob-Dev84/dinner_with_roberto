@@ -14,15 +14,13 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         <div class="pb-6 flex flex-col">
-                            <h3>{{ __('Total ingredients inserted:') }}</h3>
+                            <h3>{{ __('Total methods inserted:') }}</h3>
 
                             <ul>
-                                @forelse ($ingredientsInserted as $ingredient)
+                                @forelse ($methodsInserted as $method)
                                     <li class="flex justify-between odd:bg-gray-200">
                                         <div class="flex justify-center items-center">
-                                            {{ $ingredient->quantity }}
-                                            {{ $ingredient->unit }}
-                                            {{ $ingredient->name }}
+                                            {{ $method->method }}
                                         </div>
 
                                         <div class="flex justify-center items-center">
