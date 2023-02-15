@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Post;
 
-use App\Models\Post;
-use App\Models\User;
 use App\Models\PostMethod;
 use Illuminate\Http\Request;
+use App\Models\PostMethodGroup;
 use App\Http\Controllers\Controller;
 
-class PostMethodController extends Controller
+class PostMethodGroupController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,19 +16,16 @@ class PostMethodController extends Controller
      */
     public function index(User $user, Post $post)
     {
-        $methodsInserted = PostMethod::where('post_id', $post->id)
-                                        // ->with('postIngredientsGroups')
-                                        ->get();
+        $methods = PostMethod::get();
 
-        $methodsGrouped = $post->postMethodsGroups()->get();
-        // dd($methodsInserted);
+        $methodsGroups = PostMethodGroup::get();
 
-
-        return view('posts.methods.index', 
-                    compact('post',
-                            'methodsInserted',
-                            'methodsGrouped',
-                            ) 
+        return view('posts.methods.groups.index', 
+                compact('post',
+                        'ingredients',
+                        'ingredientsGroups',
+                        // 'ingredientsInserted',
+                        ) 
                 );
     }
 
@@ -49,19 +45,9 @@ class PostMethodController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, User $user, Post $post)
+    public function store(Request $request)
     {
-        
-
-        $request->validate([
-            'method' => 'required|max:65535|regex:/^[\pL\s\-]+$/u',
-        ]);
-
-        $post->postMethods()->create([
-            'method' => $request->method,
-         ]);
-
-         return back();
+        //
     }
 
     /**

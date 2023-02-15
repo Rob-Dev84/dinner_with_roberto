@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\PostMethod;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
@@ -30,6 +31,14 @@ class Post extends Model
 
     public function postIngredientsGroups() {
         return $this->hasMany(PostIngredientGroup::class);
+    }
+
+    public function postMethods() {
+        return $this->hasMany(PostMethod::class);
+    }
+
+    public function postMethodsGroups() {
+        return $this->hasMany(PostMethodGroup::class);
     }
     
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Post\PostController;
 use App\Http\Controllers\Post\PostMethodController;
 use App\Http\Controllers\Post\PostIngredientController;
+use App\Http\Controllers\Post\PostMethodGroupController;
 use App\Http\Controllers\Post\PostIngredientGroupController;
 // use App\Http\Controllers\Post\PostIngredientGroupController;
 
