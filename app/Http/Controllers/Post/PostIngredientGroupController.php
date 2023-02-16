@@ -157,7 +157,8 @@ class PostIngredientGroupController extends Controller
 
         
 
-        return back();
+        // return back();
+        return redirect()->route('posts.ingredients', [$user, $post]);
     }
 
     /**

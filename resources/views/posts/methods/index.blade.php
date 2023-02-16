@@ -29,18 +29,20 @@
                                                 {{ __('Mod') }}
                                             </x-nav-link>
                                                                                 {{-- posts.methods.delete --}}
-                                            <form method="POST" action="{{ route('posts.methods.delete', [$method, auth()->user(), $post]) }}">
+                                            {{-- <form method="POST" action="{{ route('posts.methods.delete', [$method, auth()->user(), $post]) }}">
                                                 @csrf
                                                 @method('DELETE')
-                        
-                                                
-                        
-                                                {{-- <div class="flex items-center justify-end mt-4"> --}}
+                                
                                                     <x-danger-button class="ml-4">
                                                         {{ __('Del') }}
                                                     </x-danger-button>
-                                                {{-- </div> --}}
-                                            </form>
+                                 
+                                            </form> --}}
+
+                                
+                                            @include('posts.methods.modals.delete-method-form')
+                                            
+                                            
                                         </div>   
                                     </li>
                                 @empty
@@ -140,7 +142,7 @@
                                             </div>
 
                                             <div class="ml-4">
-                                                <form method="POST" action="{{ route('posts.methods.ungroup', [$ingredient, auth()->user(), $post]) }}">
+                                                <form method="POST" action="{{ route('posts.methods.ungroup', [$method, auth()->user(), $post]) }}">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="flex items-center justify-end mt-4">

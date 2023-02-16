@@ -2,7 +2,7 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
  
-            {{ __('Group ingredients for: ') }}
+            {{ __('Group methods for: ') }}
             {{ $post->title }}
             
         </h2>
@@ -17,13 +17,13 @@
                 <div class="p-6 text-gray-900">
                     
 
-                    {{-- If there insn't any ingredient available, don't show the form --}}
+                    {{-- If there insn't any method available, don't show the form --}}
 
-                    @if (count($ingredients->where("post_ingredient_group_id", null)))
+                    @if (count($methods->where("post_method_group_id", null)))
                         
-                    <h3>{{ __('Create new Ingredients Group') }}</h3>
+                    <h3>{{ __('Create new methods Group') }}</h3>
 
-                    <form method="POST" action="{{ route('posts.ingredients.groups.store', [auth()->user(), $post]) }}">
+                    <form method="POST" action="{{ route('posts.methods.groups.store', [auth()->user(), $post]) }}">
                         @csrf
                         {{-- @method('PUT') --}}
 
@@ -38,25 +38,23 @@
                         </div>
 
                        
-                        <h3>{{ __('ingredients available:') }}</h3>
+                        <h3>{{ __('methods available:') }}</h3>
                         <div class="pb-6">
                             
                             <ul class="">
-                                @foreach ($ingredients as $ingredient)
-                                    {{-- we want to show only ingrediens not grouped yet --}}
-                                    @if (is_null($ingredient->post_ingredient_group_id))
+                                @foreach ($methods as $method)
+                                    {{-- we want to show only methods not grouped yet --}}
+                                    @if (is_null($method->post_method_group_id))
                                         <li class="flex justify-between items-center odd:bg-gray-200">
                                             <div class="ml-2">
-                                                {{ $ingredient->quantity }}
-                                                {{ $ingredient->unit }}
-                                                {{ $ingredient->name }}
+                                                {{ $method->method }}
                                             </div>
                                             
                                             <div class="mr-6">
-                                                {{-- <x-input-label for="ingredient" :value="__('Title')" /> --}}
-                                                <x-text-input id="" class="" type="checkbox" name="ingredient[]" :value="$ingredient->id" />
-                                                    {{-- <input type="checkbox" name="ingredient[]" :value="$ingredient->ingredient_groups_id"> --}}
-                                                <x-input-error :messages="$errors->get('ingredient')" class="mt-2" />
+                                                {{-- <x-input-label for="method" :value="__('Title')" /> --}}
+                                                <x-text-input id="" class="" type="checkbox" name="method[]" :value="$method->id" />
+                                                    {{-- <input type="checkbox" name="method[]" :value="$method->method_groups_id"> --}}
+                                                <x-input-error :messages="$errors->get('method')" class="mt-2" />
                                             </div>   
                                         </li>
                                     @endif
@@ -71,7 +69,7 @@
                     </form>
 
                     @else
-                        {{ __('You don\'t have ingredients to group') }}
+                        {{ __('You don\'t have methods to group') }}
                     @endif
                 
                 </div>
@@ -79,20 +77,20 @@
         </div>
     </div>
 
-    {{-- Add Ingredients to existing Group --}}
+    {{-- Add methods to existing Group --}}
     <div class="py-2 flex-1">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     
 
-                    {{-- If there insn't any ingredient available, don't show the form --}}
+                    {{-- If there insn't any method available, don't show the form --}}
 
-                    @if (count($ingredients->where("post_ingredient_group_id", null)))
+                    @if (count($methods->where("post_method_group_id", null)))
                         
-                    <h3>{{ __('Add Ingredients to existing Group') }}</h3>
+                    <h3>{{ __('Add methods to existing Group') }}</h3>
                     
-                    <form method="POST" action="{{ route('posts.ingredients.groups.update', [auth()->user(), $post]) }}">
+                    <form method="POST" action="{{ route('posts.methods.groups.update', [auth()->user(), $post]) }}">
                         @csrf
                         @method('PUT')
 
@@ -102,10 +100,11 @@
 
                             <div class="mt-4">
                                 <x-input-label for="group_title" :value="__('Select group')" />
+                               
                                 <select name="group_title" id="group_title">
                                     <option value="">{{ __('Select group') }}</option>
 
-                                    @foreach ($ingredientsGroups as $group)
+                                    @foreach ($methodsGroups as $group)
                                     {{-- //TODO make selected working) --}}
                                         <option :value="{{ $group->id }}" @selected(old('group_title', $group->title))">{{ $group->title }}</option>
                                     @endforeach
@@ -116,24 +115,22 @@
                         </div>
 
                        
-                        <h3>{{ __('ingredients not grouped yet:') }}</h3>
+                        <h3>{{ __('methods not grouped yet:') }}</h3>
                         <div class="pb-6">
                             
                             <ul class="">
-                                @foreach ($ingredients as $ingredient)
-                                    {{-- we want to show only ingrediens not grouped yet --}}
-                                    @if (is_null($ingredient->post_ingredient_group_id))
+                                @foreach ($methods as $method)
+                                    {{-- we want to show only methods not grouped yet --}}
+                                    @if (is_null($method->post_method_group_id))
                                         <li class="flex justify-between items-center odd:bg-gray-200">
                                             <div class="ml-2">
-                                                {{ $ingredient->quantity }}
-                                                {{ $ingredient->unit }}
-                                                {{ $ingredient->name }}
+                                                {{ $method->method }}
                                             </div>
                 
                                             <div class="mr-6">
-                                                {{-- <x-input-label for="ingredient" :value="__('Title')" /> --}}
-                                                <x-text-input id="" class="" type="checkbox" name="group_ingredient[]" :value="$ingredient->id" />
-                                                <x-input-error :messages="$errors->get('group_ingredient')" class="mt-2" />
+                                                {{-- <x-input-label for="method" :value="__('Title')" /> --}}
+                                                <x-text-input id="" class="" type="checkbox" name="group_method[]" :value="$method->id" />
+                                                <x-input-error :messages="$errors->get('group_method')" class="mt-2" />
                                             </div>   
                                         </li>
                                     @endif
@@ -146,7 +143,7 @@
                                 {{ __('Add Existing Group') }}
                             </x-primary-button>
 
-                            {{-- <form method="POST" action="{{ route('post.ingredients.groups.destroy', [$ingredientGrouped, auth()->user(), $post]) }}">
+                            {{-- <form method="POST" action="{{ route('post.methods.groups.destroy', [$methodGrouped, auth()->user(), $post]) }}">
                                 @csrf
                                 @method('PUT')
                                 <div class="flex items-center justify-end mt-4">
@@ -159,7 +156,7 @@
                     </form>
 
                     @else
-                        <p>{{ __('You don\'t have ingredients to group') }}</p>
+                        <p>{{ __('You don\'t have methods to group') }}</p>
                     @endif
                 
                 </div>

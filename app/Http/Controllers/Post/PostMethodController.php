@@ -18,11 +18,10 @@ class PostMethodController extends Controller
     public function index(User $user, Post $post)
     {
         $methodsInserted = PostMethod::where('post_id', $post->id)
-                                        // ->with('postIngredientsGroups')
+                                        // ->with('postMethodsGroups')
                                         ->get();
 
         $methodsGrouped = $post->postMethodsGroups()->get();
-        // dd($methodsInserted);
 
 
         return view('posts.methods.index', 
@@ -81,9 +80,14 @@ class PostMethodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(PostMethod $method, $user, Post $post)
     {
-        //
+     
+        return view('posts.methods.edit', 
+                    compact('post',
+                            'method',
+                            ) 
+                );
     }
 
     /**
@@ -93,9 +97,23 @@ class PostMethodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, PostMethod $method, $user, Post $post)
     {
-        //
+
+        // dd($request->method);
+        //TODO policy - check if modifying the group from relative post
+        //TODO policy - check if user is admin
+        //TODO policy - check if id method is correct
+
+        // $request->validate([
+        //     'method' => 'required|max:65535|regex:/^[\pL\s\-]+$/u',
+        // ]);
+
+        $post->postMethods()->where('id', $method->id)->first()->update([
+            'method' => $request->method,
+         ]);
+
+         return redirect()->route('posts.methods', [$user, $post]);
     }
 
     /**
@@ -104,8 +122,31 @@ class PostMethodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, PostMethod $method, $user, Post $post)
     {
-        //
+        //TODO policy - check if method is from the post id
+        //TODO policy - check if user is admin
+
+        $post->postMethods()->where('id', $method->id)->delete();
+
+        return back();
     }
+
+
+    public function ungroup(Request $request, $method, User $user, Post $post)
+    {
+        //TODO policy - check if deleteing the group from relative post
+
+            $post->postMethods()->where('id', $method)
+                                ->update([
+                'post_method_group_id' => NULL,
+             ]);
+
+        return back();
+
+
+    }
+
+
+
 }

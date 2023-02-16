@@ -71,7 +71,7 @@ Route::get('/posts/ingredients/groups/{user:name}/{post:slug}', 'index')->name('
 Route::post('/posts/ingredients/groups/{user:name}/{post:slug}/store', 'store')->name('posts.ingredients.groups.store');
 Route::get('/posts/ingredients/groups/{ingredientGrouped:id}/{user:name}/{post:slug}/edit', 'edit')->name('posts.ingredients.groups.edit');
 Route::put('/posts/ingredients/groups/{ingredientGrouped:id}/{user:name}/{post:slug}/updateTitle', 'updateTitle')->name('posts.ingredients.groups.updateTitle');
-Route::put('/posts/ingredients/groups/{user:name}/{post:slug}/update', 'update')->name('posts.ingredients.groups.update');
+Route::put('/posts/ingredients/groups/update/{user:name}/{post:slug}', 'update')->name('posts.ingredients.groups.update');
 // Route::put('/posts/ingredients/groups/{user:name}/{post:slug}', 'softDelete')->name('ingredients.ingredients.groups.softDelete');
 Route::delete('/posts/ingredients/groups/{post_ingredient_groups:id}/{user:name}/{post:slug}', 'destroy')->name('post.ingredients.groups.destroy');
 
@@ -98,11 +98,11 @@ Route::delete('/posts/methods/{method:id}/{user:name}/{post:slug}/delete', 'dest
 Route::controller(PostMethodGroupController::class)->group(function () {
 
     //TODO use -> user:username (because will be unique)
-Route::get('/posts/methods/groups/{user:name}/{post:slug}', 'index')->name('posts.methods.groups'); //Here we show: all ingredients, ingredients grouped, ingredients not grouped
+Route::get('/posts/methods/groups/{user:name}/{post:slug}', 'index')->name('posts.methods.groups'); //Here we show: all methods, methods grouped, methods not grouped
 Route::post('/posts/methods/groups/{user:name}/{post:slug}/store', 'store')->name('posts.methods.groups.store');
 Route::get('/posts/methods/groups/{methodGrouped:id}/{user:name}/{post:slug}/edit', 'edit')->name('posts.methods.groups.edit');
 Route::put('/posts/methods/groups/{methodGrouped:id}/{user:name}/{post:slug}/updateTitle', 'updateTitle')->name('posts.methods.groups.updateTitle');
-Route::put('/posts/methods/groups/{user:name}/{post:slug}/update', 'update')->name('posts.methods.groups.update');
+Route::put('/posts/methods/groups/update/{user:name}/{post:slug}', 'update')->name('posts.methods.groups.update');
 Route::delete('/posts/methods/groups/{post_ingredient_groups:id}/{user:name}/{post:slug}', 'destroy')->name('post.methods.groups.destroy');
 
 })->middleware(['auth', 'verified']);

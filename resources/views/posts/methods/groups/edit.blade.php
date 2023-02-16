@@ -14,16 +14,16 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
  
-                    <form method="POST" action="{{ route('posts.ingredients.groups.updateTitle', [$ingredientGrouped, auth()->user(), $post]) }}">
+                    <form method="POST" action="{{ route('posts.methods.groups.updateTitle', [$methodGrouped, auth()->user(), $post]) }}">
                         @csrf
                         @method('PUT')
 
                         <div class="flex justify-between">
 
-                                {{-- Ingredient group name --}}
+                                {{-- method group name --}}
                             <div class="mt-4">
                                 <x-input-label for="title" :value="__('Title')" />
-                                <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="$ingredientGrouped->title" required />
+                                <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="$methodGrouped->title" required />
                                 <x-input-error :messages="$errors->get('title')" class="mt-2" />
                             </div>
                         </div>
