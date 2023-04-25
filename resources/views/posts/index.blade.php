@@ -22,7 +22,13 @@
             <div class="flex bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="border">
                     <div class="p-6 text-gray-900">
-                        {{ 'img here' }}
+                        @if ($post->img_link)
+                            <img class="w-40"
+                                src="{{ asset('storage/' . $post->img_link) }}" 
+                                alt="{{ $post->title . '\'s photo' }}"
+                            />
+                        @endif
+                        
                     </div>
 
                 </div>
@@ -65,10 +71,8 @@
     @else
     {{ __("There aren't recipes yet") }}
     @endif
-
     
 
-    
 </x-app-layout>
 
 

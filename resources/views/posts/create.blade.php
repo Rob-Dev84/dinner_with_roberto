@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900">
 
                                                  {{-- posts.store --}}  
-                    <form method="POST" action="{{ route('posts.store', auth()->user()) }}">
+                    <form method="POST" enctype="multipart/form-data" action="{{ route('posts.store', auth()->user()) }}">
                         @csrf
 
                         <!-- Title -->
@@ -38,9 +38,9 @@
 
                         <!-- Img -->
                         <div class="mt-4">
-                            <x-input-label for="image" :value="__('Image')" />
-                            <x-text-input id="image" class="block mt-1 w-full" type="file" name="image" :value="old('image')" />
-                            <x-input-error :messages="$errors->get('image')" class="mt-2" />
+                            <x-input-label for="img_link" :value="__('Image')" />
+                            <x-text-input id="img_link" class="block mt-1 w-full" type="file" name="img_link" :value="old('img_link')" />
+                            <x-input-error :messages="$errors->get('img_link')" class="mt-2" />
                         </div>
 
                         <!-- Visible Only for Admin -->

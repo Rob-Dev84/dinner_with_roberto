@@ -46,15 +46,15 @@ class PostController extends Controller
     public function store(Request $request, User $user)
     {
 
-        
+        // dd($request->hasFile('img_link'));
 
-        // dd($slug);
+        
 
         $request->validate([
             'title' => 'required|unique:posts|max:100|regex:/^[\pL\s]+$/u',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
             'meta_title' => 'max:100',
             'meta_description' => 'max:200',
-            'img_link' => 'max:200',
+            'img_link' => 'mimes:jpg,jpeg,png|max:2048',
             'intro' => 'regex:/^[\pL\s\-]+$/u',
             'note' => 'regex:/^[\pL\s\-]+$/u',
         ]);
@@ -64,14 +64,23 @@ class PostController extends Controller
         $slug = strtolower($slug);
 
 
-        // dd($slug);
+        //store image into the folder... app/public/images/file.extension
+        $imagePath = null;
+        if ($request->hasFile('img_link')) {
+            $imagePath = $request->file('img_link')->storeAs(
+                'images',
+                // $request->file('img_link')->getClientOriginalExtension(),
+                $request->file('img_link')->getClientOriginalName(),
+                'public',
+            );
+        }
 
         $request->user()->posts()->create([
            'title' => $request->title,
            'slug' => $slug,
            'meta_title' => $request->meta_title,
            'meta_description' => $request->meta_description,
-           'img_link' => $request->img_link,
+           'img_link' => $imagePath,
            'intro' => $request->intro,
            'note' => $request->note,
         ]);
@@ -116,7 +125,28 @@ class PostController extends Controller
      */
     public function update(Request $request, User $user, Post $post)
     {
-        // dd($post->intro);
+
+        //TODO Add validation here
+        $request->validate([
+            'title' => 'required|unique:posts|max:100|regex:/^[\pL\s]+$/u',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
+            'meta_title' => 'max:100',
+            'meta_description' => 'max:200',
+            'img_link' => 'mimes:jpg,jpeg,png|max:2048',
+            'intro' => 'regex:/^[\pL\s\-]+$/u',
+            'note' => 'regex:/^[\pL\s\-]+$/u',
+        ]);
+
+        //store image into the folder... app/public/images/file.extension
+        $imagePath = null;
+        if ($request->hasFile('img_link')) {
+            $imagePath = $request->file('img_link')->storeAs(
+                'images',
+                // $request->file('img_link')->getClientOriginalExtension(),
+                $request->file('img_link')->getClientOriginalName(),
+                'public',
+            );
+        }
+
 
         $slug = str_replace(' ','-', $request->title);
         $slug = strtolower($slug);
@@ -126,7 +156,7 @@ class PostController extends Controller
            'slug' => $slug,
            'meta_title' => $request->meta_title,
            'meta_description' => $request->meta_description,
-           'img_link' => $request->img_link,
+           'img_link' => $imagePath,
            'intro' => $request->intro,
            'note' => $request->note,
         ]);
