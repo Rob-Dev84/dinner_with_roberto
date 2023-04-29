@@ -32,9 +32,7 @@
                         @endif
                         <br>
                         @if ($post->postImages->count() < 5)
-                        <x-nav-link :href="route('posts.images', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.methods')">
-                            {{ __("Add photo") }}
-                        </x-nav-link>
+                            <x-a-link href="{{ route('posts.images.create', [auth()->user(), $post->slug]) }}" text="{{ __('Add image') }}" />
                         @endif
                         <small>{{ $post->postImages->count() }}{{ '/5' }}</small>
                     </div>

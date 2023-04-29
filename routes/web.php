@@ -112,7 +112,8 @@ Route::controller(PostImageController::class)->group(function () {
 
     //TODO use -> user:username (because will be unique)
     Route::get('/posts/images/{user:name}/{post:slug}', 'index')->name('posts.images'); //Here we show: all methods, methods grouped, methods not grouped
-    Route::post('/posts/groups/{user:name}/{post:slug}/store', 'store')->name('posts.images.store');
+    Route::get('/posts/images/{user:name}/{post:slug}/store', 'create')->name('posts.images.create');
+    Route::post('/posts/images/{user:name}/{post:slug}/store', 'store')->name('posts.images.store');
     Route::delete('/posts/groups/{image:id}/{user:name}/{post:slug}', 'destroy')->name('posts.images.destroy');
 
 })->middleware(['auth', 'verified']);
