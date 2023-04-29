@@ -22,13 +22,21 @@
             <div class="flex bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="border">
                     <div class="p-6 text-gray-900">
-                        @if ($post->img_link)
+                        @if ($post->postImages->count())
                             <img class="w-40"
-                                src="{{ asset('storage/' . $post->img_link) }}" 
+                                src="{{ asset('storage/' . $post->postImages->path) }}" 
                                 alt="{{ $post->title . '\'s photo' }}"
                             />
+                        @else
+                            {{ __("Post hasn't main image yet") }}
                         @endif
-                        
+                        <br>
+                        @if ($post->postImages->count() < 5)
+                        <x-nav-link :href="route('posts.images', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.methods')">
+                            {{ __("Add photo") }}
+                        </x-nav-link>
+                        @endif
+                        <small>{{ $post->postImages->count() }}{{ '/5' }}</small>
                     </div>
 
                 </div>
@@ -48,6 +56,9 @@
                     </x-nav-link>
                     <x-nav-link :href="route('posts.methods', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.methods')">
                         {{ __('Edit methos') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('posts.images', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.methods')">
+                        {{ __('Edit Photos') }}
                     </x-nav-link>
 
                 </div>

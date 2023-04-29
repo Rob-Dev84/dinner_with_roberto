@@ -18,10 +18,8 @@ class PostController extends Controller
     {
 
         // $posts = Post::with(['user'])->paginate(6);
-        $posts = Post::get();
-
+        $posts = Post::with('postImages')->get();
         // dd($posts);
-
         return view('posts.index', [
             'posts' => $posts 
         ]);

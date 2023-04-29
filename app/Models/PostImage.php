@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class PostImage extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'path',
+        'title',
+        'alt',
+        'figcaption',
+        'position',
+    ];
+
+    
 }

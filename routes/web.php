@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Post\PostController;
+use App\Http\Controllers\Post\PostImageController;
 use App\Http\Controllers\Post\PostMethodController;
 use App\Http\Controllers\Post\PostIngredientController;
 use App\Http\Controllers\Post\PostMethodGroupController;
@@ -107,6 +108,31 @@ Route::delete('/posts/methods/groups/{post_ingredient_groups:id}/{user:name}/{po
 
 })->middleware(['auth', 'verified']);
 
+Route::controller(PostImageController::class)->group(function () {
+
+    //TODO use -> user:username (because will be unique)
+    Route::get('/posts/images/{user:name}/{post:slug}', 'index')->name('posts.images'); //Here we show: all methods, methods grouped, methods not grouped
+    Route::post('/posts/groups/{user:name}/{post:slug}/store', 'store')->name('posts.images.store');
+    Route::delete('/posts/groups/{image:id}/{user:name}/{post:slug}', 'destroy')->name('posts.images.destroy');
+
+})->middleware(['auth', 'verified']);
+
+// Route::controller(PostImageController::class)->group(function () {
+
+//     Route::get('/posts', 'index')->name('posts');
+
+  
+//                     //TODO use -> user:username (because will be unique)
+//     Route::get('/posts/{user:name}', 'create')->name('posts.create');//form to create a post (title)
+//     Route::post('/posts/{user:name}', 'store')->name('posts.store');
+
+//     Route::get('/posts/{user:name}/{post:slug}', 'edit')->name('posts.edit');//form to modify post title
+//     Route::put('/posts/{user:name}/{post:slug}', 'update')->name('posts.update');
+//     Route::put('/posts/{user:name}/{post:title}/softDelete', 'softDelete')->name('posts.softDelete');
+
+
+//     // Route::delete('/posts/{user:name}/{post:title}', 'destroy')->name('posts.destroy');
+// })->middleware(['auth', 'verified']);
 
 
 Route::get('/hint', function () {

@@ -6,6 +6,7 @@ use App\Models\PostMethod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+
 class Post extends Model
 {
     use HasFactory;
@@ -39,6 +40,10 @@ class Post extends Model
 
     public function postMethodsGroups() {
         return $this->hasMany(PostMethodGroup::class);
+    }
+
+    public function postImages() {
+        return $this->hasMany(PostImage::class);
     }
     
 

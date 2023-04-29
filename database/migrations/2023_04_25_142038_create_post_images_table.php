@@ -15,6 +15,12 @@ return new class extends Migration
     {
         Schema::create('post_images', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('post_id')->constrained();
+            $table->string('path', 200)->nullable();//images/recipes/pasta/spaghetti-aglio-e-olio.jpg
+            $table->string('title', 200)->nullable();//title img attribute - no longer than 125 characters
+            $table->string('alt', 200)->nullable();//alt img attribute - no longer than 125 characters
+            $table->string('figcaption', 200)->nullable();//figcaption tag - no longer than 125 characters
+            $table->string('position', 50)->nullable();//Here we place our image in a post - main/intro-end/methos/methos-end/recipe-card
             $table->timestamps();
         });
     }
