@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Add new recipe') }}
+            {{ __('Add images to your post: ') }} <u>{{ $post->title }}</u> 
         </h2>
     </x-slot>
 
@@ -10,54 +10,56 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
 
-                                                 {{-- posts.store --}}  
-                    <form method="POST" enctype="multipart/form-data" action="{{ route('posts.store', auth()->user()) }}">
+                    <form method="POST" enctype="multipart/form-data" action="{{ route('posts.images.store', [auth()->user(), $post->slug]) }}">
                         @csrf
 
-                        <!-- Title -->
-                        <div class="mt-4">
-                            <x-input-label for="title" :value="__('Title')" />
-                            <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title')" required autofocus />
-                            <x-input-error :messages="$errors->get('title')" class="mt-2" />
+                        <div class="flex flex-wrap -mx-4">
+                        
+                            @foreach($positions  as  $index => $position)
+                        
+                                <div class="w-full lg:w-1/2 px-4">
+                                    <div class="border border-gray-300 rounded-lg p-6">
+                                        {{-- Image --}}    
+                                        <div class="mt-4">
+                                            <x-input-label for="path" :value="__('Select Image: ').ucfirst($position)" />
+                                            <x-text-input id="path_{{$index+1}}" class="block mt-1 w-full" type="file" name="path_{{$index+1}}" :value="old('path_{{$i}}')" />
+                                            <x-input-error :messages="$errors->get('path_{{$index+1}}')" class="mt-2" />
+                                        </div>
+
+                                        {{-- Title --}}                            
+                                        <div class="mt-4">
+                                            <x-input-label for="title{{$index+1}}" :value="__('Title')" />
+                                            <x-text-input id="title{{$index+1}}" class="block mt-1 w-full" type="text" name="title{{$index+1}}" :value="old('title{{$index+1}}')" autofocus />
+                                            <x-input-error :messages="$errors->get('title{{$index+1}}')" class="mt-2" />
+                                        </div>
+
+                                        {{-- Alt --}}
+                                        <div class="mt-4">
+                                            <x-input-label for="alt{{$index+1}}" :value="__('Alt')" />
+                                            <x-text-input id="alt{{$index+1}}" class="block mt-1 w-full" type="text" name="alt{{$index+1}}" :value="old('alt{{$index+1}}')" autofocus />
+                                            <x-input-error :messages="$errors->get('alt{{$index+1}}')" class="mt-2" />
+                                        </div>
+
+                                        {{-- Figcaption --}}
+                                        <div class="mt-4">
+                                            <x-input-label for="figcaption{{$index+1}}" :value="__('Figcaption')" />
+                                            <x-text-input id="figcaption{{$index+1}}" class="block mt-1 w-full" type="text" name="figcaption{{$index+1}}" :value="old('figcaption{{$index+1}}')" autofocus />
+                                            <x-input-error :messages="$errors->get('figcaption{{$index+1}}')" class="mt-2" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            @endforeach
                         </div>
 
-                        <!-- Visible Only for Admin -->
-                        <div class="mt-4">
-                            <x-input-label for="meta title" :value="__('Meta Tile')" />
-                            {{-- <x-text-input id="meta_title" class="block mt-1 w-full" type="text" name="meta_title" :value="old('meta_title')" /> --}}
-                            <textarea id="meta_title" class="block mt-1 w-full" name="meta_title" type="text">{{ old('meta_title') }}</textarea>
-                            <x-input-error :messages="$errors->get('meta_title')" class="mt-2" />
-                        </div>
+                        @if ($errors->has('path'))
+                            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                                <strong class="font-bold">{{ __('Error!') }}</strong>
+                                <span class="block sm:inline">{{ $errors->first('path') }}</span>
+                            </div>
+                        @endif
 
-                        <!-- Visible Only for Admin -->
-                        <div class="mt-4">
-                            <x-input-label for="meta_description title" :value="__('Meta Description')" />
-                            <textarea id="meta_description" class="block mt-1 w-full" name="meta_description" type="text"></textarea>
-                            <x-input-error :messages="$errors->get('meta_description')" class="mt-2" />
-                        </div>
-
-                        <!-- Img -->
-                        <div class="mt-4">
-                            <x-input-label for="img_link" :value="__('Image')" />
-                            <x-text-input id="img_link" class="block mt-1 w-full" type="file" name="img_link" :value="old('img_link')" />
-                            <x-input-error :messages="$errors->get('img_link')" class="mt-2" />
-                        </div>
-
-                        <!-- Visible Only for Admin -->
-                        <div class="mt-4">
-                            <x-input-label for="intro" :value="__('Intro')" />
-                            <textarea id="intro" class="block mt-1 w-full" name="intro" type="text">{{ old('intro') }}</textarea>
-                            <x-input-error :messages="$errors->get('intro')" class="mt-2" />
-                        </div>
-
-                        <!-- Visible Only for Admin -->
-                        <div class="mt-4">
-                            <x-input-label for="note" :value="__('Notes')" />
-                            <textarea id="note" class="block mt-1 w-full" name="note" type="text">{{ old('note') }}</textarea>
-                            <x-input-error :messages="$errors->get('summary')" class="mt-2" />
-                        </div>
-
-
+                        
                         <div class="flex items-center justify-end mt-4">
 
                             <x-primary-button class="ml-4">
@@ -65,6 +67,8 @@
                             </x-primary-button>
                         </div>
                     </form>
+
+                    
                 </div>
             </div>
         </div>

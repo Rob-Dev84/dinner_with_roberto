@@ -22,11 +22,21 @@
             <div class="flex bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="border">
                     <div class="p-6 text-gray-900">
-                        @if ($post->postImages->count())
-                            <img class="w-40"
-                                src="{{ asset('storage/' . $post->postImages->path) }}" 
-                                alt="{{ $post->title . '\'s photo' }}"
-                            />
+                        @if ($post->postImages->count() && !is_null($introImage->path))
+{{-- {{ dd($introImage) }} --}}
+                        <img class="w-40" 
+                            src="{{ asset($introImage->path) }}" 
+                            alt="{{ $post->title . '\'s photo' }}"
+                        />
+                            
+                            @foreach($post->postImages as $image)
+                                {{-- <img class="w-40" 
+                                    src="{{ asset($image->path) }}" 
+                                    alt="{{ $post->title . '\'s photo' }}"
+                                /> --}}
+                                
+                            @endforeach
+                            
                         @else
                             {{ __("Post hasn't main image yet") }}
                         @endif

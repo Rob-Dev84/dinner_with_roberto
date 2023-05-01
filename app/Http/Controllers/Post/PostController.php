@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Post;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Models\PostImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -18,10 +19,19 @@ class PostController extends Controller
     {
 
         // $posts = Post::with(['user'])->paginate(6);
+
         $posts = Post::with('postImages')->get();
-        // dd($posts);
+        $introImage = PostImage::where('position', 'intro')->first();
+
+        //get all posts and intro image
+        // $posts = Post::with(['postImages' => function ($query) {
+        //                     $query->where('position', 'intro');
+        //                 }])
+        //                 ->get();
+
         return view('posts.index', [
-            'posts' => $posts 
+            'posts' => $posts,
+            'introImage' => $introImage,
         ]);
     }
 
@@ -60,6 +70,22 @@ class PostController extends Controller
         //change title format (lowerCase and add (-) aech withe space)
         $slug = str_replace(' ','-', $request->title);
         $slug = strtolower($slug);
+
+        //better to sanitize like that
+            // // replace non letter or digits by -
+            // $slug = preg_replace('~[^\pL\d]+~u', '-', $slug);
+
+            // // transliterate
+            // $slug = iconv('utf-8', 'us-ascii//TRANSLIT', $slug);
+
+            // // remove unwanted characters
+            // $slug = preg_replace('~[^-\w]+~', '', $slug);
+
+            // // trim
+            // $slug = trim($slug, '-');
+
+            // // lowercase
+            // $slug = strtolower($slug);
 
 
         //store image into the folder... app/public/images/file.extension

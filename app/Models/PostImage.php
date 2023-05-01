@@ -17,5 +17,9 @@ class PostImage extends Model
         'position',
     ];
 
+    public function post() {
+        return $this->BelongsTo(Post::class);
+    }
+
     
 }
