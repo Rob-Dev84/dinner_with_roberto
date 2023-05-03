@@ -15,138 +15,45 @@
 
                         <div class="flex flex-wrap -mx-4">
                         
-                            @foreach($positions as $index => $position)
+                            @foreach($images as $image)
                           
                                 <div class="w-full lg:w-1/2 px-4">
                                     <div class="border border-gray-300 rounded-lg p-6">
 
-                                        {{-- TODO: change this input text with textarea --}}
+                                        {{-- Image --}}  
+                                        <div class="mt-4">
+                                            <x-input-label for="path" :value="__('To modify the image, delete it')" />
+                                            <x-text-input id="" class="block mt-1 w-full" type="file" name="image_{{$image->id}}" disabled />
+                                            <x-input-error :messages="$errors->get('image_{{$image->id}}')" class="mt-2" />
+                                        </div>
 
-                                        @if (!in_array($position, $usedPositions))
+                                        {{-- Title --}}                            
+                                        <div class="mt-4">
+                                            <x-input-label for="title_{{$image->id}}" :value="__('Title')" />
+                                            {{-- <x-text-input id="title_{{$image->id}}" class="block mt-1 w-full" type="text" name="title_{{$image->id}}" :value="old('title_{{$image->title}}')" autofocus /> --}}
+                                            {{-- <x-textarea class="block mt-1 w-full" id="title_{{$image->id}}" name="title_{{$image->id}}" label="" value="'title_{{$image->title}}" autofocus /> --}}
+                                            <textarea class="block mt-1 w-full" id="title_{{$image->id}}" name="title_{{$image->id}}" label="" value="'title_{{$image->id}}" autofocus>{{ $image->title }}</textarea>
+                                            <x-input-error :messages="$errors->get('title_{{$image->id}}')" class="mt-2" />
+                                        </div>
 
-                                        {{-- active inputs --}}
+                                        {{-- Alt --}}
+                                        <div class="mt-4">
+                                            <x-input-label for="alt_{{$image->id}}" :value="__('Alt')" />
+                                            {{-- <x-text-input id="alt_{{$image->id}}" class="block mt-1 w-full" type="text" name="alt_{{$image->id}}" :value="old('alt_{{$image->alt}}')" autofocus /> --}}
+                                            {{-- <x-textarea class="block mt-1 w-full" id="alt_{{$image->id}}" name="alt_{{$image->id}}" label="" :value="old('alt_{{$image->alt}}')" autofocus /> --}}
+                                            <textarea class="block mt-1 w-full" id="title_{{$image->id}}" name="alt_{{$image->id}}" label="" value="'alt_{{$image->id}}" autofocus>{{ $image->alt }}</textarea>
+                                            <x-input-error :messages="$errors->get('alt_{{$image->id}}')" class="mt-2" />
+                                        </div>
 
-                                            {{-- Image --}}    
-                                            <div class="mt-4">
-                                                <x-input-label for="path" :value="__('Select Image: ').ucfirst($position)" />
-                                                <x-text-input id="path_{{$index+1}}" class="block mt-1 w-full" type="file" name="path_{{$index+1}}" :value="old('path_{{$index+1}}')" />
-                                                <x-input-error :messages="$errors->get('path_{{$index+1}}')" class="mt-2" />
-                                            </div>
-
-                                            {{-- Title --}}                            
-                                            <div class="mt-4">
-                                                <x-input-label for="title{{$index+1}}" :value="__('Title')" />
-                                                <x-text-input id="title_{{$index+1}}" class="block mt-1 w-full" type="text" name="title_{{$index+1}}" :value="old('title_{{$index+1}}')" autofocus />
-                                                {{-- <x-textarea class="block mt-1 w-full" id="title_{{$index+1}}" name="title_{{$index+1}}" label="" value="'title_{{$index+1}}" autofocus /> --}}
-                                                <x-input-error :messages="$errors->get('title_{{$index+1}}')" class="mt-2" />
-                                            </div>
-
-                                            {{-- Alt --}}
-                                            <div class="mt-4">
-                                                <x-input-label for="alt{{$index+1}}" :value="__('Alt')" />
-                                                <x-text-input id="alt_{{$index+1}}" class="block mt-1 w-full" type="text" name="alt_{{$index+1}}" :value="old('alt_{{$index+1}}')" autofocus />
-                                                {{-- <x-textarea class="block mt-1 w-full" id="alt_{{$index+1}}" name="alt_{{$index+1}}" label="" :value="old('alt_{{$index+1}}')" autofocus /> --}}
-                                                <x-input-error :messages="$errors->get('alt_{{$index+1}}')" class="mt-2" />
-                                            </div>
-
-                                            {{-- Figcaption --}}
-                                            <div class="mt-4">
-                                                <x-input-label for="figcaption{{$index+1}}" :value="__('Figcaption')" />
-                                                <x-text-input id="figcaption_{{$index+1}}" class="block mt-1 w-full" type="text" name="figcaption_{{$index+1}}" :value="old('figcaption_{{$index+1}}')" autofocus />
-                                                {{-- <x-textarea class="block mt-1 w-full" id="figcaption_{{$index+1}}" name="figcaption_{{$index+1}}" label="" :value="old('figcaption_{{$index+1}}')" autofocus /> --}}
-                                                <x-input-error :messages="$errors->get('figcaption_{{$index+1}}')" class="mt-2" />
-                                            </div>  
-                                            
-                                        @else
-                                            {{-- Image --}}  
-                                            <div class="mt-4">
-                                                <x-input-label for="path" :value="__('Image inserted')" />
-                                                <x-text-input id="path_{{$index+1}}" class="block mt-1 w-full" type="file" name="path_{{$index+1}}" disabled />
-                                                <x-input-error :messages="$errors->get('path_{{$index+1}}')" class="mt-2" />
-                                            </div>
-                                            {{-- Title --}}  
-                                            <div class="mt-4">
-                                                <x-input-label for="title{{$index+1}}" :value="__('Title: add or edit in edit section')" />
-                                                <x-text-input id="title_{{$index+1}}" class="block mt-1 w-full" type="text" name="title_{{$index+1}}" disabled />
-                                                {{-- <x-textarea class="block mt-1 w-full" id="title_{{$index+1}}" name="title_{{$index+1}}" label="" disabled --}}
-                                                <x-input-error :messages="$errors->get('title_{{$index+1}}')" class="mt-2" />
-                                            </div>
-                                            {{-- Alt --}}  
-                                            <div class="mt-4">
-                                                <x-input-label for="alt{{$index+1}}" :value="__('Alt: add or edit in edit section')" />
-                                                <x-text-input id="alt_{{$index+1}}" class="block mt-1 w-full" type="text" name="alt_{{$index+1}}" disabled />
-                                                {{-- <x-textarea class="block mt-1 w-full" id="alt_{{$index+1}}" name="alt_{{$index+1}}" label="" disabled /> --}}
-                                                <x-input-error :messages="$errors->get('alt_{{$index+1}}')" class="mt-2" />
-                                            </div>
-                                            {{-- Figcaption --}}
-                                            <div class="mt-4">
-                                                <x-input-label for="figcaption{{$index+1}}" :value="__('Figcaption: add or edit in edit section')" />
-                                                <x-text-input id="figcaption_{{$index+1}}" class="block mt-1 w-full" type="text" name="figcaption_{{$index+1}}" disabled />
-                                                {{-- <x-textarea class="block mt-1 w-full" id="figcaption_{{$index+1}}" name="figcaption_{{$index+1}}" label="" disabled /> --}}
-                                                <x-input-error :messages="$errors->get('figcaption_{{$index+1}}')" class="mt-2" />
-                                            </div>   
-                                            
-                                        @endif  
-                                    
-                                        {{-- TODO: in the future you can use this code, but you need to add createOrUpdate() in store method --}}
-                                        {{-- @if ($image = $images->where('position', $position)->first())
-                                        
-                                            @if (is_null($image->title))
-                                                                         
-                                                <div class="mt-4">
-                                                    <x-input-label for="title{{$index+1}}" :value="__('Title')" />
-                                                    <x-text-input id="title_{{$index+1}}" class="block mt-1 w-full" type="text" name="title_{{$index+1}}" :value="old('title_{{$index+1}}')" autofocus />
-                                                    
-                                                    <x-input-error :messages="$errors->get('title_{{$index+1}}')" class="mt-2" />
-                                                </div>
-                                            @else
-                                                                          
-                                                <div class="mt-4">
-                                                    <x-input-label for="title{{$index+1}}" :value="__('Title inserted')" />
-                                                    <x-text-input id="title_{{$index+1}}" class="block mt-1 w-full" type="text" name="title_{{$index+1}}" disabled />
-                                                   
-                                                    <x-input-error :messages="$errors->get('title_{{$index+1}}')" class="mt-2" />
-                                                </div>
-                                            @endif 
-
-                                            @if (is_null($image->alt) && is_null($image->figcaption))
-                                               
-                                                <div class="mt-4">
-                                                    <x-input-label for="alt{{$index+1}}" :value="__('Alt')" />
-                                                    <x-text-input id="alt_{{$index+1}}" class="block mt-1 w-full" type="text" name="alt_{{$index+1}}" :value="old('alt_{{$index+1}}')" autofocus />
-                                                    
-                                                    <x-input-error :messages="$errors->get('alt_{{$index+1}}')" class="mt-2" />
-                                                </div>
-                                            @else
-                                           
-                                                <div class="mt-4">
-                                                    <x-input-label for="alt{{$index+1}}" :value="__('Alt inserted')" />
-                                                    <x-text-input id="alt_{{$index+1}}" class="block mt-1 w-full" type="text" name="alt_{{$index+1}}" disabled />
-                                                    
-                                                    <x-input-error :messages="$errors->get('alt_{{$index+1}}')" class="mt-2" />
-                                                </div>
-                                            @endif 
-
-                                            @if (is_null($image->figcaption))
-                                              
-                                                <div class="mt-4">
-                                                    <x-input-label for="figcaption{{$index+1}}" :value="__('Figcaption')" />
-                                                    <x-text-input id="figcaption_{{$index+1}}" class="block mt-1 w-full" type="text" name="figcaption_{{$index+1}}" :value="old('figcaption_{{$index+1}}')" autofocus />
-                                                    
-                                                    <x-input-error :messages="$errors->get('figcaption_{{$index+1}}')" class="mt-2" />
-                                                </div>  
-                                            @else
-                                           
-                                                <div class="mt-4">
-                                                    <x-input-label for="figcaption{{$index+1}}" :value="__('Figcaption inserted')" />
-                                                    <x-text-input id="figcaption_{{$index+1}}" class="block mt-1 w-full" type="text" name="figcaption_{{$index+1}}" disabled />
-                                                    
-                                                    <x-input-error :messages="$errors->get('figcaption_{{$index+1}}')" class="mt-2" />
-                                                </div>                      
-                                            @endif
-                                        @endif --}}
-                      
-                                    
+                                        {{-- Figcaption --}}
+                                        <div class="mt-4">
+                                            <x-input-label for="figcaption_{{$image->id}}" :value="__('Figcaption')" />
+                                            {{-- <x-text-input id="figcaption_{{$image->id}}" class="block mt-1 w-full" type="text" name="figcaption_{{$image->id}}" :value="old('figcaption_{{$image->id}}')" autofocus /> --}}
+                                            {{-- <x-textarea class="block mt-1 w-full" id="figcaption_{{$index+1}}" name="figcaption_{{$image->id}}" label="" :value="old('figcaption_{{$image->id}}')" autofocus /> --}}
+                                            <textarea class="block mt-1 w-full" id="figcaption_{{$image->id}}" name="figcaption_{{$image->id}}" label="" value="'figcaption_{{$image->id}}" autofocus>{{ $image->figcaption }}</textarea>
+                                            <x-input-error :messages="$errors->get('figcaption_{{$image->id}}')" class="mt-2" />
+                                        </div>      
+                                
                                     </div>
                                 </div>
                                 <hr>

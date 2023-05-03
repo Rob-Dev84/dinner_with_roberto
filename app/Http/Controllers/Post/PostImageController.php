@@ -179,17 +179,18 @@ class PostImageController extends Controller
      */
     public function edit(User $user, Post $post)
     {
-        $positions = ['intro', 'intro_end', 'method', 'method_end', 'recipe_card'];//This are the positions for each image
+        // $positions = ['intro', 'intro_end', 'method', 'method_end', 'recipe_card'];//This are the positions for each image
 
         $images = $post->find($post->id)->postImages()->get();
-
-        $usedPositions = [];//To get all the occupade positions
+        // dd($images);
+        // $usedPositions = [];//To get all the occupade positions
         
         return view('posts.images.edit', 
                     compact('post',
-                            'positions',
+                            // 'positions',
                             'images',
-                            'usedPositions',)
+                            // 'usedPositions',
+                            )
                 );
     }
 
