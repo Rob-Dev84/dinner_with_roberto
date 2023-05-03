@@ -114,6 +114,8 @@ Route::controller(PostImageController::class)->group(function () {
     Route::get('/posts/images/{user:name}/{post:slug}', 'index')->name('posts.images'); //Here we show: all methods, methods grouped, methods not grouped
     Route::get('/posts/images/{user:name}/{post:slug}/create', 'create')->name('posts.images.create');
     Route::post('/posts/images/{user:name}/{post:slug}/store', 'store')->name('posts.images.store');
+    Route::get('/posts/images/{user:name}/{post:slug}/edit', 'edit')->name('posts.images.edit');
+    Route::post('/posts/images/{user:name}/{post:slug}/update', 'update')->name('posts.images.update');
     Route::delete('/posts/groups/{image:id}/{user:name}/{post:slug}', 'destroy')->name('posts.images.destroy');
 
 })->middleware(['auth', 'verified']);

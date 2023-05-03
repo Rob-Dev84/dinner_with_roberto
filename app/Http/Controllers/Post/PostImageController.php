@@ -36,11 +36,23 @@ class PostImageController extends Controller
     public function create(User $user, Post $post)
     {
   
-        $positions = ['intro', 'intro_end', 'method', 'method_end', 'recipe_card'];
+        $positions = ['intro', 'intro_end', 'method', 'method_end', 'recipe_card'];//This are the positions for each image
+
+        $images = $post->find($post->id)->postImages()->get();
+
+        $usedPositions = [];//To get all the occupade positions
+
+        foreach ($images as $image) {
+            $usedPositions[] = $image->position;
+        }
+
+        // dd($usedPositions);
 
         return view('posts.images.create', 
                     compact('post',
-                            'positions',)
+                            'positions',
+                            'images',
+                            'usedPositions',)
                 );
     }
 
@@ -56,17 +68,14 @@ class PostImageController extends Controller
         // dd($request->hasFile('path'));
 
         $request->validate([
-            // 'image' => 'mimes:jpg,jpeg,png|max:2048',//images/recipes/pasta/spaghetti-aglio-e-olio.jpg
-            
-
             'path_*' => 'image|mimes:jpeg,png,jpg,gif|max:2048|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*\.[a-z]{3,4}$/', // add your validation rules for each image input field
-            'path' => 'required_without_all:image_1,image_2,image_3,image_4,image_5', // validate if at least one image is uploaded
-            'title' => 'max:125|regex:/^[\pL\s]+$/u',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
-            'alt' => 'max:125|regex:/^[\pL\s]+$/u',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
-            'figcaption' => 'max:200',
+            'path' => 'required_without_all:path_1,path_2,path_3,path_4,path_5', // validate if at least one image is uploaded
+            'title_*' => 'max:125|regex:/^[\pL\s]+$/u',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
+            'alt_*' => 'max:125|regex:/^[\pL\s]+$/u',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
+            'figcaption_*' => 'max:200|regex:/^[\pL\s]+$/u',
         ]);
 
-        
+        // dd($request->title_4);
 
         
         //Create a recipe folder inside public/images 
@@ -82,10 +91,14 @@ class PostImageController extends Controller
                 5 => 'recipe_card',
             ];
 
+            
+
             foreach ($request->file() as $key => $image) {
                 $index = substr($key, -1);
                 $position = $imageMap[$index];
-   
+
+                
+                
                 if ($request->hasFile('path_'.$index)) {
                     $image = $request->file('path_'.$index);
                     $imageName = $image->getClientOriginalName();
@@ -109,23 +122,25 @@ class PostImageController extends Controller
 
                     // Append the position to the file name
                     $imageName = $fileNameWithoutExtension . '-' . $position . '.' . $extension;
-
-                    dd($imageName);
                     
                 }
 
             //this will be the path to store into the database
             $path = str_replace('/var/www/html/public/', '', $imagePath);
 
-            $request->user()->posts()->find($post->id)->postImages()->create([
+
+            // dd($request->input('alt_'.$index));
+
+        
+            $request->user()->posts()->find($post->id)->postImages()->firstOrCreate([
                 'path' => $path,
-             //    'title' => $request->title,
-             //    'alt' => $request->alt,
-             //    'figcaption' => $request->figcaption,
+                'title' => $request->input('title_'.$index),
+                'alt' => $request->input('alt_'.$index),
+                'figcaption' => $request->input('figcaption_'.$index),
                 'position' => $position,
              ]);
 
-                
+             
             }
               
            
@@ -162,9 +177,20 @@ class PostImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user, Post $post)
     {
-        //
+        $positions = ['intro', 'intro_end', 'method', 'method_end', 'recipe_card'];//This are the positions for each image
+
+        $images = $post->find($post->id)->postImages()->get();
+
+        $usedPositions = [];//To get all the occupade positions
+        
+        return view('posts.images.edit', 
+                    compact('post',
+                            'positions',
+                            'images',
+                            'usedPositions',)
+                );
     }
 
     /**

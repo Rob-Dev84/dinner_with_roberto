@@ -65,7 +65,7 @@
                     <x-nav-link :href="route('posts.methods', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.methods')">
                         {{ __('Edit methos') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('posts.images', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.methods')">
+                    <x-nav-link :href="route('posts.images.edit', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.images.edit')">
                         {{ __('Edit Photos') }}
                     </x-nav-link>
 

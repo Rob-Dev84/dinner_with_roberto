@@ -1,7 +1,3 @@
-{{-- @props(['disabled' => false]) --}}
+<textarea {{ $attributes->merge(['class' => 'border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm']) }}></textarea>
 
-@props(['name', 'disabled' => false])
-
-<textarea  {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge(['class' => 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm', 'name' => '{{ $name }}']) !!}>
-    {{ $slot }}
-</textarea>
+{{-- <textarea {{ $attributes->merge(['class' => 'border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm', 'value' => $value]) }}></textarea> --}}
