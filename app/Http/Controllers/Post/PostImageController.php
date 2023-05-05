@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Post;
 
 use App\Models\Post;
+use App\Models\PostImage;
 use App\Models\User;
-use Illuminate\Support\Str;
+// use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 
 class PostImageController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -19,9 +22,6 @@ class PostImageController extends Controller
     public function index(User $user, Post $post)
     {
         //TODO - in model add relationship post images and we can get the images for related post
-
-        
-
 
         return view('posts.images.index', 
                     compact('post',)
@@ -77,10 +77,16 @@ class PostImageController extends Controller
 
         // dd($request->title_4);
 
+        //Create a recipe folder inside public/images /recipes
         
-        //Create a recipe folder inside public/images 
-        $postImagesPath = public_path('images/' . Str::slug($post->slug));
+        // $postImagesPath = public_path('images/recipes/' . Str::slug($post->slug));
+        $postImagesPath = public_path('images/recipes/' . $post->slug);
         File::makeDirectory($postImagesPath, $mode = 0777, true, true);
+
+        // dd(public_path('images/recipes/' . $post->slug));
+
+        // dd(File::makeDirectory($postImagesPath, $mode = 0777, true, true));
+        
 
             //for each index we assign an image position
             $imageMap = [
@@ -104,9 +110,9 @@ class PostImageController extends Controller
                     $imageName = $image->getClientOriginalName();
                     // $originalName = $image->getClientOriginalName();
                     $imagePath = $postImagesPath . '/' . $imageName;
-                    $image->move($postImagesPath, $imageName);
-                    $post->path = $imageName;
                     
+                    $post->path = $imageName;
+                    // dd($postImagesPath, $imageName);
                     
                     // convert file name to: 1. lower case and 2. kebab-case
                     $imageName = str_replace([' ', '_'], '-', $imageName);
@@ -120,20 +126,33 @@ class PostImageController extends Controller
                     // Remove the extension from the file name
                     $fileNameWithoutExtension = pathinfo($imageName, PATHINFO_FILENAME);
 
+                    //this moves image to the folder
+                    $image->move($postImagesPath, $fileNameWithoutExtension .'-'. $position .'.'. $extension);
+
+                    //this will be the path to store into the database
+                    $path = str_replace('/var/www/html/public/', '', $imagePath);
+
                     // Append the position to the file name
-                    $imageName = $fileNameWithoutExtension . '-' . $position . '.' . $extension;
+                    $imagePath = dirname($path) . "/" . $fileNameWithoutExtension .'-'. $position .'.'. $extension;
+                            
+                    
+                    // dd($imagePath);
+
+
+                    
+
                     
                 }
 
-            //this will be the path to store into the database
-            $path = str_replace('/var/www/html/public/', '', $imagePath);
+                
 
+            
 
             // dd($request->input('alt_'.$index));
 
         
             $request->user()->posts()->find($post->id)->postImages()->firstOrCreate([
-                'path' => $path,
+                'path' => $imagePath,
                 'title' => $request->input('title_'.$index),
                 'alt' => $request->input('alt_'.$index),
                 'figcaption' => $request->input('figcaption_'.$index),
@@ -205,6 +224,23 @@ class PostImageController extends Controller
     {
         //
     }
+
+    //To show modal with unique image id
+    public function getDeleteModal($id)
+{
+    $image = PostImage::findOrFail($id);
+    // $images = $post->find($post->id)->postImages($image->id)->get();
+
+    return view('posts.images.partials.delete-modal', compact('image'))->render();
+}
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    
 
     /**
      * Remove the specified resource from storage.

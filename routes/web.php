@@ -7,6 +7,7 @@ use App\Http\Controllers\Post\PostImageController;
 use App\Http\Controllers\Post\PostMethodController;
 use App\Http\Controllers\Post\PostIngredientController;
 use App\Http\Controllers\Post\PostMethodGroupController;
+use App\Http\Controllers\Post\PostImageDeletionController;
 use App\Http\Controllers\Post\PostIngredientGroupController;
 // use App\Http\Controllers\Post\PostIngredientGroupController;
 
@@ -116,7 +117,16 @@ Route::controller(PostImageController::class)->group(function () {
     Route::post('/posts/images/{user:name}/{post:slug}/store', 'store')->name('posts.images.store');
     Route::get('/posts/images/{user:name}/{post:slug}/edit', 'edit')->name('posts.images.edit');
     Route::post('/posts/images/{user:name}/{post:slug}/update', 'update')->name('posts.images.update');
-    Route::put('/posts/images/{user:name}/{post:slug}/softDelete', 'softDelete')->name('posts.images.softDelete');
+    // Route::delete('/posts/images/{post_images:id}/{user:name}/{post:slug}/softDelete', 'softDelete')->name('posts.images.softDelete');
+    Route::delete('/posts/groups/{image:id}/{user:name}/{post:slug}', 'destroy')->name('posts.images.destroy');
+
+})->middleware(['auth', 'verified']);
+
+Route::controller(PostImageDeletionController::class)->group(function () {
+
+    //TODO use -> user:username (because will be unique)
+    Route::get('/posts/images/{user:name}/{post:slug}', 'index')->name('posts.images.deletions');
+    Route::delete('/posts/images/{post_images:id}/{user:name}/{post:slug}/softDelete', 'softDelete')->name('posts.images.deletions.softDelete');
     Route::delete('/posts/groups/{image:id}/{user:name}/{post:slug}', 'destroy')->name('posts.images.destroy');
 
 })->middleware(['auth', 'verified']);

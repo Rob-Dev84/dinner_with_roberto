@@ -22,29 +22,58 @@
             <div class="flex bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="border">
                     <div class="p-6 text-gray-900">
-                        @if ($post->postImages->count() && !is_null($introImage->path))
-{{-- {{ dd($introImage) }} --}}
-                        <img class="w-40" 
-                            src="{{ asset($introImage->path) }}" 
-                            alt="{{ $post->title . '\'s photo' }}"
-                        />
+                        {{-- @if ($post->postImages->count() && !is_null($introImage->path))
+
+                            <img class="w-40" 
+                                src="{{ asset($introImage->path) }}" 
+                                alt="{{ $post->title . '\'s photo' }}"
+                            />
                             
                             @foreach($post->postImages as $image)
-                                {{-- <img class="w-40" 
-                                    src="{{ asset($image->path) }}" 
-                                    alt="{{ $post->title . '\'s photo' }}"
-                                /> --}}
+                                
                                 
                             @endforeach
                             
                         @else
                             {{ __("Post hasn't main image yet") }}
-                        @endif
+                        @endif --}}
+
+                        {{-- {{ dd(asset($introImage->path)); }}
+
+                        @if ($introImage)
+                            <img class="w-40" 
+                                src="{{ asset($introImage->path) }}" 
+                                alt="{{ $post->title . '\'s photo' }}"
+                            />
+                        @else
+                                {{ __("Post hasn't main image yet") }}
+                        @endif --}}
+
+                        @forelse ($post->postImages as $image)
+                            @if ($image->position === 'intro')
+                                <img class="w-40" 
+                                    src="{{ asset($introImage->path) }}" 
+                                    alt="{{ $post->title . '\'s photo' }}"
+                                />
+                            @else
+                                {{ __("Post hasn't main image yet") }}
+                            @endif
+                                
+                        @empty
+                            {{ __("Post hasn't main image yet") }}
+                        @endforelse
+
                         <br>
+                        
                         @if ($post->postImages->count() < 5)
                             <x-a-link href="{{ route('posts.images.create', [auth()->user(), $post->slug]) }}" text="{{ __('Add image') }}" />
                         @endif
                         <small>{{ $post->postImages->count() }}{{ '/5' }}</small>
+                        <br>
+
+                        @if ($post->postImages->count() > 0)
+                            <x-a-link href="{{ route('posts.images.deletions', [auth()->user(), $post->slug]) }}" text="{{ __('Del image') }}" />
+                        @endif
                     </div>
 
                 </div>
