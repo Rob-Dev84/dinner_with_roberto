@@ -38,26 +38,30 @@
                             {{ __("Post hasn't main image yet") }}
                         @endif --}}
 
-                        {{-- {{ dd(asset($introImage->path)); }}
+                       
 
-                        @if ($introImage)
-                            <img class="w-40" 
-                                src="{{ asset($introImage->path) }}" 
-                                alt="{{ $post->title . '\'s photo' }}"
-                            />
-                        @else
-                                {{ __("Post hasn't main image yet") }}
-                        @endif --}}
-
-                        @forelse ($post->postImages as $image)
-                            @if ($image->position === 'main')
+                        {{-- @if ($introImage)
+                            @if ($introImage->position === 'intro')
                                 <img class="w-40" 
                                     src="{{ asset($introImage->path) }}" 
                                     alt="{{ $post->title . '\'s photo' }}"
                                 />
-                            @else
-                                {{ __("Post hasn't main image yet") }}
                             @endif
+                            
+                        @else
+                                {{ __("Post hasn't main image yet") }}
+                        @endif --}}
+{{-- {{ dd($post->postImages); }} --}}
+                        @forelse ($post->postImages as $image)
+                        
+                            @if ($image->position === 'intro')
+                                <img class="w-40" 
+                                    src="{{ asset($image->path) }}" 
+                                    alt="{{ $post->title . '\'s photo' }}"
+                                />
+                            @endif
+                                {{-- {{ __("Post hasn't main image yet") }}
+                            @endif --}}
                                 
                         @empty
                             {{ __("Post hasn't main image yet") }}

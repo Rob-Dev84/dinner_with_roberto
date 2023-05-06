@@ -21,7 +21,17 @@ class PostController extends Controller
         // $posts = Post::with(['user'])->paginate(6);
 
         $posts = Post::with('postImages')->get();
-        $introImage = PostImage::where('position', 'intro')->first();
+
+        // dd($posts);
+
+        $introImage = [];
+
+        foreach ($posts as $post) {
+            // dd($post->id);
+            $introImage = PostImage::where('position', 'intro')->where('post_id', $post->id)->first();
+            // dd($introImage);
+        }
+        
 
         //get all posts and intro image
         // $posts = Post::with(['postImages' => function ($query) {

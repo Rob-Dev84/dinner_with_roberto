@@ -58,9 +58,10 @@
                                             </div>  
                                             
                                         @else
+                                        
                                             {{-- Image --}}  
                                             <div class="mt-4">
-                                                <x-input-label for="path" :value="__('Image inserted')" />
+                                                <x-input-label for="path" :value="__('Image inserted: '). $position" />
                                                 <x-text-input id="path_{{$index+1}}" class="block mt-1 w-full" type="file" name="path_{{$index+1}}" disabled />
                                                 <x-input-error :messages="$errors->get('path_{{$index+1}}')" class="mt-2" />
                                             </div>
