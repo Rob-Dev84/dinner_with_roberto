@@ -50,7 +50,7 @@
                         @endif --}}
 
                         @forelse ($post->postImages as $image)
-                            @if ($image->position === 'intro')
+                            @if ($image->position === 'main')
                                 <img class="w-40" 
                                     src="{{ asset($introImage->path) }}" 
                                     alt="{{ $post->title . '\'s photo' }}"
