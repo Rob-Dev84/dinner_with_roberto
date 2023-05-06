@@ -22,26 +22,9 @@ class PostController extends Controller
 
         $posts = Post::with('postImages')->get();
 
-        // dd($posts);
-
-        $introImage = [];
-
-        foreach ($posts as $post) {
-            // dd($post->id);
-            $introImage = PostImage::where('position', 'intro')->where('post_id', $post->id)->first();
-            // dd($introImage);
-        }
-        
-
-        //get all posts and intro image
-        // $posts = Post::with(['postImages' => function ($query) {
-        //                     $query->where('position', 'intro');
-        //                 }])
-        //                 ->get();
 
         return view('posts.index', [
             'posts' => $posts,
-            'introImage' => $introImage,
         ]);
     }
 

@@ -22,42 +22,13 @@
             <div class="flex bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="border">
                     <div class="p-6 text-gray-900">
-                        {{-- @if ($post->postImages->count() && !is_null($introImage->path))
-
-                            <img class="w-40" 
-                                src="{{ asset($introImage->path) }}" 
-                                alt="{{ $post->title . '\'s photo' }}"
-                            />
-                            
-                            @foreach($post->postImages as $image)
-                                
-                                
-                            @endforeach
-                            
-                        @else
-                            {{ __("Post hasn't main image yet") }}
-                        @endif --}}
-
-                       
-
-                        {{-- @if ($introImage)
-                            @if ($introImage->position === 'intro')
-                                <img class="w-40" 
-                                    src="{{ asset($introImage->path) }}" 
-                                    alt="{{ $post->title . '\'s photo' }}"
-                                />
-                            @endif
-                            
-                        @else
-                                {{ __("Post hasn't main image yet") }}
-                        @endif --}}
-{{-- {{ dd($post->postImages); }} --}}
+                        
                         @forelse ($post->postImages as $image)
                         
                             @if ($image->position === 'intro')
                                 <img class="w-40" 
                                     src="{{ asset($image->path) }}" 
-                                    alt="{{ $post->title . '\'s photo' }}"
+                                    alt="{{ $image->alt }}"
                                 />
                             @endif
                                 {{-- {{ __("Post hasn't main image yet") }}

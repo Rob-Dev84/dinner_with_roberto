@@ -32,11 +32,15 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button class="ml-3">
+                <x-danger-button>
                     {{ __('Delete Image') }}
                 </x-danger-button>
             </div>
+
+            
         </form>
     </x-modal>
+    
+    
     
 </section>

@@ -90,29 +90,29 @@ class PostImageDeletionController extends Controller
     {
         
 
-        $image = PostImage::findOrFail($image);
+        // $image = PostImage::findOrFail($image);
        
-        $fileName = pathinfo($image->path, PATHINFO_FILENAME); // 'image-name'
-        $extension = pathinfo($image->path, PATHINFO_EXTENSION); // 'png'
+        // $fileName = pathinfo($image->path, PATHINFO_FILENAME); // 'image-name'
+        // $extension = pathinfo($image->path, PATHINFO_EXTENSION); // 'png'
         
-        $directory = dirname($image->path) . '/';// gives: images/recipes/name-recipe/
+        // $directory = dirname($image->path) . '/';// gives: images/recipes/name-recipe/
 
-        // $deletedFilename = $fileName . '-' . time() . '.' . $extension;
+        // // $deletedFilename = $fileName . '-' . time() . '.' . $extension;
 
-        $deletedFilename = $fileName . '-' . uniqid() . '.' . $extension;//add an unique deleted id at the file name
+        // $deletedFilename = $fileName . '-' . uniqid() . '.' . $extension;//add an unique deleted id at the file name
 
-        if (File::exists($image->path)) {
-            $deletedPath = $directory . 'deleted';//Add "deleted" directory: images/recipes/name-recipe/deleted
+        // if (File::exists($image->path)) {
+        //     $deletedPath = $directory . 'deleted';//Add "deleted" directory: images/recipes/name-recipe/deleted
             
-            if (!File::exists($deletedPath)) {//to create the subfolder "deleted"
-                File::makeDirectory($deletedPath, 0755, true);
-            }
-            File::move($image->path, $deletedPath . '/' . $deletedFilename);
+        //     if (!File::exists($deletedPath)) {//to create the subfolder "deleted"
+        //         File::makeDirectory($deletedPath, 0755, true);
+        //     }
+        //     File::move($image->path, $deletedPath . '/' . $deletedFilename);
 
-        }
+        // }
 
-        // Soft Delete the image
-        $image->delete();
+        // // Soft Delete the image
+        // $image->delete();
 
         return redirect()->back()->with('success', 'Image deleted successfully.');
     }
