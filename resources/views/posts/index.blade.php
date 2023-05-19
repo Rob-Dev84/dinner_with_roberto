@@ -6,12 +6,19 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <x-nav-link :href="route('posts.create', auth()->user())" :active="request()->routeIs('posts.create')">
-                    {{ __('+ Create a new post') }}
-                </x-nav-link>
-            </div>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex justify-between">
+            {{-- <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg"> --}}
+                <x-a-link 
+                    :href="route('posts.create', auth()->user())" 
+                    :active="request()->routeIs('posts.create')" 
+                    :text=" __('+ Create a new post')">
+                </x-a-link>
+                <x-a-link class="bg-red-500"
+                    :href="route('posts.create', auth()->user())" 
+                    :active="request()->routeIs('posts.create')" 
+                    :text=" __('Trashed posts')">
+                </x-a-link>
+            {{-- </div> --}}
         </div>
     </div>
 
@@ -41,13 +48,31 @@
                         <br>
                         
                         @if ($post->postImages->count() < 5)
-                            <x-a-link href="{{ route('posts.images.create', [auth()->user(), $post->slug]) }}" text="{{ __('Add image') }}" />
+                            {{-- <x-a-link href="{{ route('posts.images.create', [auth()->user(), $post->slug]) }}" text="{{ __('Add image') }}" /> --}}
+
+                            <x-a-link
+                                :href="route('posts.images.create', [auth()->user(), $post->slug])"
+                                :active="request()->routeIs('posts.images.create')" 
+                                :text=" __('Add image')">
+                            </x-a-link>
                         @endif
                         <small>{{ $post->postImages->count() }}{{ '/5' }}</small>
                         <br>
 
-                        @if ($post->postImages->count() > 0)
-                            <x-a-link href="{{ route('posts.images.deletions', [auth()->user(), $post->slug]) }}" text="{{ __('Del image') }}" />
+                        @if ($post->postImages->count())
+                            <x-a-link
+                                :href="route('posts.images.deletions', [auth()->user(), $post->slug])"
+                                :active="request()->routeIs('posts.images.deletions')" 
+                                :text=" __('Del image')">
+                            </x-a-link>
+                        @endif
+
+                        @if ($trasedImages)
+                            <x-a-link
+                                :href="route('posts.images.trash', [auth()->user(), $post->slug])"
+                                :active="request()->routeIs('posts.images.trash')" 
+                                :text=" __('Trashed images')">
+                            </x-a-link>
                         @endif
                     </div>
 
@@ -60,18 +85,38 @@
                     </div>
                 </div>
                 <div class="border">
-                    <x-nav-link :href="route('posts.edit', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.edit')">
+                    {{-- <x-nav-link :href="route('posts.edit', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.edit')">
                         {{ __('Edit title/notes') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('posts.ingredients', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.ingredients')">
+                    </x-nav-link> --}}
+                    <x-a-link 
+                        :href="route('posts.edit', [auth()->user(), $post->slug])" 
+                        :active="request()->routeIs('posts.edit')" 
+                        :text=" __('Edit title/notes')">
+                    </x-a-link>
+                    {{-- <x-nav-link :href="route('posts.ingredients', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.ingredients')">
                         {{ __('Edit ingredients') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('posts.methods', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.methods')">
+                    </x-nav-link> --}}
+                    <x-a-link 
+                        :href="route('posts.ingredients', [auth()->user(), $post->slug])" 
+                        :active="request()->routeIs('posts.ingredients')" 
+                        :text=" __('Edit ingredients')">
+                    </x-a-link>
+                    {{-- <x-nav-link :href="route('posts.methods', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.methods')">
                         {{ __('Edit methos') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('posts.images.edit', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.images.edit')">
+                    </x-nav-link> --}}
+                    <x-a-link 
+                        :href="route('posts.methods', [auth()->user(), $post->slug])"
+                        :active="request()->routeIs('posts.methods')" 
+                        :text=" __('Edit methos')">
+                    </x-a-link>
+                    {{-- <x-nav-link :href="route('posts.images.edit', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.images.edit')">
                         {{ __('Edit Photos') }}
-                    </x-nav-link>
+                    </x-nav-link> --}}
+                    <x-a-link 
+                        :href="route('posts.images.edit', [auth()->user(), $post->slug])"
+                        :active="request()->routeIs('posts.images.edit')" 
+                        :text=" __('Edit Photos')">
+                    </x-a-link>
 
                 </div>
                 

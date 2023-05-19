@@ -7,6 +7,7 @@ use App\Http\Controllers\Post\PostImageController;
 use App\Http\Controllers\Post\PostMethodController;
 use App\Http\Controllers\Post\PostIngredientController;
 use App\Http\Controllers\Post\PostMethodGroupController;
+use App\Http\Controllers\Post\PostTrashedImageController;
 use App\Http\Controllers\Post\PostImageDeletionController;
 use App\Http\Controllers\Post\PostIngredientGroupController;
 // use App\Http\Controllers\Post\PostIngredientGroupController;
@@ -43,11 +44,15 @@ Route::controller(PostController::class)->group(function () {
     Route::post('/posts/{user:name}', 'store')->name('posts.store');
 
     Route::get('/posts/{user:name}/{post:slug}', 'edit')->name('posts.edit');//form to modify post title
-    Route::put('/posts/{user:name}/{post:slug}', 'update')->name('posts.update');
+    Route::put('/posts/{user:name}/{post:slug}', 'update')->name('posts.update');//TODO: update post info 
     Route::put('/posts/{user:name}/{post:title}/softDelete', 'softDelete')->name('posts.softDelete');
 
 
     // Route::delete('/posts/{user:name}/{post:title}', 'destroy')->name('posts.destroy');
+    //TODO: make a trashed controller and:   
+                                        // 1. add soft delete
+                                        // 2. index to show all deleted post
+                                        // 3. hard delete
 })->middleware(['auth', 'verified']);
 
 Route::controller(PostIngredientController::class)->group(function () {
@@ -127,9 +132,24 @@ Route::controller(PostImageDeletionController::class)->group(function () {
     //TODO use -> user:username (because will be unique)
     Route::get('/posts/images/{user:name}/{post:slug}', 'index')->name('posts.images.deletions');
     Route::delete('/posts/images/{post_images:id}/{user:name}/{post:slug}/softDelete', 'softDelete')->name('posts.images.deletions.softDelete');
+    // Route::get('/posts/images/{user:name}/{post:slug}/trashed', 'trash')->name('posts.images.deletions.trash');
+    // Route::post('/posts/images/{post_images:id}/{user:name}/{post:slug}/restore', 'restore')->name('posts.images.deletions.restore');
+    // Route::delete('/posts/groups/{image:id}/{user:name}/{post:slug}', 'destroy')->name('posts.images.destroy');
+
+})->middleware(['auth', 'verified']);
+
+Route::controller(PostTrashedImageController::class)->group(function () {
+
+    //TODO use -> user:username (because will be unique)
+    Route::get('/posts/images/{user:name}/{post:slug}/trash', 'index')->name('posts.images.trash');
+    Route::post('/posts/images/{post_images:id}/{user:name}/{post:slug}/restore', 'restore')->name('posts.images.deletions.restore');
     Route::delete('/posts/groups/{image:id}/{user:name}/{post:slug}', 'destroy')->name('posts.images.destroy');
 
 })->middleware(['auth', 'verified']);
+
+
+
+
 
 // Route::controller(PostImageController::class)->group(function () {
 

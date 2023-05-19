@@ -21,7 +21,6 @@ class PostImageController extends Controller
      */
     public function index(User $user, Post $post)
     {
-        //TODO - in model add relationship post images and we can get the images for related post
 
         return view('posts.images.index', 
                     compact('post',)

@@ -7,14 +7,11 @@ use App\Models\User;
 use App\Models\PostImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\File;
+use App\Helpers\ImageHelper;
 
-class PostImageDeletionController extends Controller
+class PostTrashedImageController extends Controller
 {
 
-    
-
-    
     /**
      * Display a listing of the resource.
      *
@@ -22,13 +19,22 @@ class PostImageDeletionController extends Controller
      */
     public function index(User $user, Post $post)
     {
-        $images = $post->find($post->id)->postImages()->get();
+        $images = PostImage::where('post_id', $post->id)
+                                    ->onlyTrashed()
+                                    ->get();
         // dd($images);
+        // Modify the image paths
+        foreach ($images as $image) {
+            $image->path = ImageHelper::getDeletedImagePath($image);
+        }
 
-        return view('posts.images.deletions.index',
-        compact('post',
-                'images',)
-        );
+        dd($image);
+
+        return view('posts.images.trash.index', 
+                    compact('post',
+                            'image',
+                            'images',)
+                );
     }
 
     /**
@@ -84,37 +90,6 @@ class PostImageDeletionController extends Controller
     public function update(Request $request, $id)
     {
         //
-    }
-
-    public function softDelete(Request $request, $image, $user, $post)
-    {
-        
-
-        $image = PostImage::findOrFail($image);
-       
-        $fileName = pathinfo($image->path, PATHINFO_FILENAME); // 'image-name'
-        $extension = pathinfo($image->path, PATHINFO_EXTENSION); // 'png'
-        
-        $directory = dirname($image->path) . '/';// gives: images/recipes/name-recipe/
-
-        // $deletedFilename = $fileName . '-' . time() . '.' . $extension;
-
-        $deletedFilename = $fileName . '-' . uniqid() . '.' . $extension;//add an unique deleted id at the file name
-
-        if (File::exists($image->path)) {
-            $deletedPath = $directory . 'deleted';//Add "deleted" directory: images/recipes/name-recipe/deleted
-            
-            if (!File::exists($deletedPath)) {//to create the subfolder "deleted"
-                File::makeDirectory($deletedPath, 0755, true);
-            }
-            File::move($image->path, $deletedPath . '/' . $deletedFilename);
-
-        }
-
-        // Soft Delete the image
-        $image->delete();
-
-        return redirect()->back()->with('success', 'Image deleted successfully.');
     }
 
     /**

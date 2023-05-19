@@ -21,10 +21,15 @@ class PostController extends Controller
         // $posts = Post::with(['user'])->paginate(6);
 
         $posts = Post::with('postImages')->get();
+        //get deleted images
+        // dd($posts);
 
+        $trasedImages = PostImage::onlyTrashed()->count();
+        // dd($trasedimages);
 
         return view('posts.index', [
             'posts' => $posts,
+            'trasedImages' => $trasedImages,
         ]);
     }
 
