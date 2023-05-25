@@ -99,7 +99,9 @@ class PostImageDeletionController extends Controller
 
         // $deletedFilename = $fileName . '-' . time() . '.' . $extension;
 
-        $deletedFilename = $fileName . '-' . uniqid() . '.' . $extension;//add an unique deleted id at the file name
+        $encodedId = base64_encode($image->id);//Encode the image post ID
+
+        $deletedFilename = $fileName . '-' . $encodedId . '.' . $extension;//add an unique deleted id at the file name
 
         if (File::exists($image->path)) {
             $deletedPath = $directory . 'deleted';//Add "deleted" directory: images/recipes/name-recipe/deleted
@@ -112,7 +114,9 @@ class PostImageDeletionController extends Controller
         }
 
         // Soft Delete the image
+        $image->deleted_path = $deletedPath . '/' . $deletedFilename;
         $image->delete();
+        $image->save();
 
         return redirect()->back()->with('success', 'Image deleted successfully.');
     }

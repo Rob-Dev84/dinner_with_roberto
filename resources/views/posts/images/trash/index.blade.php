@@ -22,10 +22,11 @@
                             
                             @if ($image->deleted_at)
                                 {{-- TODO: display the deleted image path --}}
+
                                 <div class="p-6 text-gray-900">
                                     <img class="w-40"
                                         {{-- src="{{ asset( $image->path) }}"  --}}
-                                        src="{{ asset(dirname($image->path) . '/deleted/' . basename($image->path)) }}"
+                                        src="{{ asset($image->deleted_path) }}"
                                         alt="{{ $image->alt }}"
                                     />
                                 </div>
@@ -36,7 +37,12 @@
                                 <p>{{ __('Image location: ') }}</p>
                                 <p><b>{{ $image->position }}</b></p>
                             </div>
-                        
+                            
+                            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                                <div class="max-w-xl">
+                                    @include('posts.images.modals.restore-image-form')
+                                </div>
+                            </div>
 
                             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                                 <div class="max-w-xl">
