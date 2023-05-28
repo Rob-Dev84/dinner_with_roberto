@@ -23,7 +23,6 @@ class PostImageDeletionController extends Controller
     public function index(User $user, Post $post)
     {
         $images = $post->find($post->id)->postImages()->get();
-        // dd($images);
 
         return view('posts.images.deletions.index',
         compact('post',
@@ -89,15 +88,12 @@ class PostImageDeletionController extends Controller
     public function softDelete(Request $request, $image, $user, $post)
     {
         
-
         $image = PostImage::findOrFail($image);
        
         $fileName = pathinfo($image->path, PATHINFO_FILENAME); // 'image-name'
         $extension = pathinfo($image->path, PATHINFO_EXTENSION); // 'png'
         
         $directory = dirname($image->path) . '/';// gives: images/recipes/name-recipe/
-
-        // $deletedFilename = $fileName . '-' . time() . '.' . $extension;
 
         $encodedId = base64_encode($image->id);//Encode the image post ID
 
@@ -110,7 +106,6 @@ class PostImageDeletionController extends Controller
                 File::makeDirectory($deletedPath, 0755, true);
             }
             File::move($image->path, $deletedPath . '/' . $deletedFilename);
-
         }
 
         // Soft Delete the image
@@ -118,7 +113,7 @@ class PostImageDeletionController extends Controller
         $image->delete();
         $image->save();
 
-        return redirect()->back()->with('success', 'Image deleted successfully.');
+        return redirect()->back()->with('success', 'Image successfully deleted.');
     }
 
     /**
@@ -127,7 +122,7 @@ class PostImageDeletionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         //
     }

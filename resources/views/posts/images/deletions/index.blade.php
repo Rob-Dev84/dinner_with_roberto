@@ -36,7 +36,7 @@
 
                             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                                 <div class="max-w-xl">
-                                    @include('posts.images.modals.delete-image-form')
+                                    @include('posts.images.modals.soft-delete-image-form')
                                 </div>
                             </div>
                         </div>

@@ -21,15 +21,8 @@ class PostTrashedImageController extends Controller
     public function index(User $user, Post $post)
     {
         $images = PostImage::where('post_id', $post->id)
-                                    ->onlyTrashed()
-                                    ->get();
-        // dd($images);
-        // Modify the image paths
-        // foreach ($images as $image) {
-        //     $image->deleted_path = ImageHelper::getDeletedImagePath($image);
-        // }
-
-        // dd($image);
+                            ->onlyTrashed()
+                            ->get();
 
         return view('posts.images.trash.index', 
                     compact('post',
@@ -109,18 +102,18 @@ class PostTrashedImageController extends Controller
         if (File::exists($image->deleted_path)) {
             
             File::move($image->deleted_path, $path_directory . $restoredFilename);
-
-            //TODO: if deleted folder is empty, delete the folder... is it necessary?
-
             
             $image->deleted_path = NULL;
             $image->restore();
             $image->save();
 
-            // $image->update([
-            //     'deleted_path' => null,
-            //     'deleted_at' => null,
-            // ]);
+            $deleted_path_directory = dirname($image->path) . '/deleted';
+
+            //If "deleted" folder doesn't contain any images, we delete it
+            if (File::isDirectory($deleted_path_directory) && File::allFiles($deleted_path_directory) === []) {
+                File::deleteDirectory($deleted_path_directory);
+            }
+            
 
             return redirect()->back()->with('success', 'Image restored successfully.');
 
@@ -136,8 +129,21 @@ class PostTrashedImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function forceDelete($image, $user, $post)
     {
-        //
+        
+        $image = PostImage::where('slug', $image)->onlyTrashed()->firstOrFail();
+  
+        $image->forceDelete();
+
+        $deleted_path_directory = dirname($image->path) . '/deleted';
+
+        //If "deleted" folder doesn't contain any images, we delete it
+        if (File::isDirectory($deleted_path_directory) && File::allFiles($deleted_path_directory) === []) {
+            File::deleteDirectory($deleted_path_directory);
+        }
+
+        return redirect()->back()->with('success', 'Image successfully deleted.');
+
     }
 }

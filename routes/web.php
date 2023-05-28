@@ -122,19 +122,14 @@ Route::controller(PostImageController::class)->group(function () {
     Route::post('/posts/images/{user:name}/{post:slug}/store', 'store')->name('posts.images.store');
     Route::get('/posts/images/{user:name}/{post:slug}/edit', 'edit')->name('posts.images.edit');
     Route::post('/posts/images/{user:name}/{post:slug}/update', 'update')->name('posts.images.update');
-    // Route::delete('/posts/images/{post_images:id}/{user:name}/{post:slug}/softDelete', 'softDelete')->name('posts.images.softDelete');
-    Route::delete('/posts/groups/{image:id}/{user:name}/{post:slug}', 'destroy')->name('posts.images.destroy');
-
+    
 })->middleware(['auth', 'verified']);
 
 Route::controller(PostImageDeletionController::class)->group(function () {
 
     //TODO use -> user:username (because will be unique)
     Route::get('/posts/images/{user:name}/{post:slug}', 'index')->name('posts.images.deletions');
-    Route::delete('/posts/images/{post_images:id}/{user:name}/{post:slug}/softDelete', 'softDelete')->name('posts.images.deletions.softDelete');
-    // Route::get('/posts/images/{user:name}/{post:slug}/trashed', 'trash')->name('posts.images.deletions.trash');
-    // Route::post('/posts/images/{post_images:id}/{user:name}/{post:slug}/restore', 'restore')->name('posts.images.deletions.restore');
-    // Route::delete('/posts/groups/{image:id}/{user:name}/{post:slug}', 'destroy')->name('posts.images.destroy');
+    Route::delete('/posts/images/{post_images:slug}/{user:name}/{post:slug}/softDelete', 'softDelete')->name('posts.images.deletions.softDelete');
 
 })->middleware(['auth', 'verified']);
 
@@ -142,8 +137,8 @@ Route::controller(PostTrashedImageController::class)->group(function () {
 
     //TODO use -> user:username (because will be unique)
     Route::get('/posts/images/{user:name}/{post:slug}/trash', 'index')->name('posts.images.trash');
-    Route::put('/posts/images/{post_images:id}/{user:name}/{post:slug}/restore', 'restore')->name('posts.images.deletions.restore');
-    Route::delete('/posts/images/{image:id}/{user:name}/{post:slug}', 'destroy')->name('posts.images.destroy');
+    Route::put('/posts/images/{post_images:slug}/{user:name}/{post:slug}/restore', 'restore')->name('posts.images.deletions.restore');
+    Route::delete('/posts/images/{post_images:slug}/{user:name}/{post:slug}/forceDelete', 'forceDelete')->name('posts.images.deletions.forceDelete');
 
 })->middleware(['auth', 'verified']);
 

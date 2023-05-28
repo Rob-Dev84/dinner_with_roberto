@@ -15,7 +15,7 @@
     >{{ __('Delete Image') }}</x-danger-button>
 
     <x-modal name="confirm-image-deletion-{{ $image->id }}" :show="$errors->userDeletion->isNotEmpty()">
-        <form method="post" action="{{ route('posts.images.destroy', [$image->id, auth()->user(), $post->slug]) }}" class="p-6">
+        <form method="post" action="{{ route('posts.images.deletions.forceDelete', [$image, auth()->user(), $post]) }}" class="p-6">
             @csrf
             @method('DELETE')
 

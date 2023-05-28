@@ -15,6 +15,7 @@ class PostImage extends Model
     protected $fillable = [
         'path',
         'title',
+        'slug',
         'alt',
         'figcaption',
         'position',
