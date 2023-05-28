@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Post;
 
 use App\Models\Post;
-use App\Models\PostImage;
 use App\Models\User;
+use App\Models\PostImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use App\Http\Requests\Post\Image\StorePostImage;
 
 class PostImageController extends Controller
 {
@@ -60,16 +61,8 @@ class PostImageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, User $user, Post $post)
+    public function store(StorePostImage $request, User $user, Post $post)
     {
-
-        $request->validate([
-            'path_*' => 'image|mimes:jpeg,png,jpg,gif|max:2048|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*\.[a-z]{3,4}$/', // add your validation rules for each image input field
-            'path' => 'required_without_all:path_1,path_2,path_3,path_4,path_5', // validate if at least one image is uploaded
-            'title_*' => 'max:125|regex:/^[\pL\s]+$/u',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
-            'alt_*' => 'max:125|regex:/^[\pL\s]+$/u',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
-            'figcaption_*' => 'max:200|regex:/^[\pL\s]+$/u',
-        ]);
         
         // creatung the post image folder
         $postImagesPath = public_path('images/recipes/' . $post->slug);
