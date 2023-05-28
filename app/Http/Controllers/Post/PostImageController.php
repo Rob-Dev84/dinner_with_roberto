@@ -45,8 +45,6 @@ class PostImageController extends Controller
             $usedPositions[] = $image->position;
         }
 
-        // dd($usedPositions);
-
         return view('posts.images.create', 
                     compact('post',
                             'positions',
@@ -82,9 +80,7 @@ class PostImageController extends Controller
 
                 //giving an index to the image position
                 $index = substr($key, -1);
-                $position = $imageMap[$index];
-
-                
+                $position = $imageMap[$index];   
                 
                 if ($request->hasFile('path_'.$index)) {
 
