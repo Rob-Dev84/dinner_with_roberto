@@ -61,7 +61,8 @@ class PostImageController extends Controller
      */
     public function store(StorePostImage $request, User $user, Post $post)
     {
-        
+        //TODO use a service to refactor this code 
+
         // creatung the post image folder
         $postImagesPath = public_path('images/recipes/' . $post->slug);
         File::makeDirectory($postImagesPath, $mode = 0777, true, true);
