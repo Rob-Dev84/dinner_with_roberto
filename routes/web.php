@@ -22,7 +22,7 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
 |
 */
 
-Route::group(['middleware' => ['XssSanitizer']], function () {
+// Route::group(['middleware' => ['XssSanitizer']], function () {
 
     Route::get('/', function () {
         return view('home');
@@ -54,7 +54,7 @@ Route::group(['middleware' => ['XssSanitizer']], function () {
                                             // 1. add soft delete
                                             // 2. index to show all deleted post
                                             // 3. hard delete
-    })->middleware(['auth', 'verified']);
+    })->middleware(['auth', 'verified', 'XssSanitizer']);
 
     Route::controller(PostIngredientController::class)->group(function () {
 
@@ -167,6 +167,6 @@ Route::group(['middleware' => ['XssSanitizer']], function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
-});
+// });
 
 require __DIR__.'/auth.php';
