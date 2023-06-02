@@ -53,4 +53,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function ingredients() {
         return $this->hasMany(PostIngredient::class);
     }
+
+    // public function isAdmin()
+    // {
+    //     return auth()->user()->where('role_id', '5')->exists();
+    // }
 }

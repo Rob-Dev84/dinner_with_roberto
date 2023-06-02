@@ -36,7 +36,7 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
     })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-    Route::middleware(['auth', 'verified', 'XssSanitizer'])->group(function () {
+    Route::middleware(['auth', 'verified', 'XssSanitizer', 'isAdmin'])->group(function () {
         Route::controller(PostController::class)->group(function () {
             Route::get('/posts', 'index')->name('posts');
 

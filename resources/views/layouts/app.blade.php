@@ -21,7 +21,10 @@
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
-            @include('layouts.admin-navigation')
+            
+            @can('isAdmin')
+                @include('layouts.admin-navigation')
+            @endcan
 
             <!-- Page Heading -->
             {{-- This is the title page --}}
