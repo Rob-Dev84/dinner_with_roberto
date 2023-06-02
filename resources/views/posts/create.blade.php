@@ -9,9 +9,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-
-                                                 {{-- posts.store --}}  
-                    <form method="POST" enctype="multipart/form-data" action="{{ route('posts.store', auth()->user()) }}">
+ 
+                    <form method="POST" action="{{ route('posts.store', auth()->user()) }}">
                         @csrf
 
                         <!-- Title -->
@@ -34,13 +33,6 @@
                             <x-input-label for="meta_description title" :value="__('Meta Description')" />
                             <textarea id="meta_description" class="block mt-1 w-full" name="meta_description" type="text"></textarea>
                             <x-input-error :messages="$errors->get('meta_description')" class="mt-2" />
-                        </div>
-
-                        <!-- Img -->
-                        <div class="mt-4">
-                            <x-input-label for="img_link" :value="__('Image')" />
-                            <x-text-input id="img_link" class="block mt-1 w-full" type="file" name="img_link" :value="old('img_link')" />
-                            <x-input-error :messages="$errors->get('img_link')" class="mt-2" />
                         </div>
 
                         <!-- Visible Only for Admin -->

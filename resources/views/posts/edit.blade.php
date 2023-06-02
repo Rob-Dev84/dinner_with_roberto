@@ -13,8 +13,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                                                 {{-- posts.store --}}  
-                    <form method="POST" enctype="multipart/form-data" action="{{ route('posts.edit', [auth()->user(), $post]) }}">
+                                                  
+                    <form method="POST" action="{{ route('posts.edit', [auth()->user(), $post]) }}">
                         @csrf
                         @method('PUT')
                         <!-- Title -->
@@ -40,20 +40,6 @@
                             <textarea id="meta_title" class="block mt-1 w-full" name="meta_description" type="text">{{ $post->meta_description }}</textarea>
                             <x-input-error :messages="$errors->get('meta_description')" class="mt-2" />
                         </div>
-
-                        <!-- Img -->
-                        <div class="mt-4">
-                            <x-input-label for="img_link" :value="__('Image')" />
-                            <x-text-input id="img_link" class="block mt-1 w-full" type="file" name="img_link" :value="$post->img_link" />
-                            <x-input-error :messages="$errors->get('img_link')" class="mt-2" />
-                        </div>
-
-
-                        @if (!empty($post->img_link))
-                            <p><b>{{ _('Image loaded: ') }} </b> {{ $post->img_link; }}</p>   
-                        @else
-                            <p><b>{{ _('Image not loaded yet') }} </b> {{ $post->img_link; }}</p>
-                        @endif
 
                         <!-- Visible Only for Admin -->
                         <div class="mt-4">
