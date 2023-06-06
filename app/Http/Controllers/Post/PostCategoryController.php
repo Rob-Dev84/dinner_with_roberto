@@ -77,9 +77,14 @@ class PostCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user, Post $post)
     {
-        //
+        $categories = PostCategory::get();
+
+        // dd($post);
+        return view('posts.categories.edit', compact('post',
+                                                     'categories',
+                                                    ));
     }
 
     /**
@@ -89,9 +94,16 @@ class PostCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user, Post $post)
     {
-        //
+        // dd($request);
+        // $request->
+
+        $request->user()->posts()->first()->update([
+            'category_id' => $request->category,
+         ]);
+
+        return redirect()->route('posts')->with('success', 'Category successfully modified.');
     }
 
     /**

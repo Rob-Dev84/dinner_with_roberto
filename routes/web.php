@@ -139,7 +139,7 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
             Route::get('/posts/{user:username}/{post:slug}/category/create', 'create')->name('posts.categories.create');
             Route::put('/posts/{user:username}/{post:slug}/category/store', 'store')->name('posts.categories.store');
             Route::get('/posts/{user:username}/{post:slug}/category/edit', 'edit')->name('posts.categories.edit');
-            Route::post('/posts/{user:username}/{post:slug}/category/update', 'update')->name('posts.categories.update');
+            Route::put('/posts/{user:username}/{post:slug}/category/update', 'update')->name('posts.categories.update');
             
         });
         

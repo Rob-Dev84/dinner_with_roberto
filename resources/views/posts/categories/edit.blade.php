@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Posts categories: ') }}
+            {{ __('Modify category to the post: ') }}
             <u>{{ $post->title }}</u> 
         </h2>
     </x-slot>
@@ -12,16 +12,15 @@
             <div class="flex bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 
                     <div class="p-6 text-gray-900">  
-                        <h3>{{ __('Choose Category') }}</h3>
-                        <form method="POST" action="{{ route('posts.softDelete', [auth()->user(), $post]) }}">
+                        <h3>{{ __('Modify Category') }}</h3>
+                        <form method="POST" action="{{ route('posts.categories.update', [auth()->user(), $post]) }}">
                             @csrf
                             @method('PUT')
 
                             {{-- <div class="relative"> --}}
                               <select name="category" class="block appearance-none w-full bg-white border border-gray-300 rounded-md py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                <option value="">{{ '---' }}{{ __(' Select ') }}{{ '---' }}</option>
                                 @forelse($categories as $category)
-                                  <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                  <option value="{{ $category->id }}" {{ $category->id === $post->category_id ? 'selected' : '' }}>{{ $category->name }}</option>
                                 @empty
                                   <option value="">{{ __('This blog doesn\'t have any category yet') }}</option>
                                 @endforelse
@@ -29,7 +28,7 @@
                             {{-- </div> --}}
                             <div class="flex items-center justify-end mt-4">
                                 <x-primary-button class="ml-3">
-                                    {{ __('Add') }}
+                                    {{ __('Modify') }}
                                 </x-primary-button>  
                             </div>
                         </form>   

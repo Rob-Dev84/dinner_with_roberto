@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Choose categories to the post: ') }}
+            {{ __('Choose category to the post: ') }}
             <u>{{ $post->title }}</u> 
         </h2>
     </x-slot>
@@ -11,7 +11,7 @@
         
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            @include('partials._success-banner')
+            {{-- @include('partials._success-banner') --}}
             
             <div class="flex bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">  

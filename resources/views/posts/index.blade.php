@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Posts') }}
+            {{ __('All Posts') }}
         </h2>
     </x-slot>
     
@@ -128,13 +128,13 @@
                     @if (is_null($post->category_id))
                     <x-a-link 
                         :href="route('posts.categories', [auth()->user(), $post->slug])"
-                        :active="request()->routeIs('posts.images.edit')" 
+                        :active="request()->routeIs('posts.categories')" 
                         :text=" __('Add Category')">
                     </x-a-link>
                     @else
                     <x-a-link 
-                        :href="route('posts.categories', [auth()->user(), $post->slug])"
-                        :active="request()->routeIs('posts.images.edit')" 
+                        :href="route('posts.categories.edit', [auth()->user(), $post->slug])"
+                        :active="request()->routeIs('posts.categories.edit')" 
                         :text=" __('Edit Category')">
                     </x-a-link>
                     @endif
