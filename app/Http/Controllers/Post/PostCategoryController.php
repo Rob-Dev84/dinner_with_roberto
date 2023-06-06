@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Post;
 
-use App\Http\Controllers\Controller;
+use App\Models\Post;
+use App\Models\User;
+use App\Models\PostCategory;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PostCategoryController extends Controller
 {
@@ -12,9 +15,22 @@ class PostCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user, Post $post)
     {
-        //
+
+        $category = $post->postCategory->name;
+        $subcategory = $post->postSubcategoryName;
+
+        $categories = PostCategory::get();
+
+
+        return view('posts.categories.index', 
+                    compact(
+                            'post',
+                            'category',
+                            'subcategory',
+                            'categories',
+                            ));
     }
 
     /**
@@ -33,9 +49,15 @@ class PostCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, User $user, Post $post)
     {
-        //
+        //TODO: Check if category_id is in the category table.
+
+        $request->user()->posts()->first()->update([
+            'category_id' => $request->category,
+         ]);
+
+         return redirect()->route('posts')->with('success', 'Category successfully inserted.');
     }
 
     /**

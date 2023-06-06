@@ -16,11 +16,11 @@ class Post extends Model
 
 
     protected $fillable = [
+        'category_id',
         'title',
         'slug',
         'meta_title',
         'meta_description',
-        'img_link',
         'intro',
         'note',
     ];
@@ -47,6 +47,24 @@ class Post extends Model
 
     public function postImages() {
         return $this->hasMany(PostImage::class);
+    }
+
+    public function postCategory() {
+        return $this->hasOne(PostCategory::class, 'id');
+    }
+
+    public function postSubcategory()
+    {
+        return $this->belongsTo(PostCategory::class, 'category_id')->with('parent');
+    }
+
+    public function getPostSubcategoryNameAttribute()
+    {
+        if ($this->postSubcategory && $this->postSubcategory->parent) {
+            return $this->postSubcategory->parent->name;
+        }
+
+        return null;
     }
     
 

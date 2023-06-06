@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
+use App\Models\PostCategory;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -22,7 +22,7 @@ class CategoriesTableSeeder extends Seeder
         ];
 
         foreach ($roles as $role) {
-            Category::create($role);
+            PostCategory::create($role);
         }
     }
 }

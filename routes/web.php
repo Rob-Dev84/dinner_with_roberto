@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Post\PostController;
 use App\Http\Controllers\Post\PostImageController;
 use App\Http\Controllers\Post\PostMethodController;
+use App\Http\Controllers\Post\PostCategoryController;
 use App\Http\Controllers\Post\PostIngredientController;
 use App\Http\Controllers\Post\PostMethodGroupController;
 use App\Http\Controllers\Post\PostTrashedImageController;
@@ -131,6 +132,17 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
             Route::delete('/posts/images/{post_images:slug}/{user:username}/{post:slug}/forceDelete', 'forceDelete')->name('posts.images.deletions.forceDelete');
     
         });
+
+        Route::controller(PostCategoryController::class)->group(function () {
+    
+            Route::get('/posts/{user:username}/{post:slug}/category', 'index')->name('posts.categories'); //Here we show: all methods, methods grouped, methods not grouped
+            Route::get('/posts/{user:username}/{post:slug}/category/create', 'create')->name('posts.categories.create');
+            Route::put('/posts/{user:username}/{post:slug}/category/store', 'store')->name('posts.categories.store');
+            Route::get('/posts/{user:username}/{post:slug}/category/edit', 'edit')->name('posts.categories.edit');
+            Route::post('/posts/{user:username}/{post:slug}/category/update', 'update')->name('posts.categories.update');
+            
+        });
+        
 
 
 
