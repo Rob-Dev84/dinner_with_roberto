@@ -140,12 +140,20 @@
                     @endif
 
                     
-
+                    @if (is_null($post->postSubcategoryName))
                     <x-a-link 
-                        :href="route('posts.images.edit', [auth()->user(), $post->slug])"
-                        :active="request()->routeIs('posts.images.edit')" 
+                        :href="route('posts.subcategories', [auth()->user(), $post->slug])"
+                        :active="request()->routeIs('posts.subcategories')" 
+                        :text=" __('Add Subcategory')">
+                    </x-a-link>
+                    @else
+                    <x-a-link 
+                        :href="route('posts.subcategories.edit', [auth()->user(), $post->slug])"
+                        :active="request()->routeIs('posts.subcategories.edit')" 
                         :text=" __('Edit Subcategory')">
                     </x-a-link>
+                    @endif
+                    
 
                     <x-a-link 
                         :href="route('posts.images.edit', [auth()->user(), $post->slug])"

@@ -8,6 +8,7 @@ use App\Http\Controllers\Post\PostMethodController;
 use App\Http\Controllers\Post\PostCategoryController;
 use App\Http\Controllers\Post\PostIngredientController;
 use App\Http\Controllers\Post\PostMethodGroupController;
+use App\Http\Controllers\Post\PostSubcategoryController;
 use App\Http\Controllers\Post\PostTrashedImageController;
 use App\Http\Controllers\Post\PostImageDeletionController;
 use App\Http\Controllers\Post\PostIngredientGroupController;
@@ -28,6 +29,9 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
     Route::get('/', function () {
         return view('home');
     });
+
+    //TODO: Only example how to use not grouped controller
+    Route::get('/items', [ItemController::class, 'index']);
 
     //TODO Only admin can access to Dashboard (stats), Manage Post, New Posts from guest users (future)
     //TODO Group middleware for "is_admin"
@@ -140,6 +144,16 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
             Route::put('/posts/{user:username}/{post:slug}/category/store', 'store')->name('posts.categories.store');
             Route::get('/posts/{user:username}/{post:slug}/category/edit', 'edit')->name('posts.categories.edit');
             Route::put('/posts/{user:username}/{post:slug}/category/update', 'update')->name('posts.categories.update');
+            
+        });
+
+        Route::controller(PostSubcategoryController::class)->group(function () {
+    
+            Route::get('/posts/{user:username}/{post:slug}/subcategory', 'index')->name('posts.subcategories'); //Here we show: all methods, methods grouped, methods not grouped
+            Route::get('/posts/{user:username}/{post:slug}/subcategory/create', 'create')->name('posts.subcategories.create');
+            Route::put('/posts/{user:username}/{post:slug}/subcategory/store', 'store')->name('posts.subcategories.store');
+            Route::get('/posts/{user:username}/{post:slug}/subcategory/edit', 'edit')->name('posts.subcategories.edit');
+            Route::put('/posts/{user:username}/{post:slug}/subcategory/update', 'update')->name('posts.subcategories.update');
             
         });
         
