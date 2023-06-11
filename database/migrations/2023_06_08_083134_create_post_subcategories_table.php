@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('post_methods', function (Blueprint $table) {
+        Schema::create('post_subcategories', function (Blueprint $table) {
             $table->id();
-            //TODO: add ->onDelete('cascade') on post_id
-            $table->foreignId('post_id')->constrained();
-            $table->foreignId('post_method_group_id')->nullable()->constrained()->onDelete('cascade');
-            $table->text('method')->nullable();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_methods');
+        Schema::dropIfExists('post_subcategories');
     }
 };

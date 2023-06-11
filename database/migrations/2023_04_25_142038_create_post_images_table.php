@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('post_images', function (Blueprint $table) {
             $table->id();
+            //TODO: add ->onDelete('cascade') on post_id
             $table->foreignId('post_id')->constrained();
             $table->string('path', 200)->nullable();//images/recipes/pasta/spaghetti-aglio-e-olio.jpg
             $table->string('title', 200)->nullable();//title img attribute - no longer than 125 characters

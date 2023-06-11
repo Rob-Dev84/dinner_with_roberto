@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('post_methods', function (Blueprint $table) {
+        Schema::create('post_tags', function (Blueprint $table) {
             $table->id();
-            //TODO: add ->onDelete('cascade') on post_id
-            $table->foreignId('post_id')->constrained();
-            $table->foreignId('post_method_group_id')->nullable()->constrained()->onDelete('cascade');
-            $table->text('method')->nullable();
+            $table->foreignId('tag_id')->constrained()->onDelete('cascade');
+            $table->foreignId('post_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_methods');
+        Schema::dropIfExists('post_tags');
     }
 };

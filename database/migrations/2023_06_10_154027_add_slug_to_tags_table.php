@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('post_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->text('description')->nullable();
-            // $table->unsignedBigInteger('parent_id')->nullable();
-            $table->timestamps();
+        Schema::table('tags', function (Blueprint $table) {
+            $table->string('slug', 50)->after('name');//don't go over 20-30 characters
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('post_categories');
+        Schema::table('tags', function (Blueprint $table) {
+            $table->dropColumn('slug');
+        });
     }
 };

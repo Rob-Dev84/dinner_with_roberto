@@ -13,18 +13,17 @@ class PostCategory extends Model
         'name',
         'slug',
         'description',
-        'parent_id',
     ];
 
-    public function parent()
-    {
-        return $this->belongsTo(Postcategory::class, 'parent_id');
-    }
+    // public function parent()
+    // {
+    //     return $this->belongsTo(Postcategory::class, 'parent_id');
+    // }
 
-    public function posts()
-    {
-        return $this->hasMany(Post::class);
-    }
+    // public function posts()
+    // {
+    //     return $this->hasMany(Post::class);
+    // }
 
 
 

@@ -53,19 +53,43 @@ class Post extends Model
         return $this->hasOne(PostCategory::class, 'id');
     }
 
-    public function postSubcategory()
-    {
-        return $this->belongsTo(PostCategory::class, 'category_id')->with('parent');
+    public function postSubcategory() {
+        return $this->hasOne(PostSubcategory::class);
     }
 
-    public function getPostSubcategoryNameAttribute()
-    {
-        if ($this->postSubcategory && $this->postSubcategory->parent) {
-            return $this->postSubcategory->parent->name;
-        }
-
-        return null;
+    public function postTags() {
+        return $this->hasManyThrough(
+            PostTag::class, 
+            Tag::class,
+        );
     }
+
+    // public function postSubcategory() {
+    //     return $this->hasOneThrough(
+    //         PostSubcategory::class,
+    //         PostCategory::class,
+    //         // 'id', // Foreign key on PostCategory table
+    //         'id', // Foreign key on PostSubcategory table
+    //         'category_id', // Local key on Post table
+    //         // 'id' // Local key on PostCategory table
+    //     );
+    // }
+    
+
+
+    // public function postSubcategory()
+    // {
+    //     return $this->belongsTo(PostCategory::class, 'category_id')->with('parent');
+    // }
+
+    // public function getPostSubcategoryNameAttribute()
+    // {
+    //     if ($this->postSubcategory && $this->postSubcategory->parent) {
+    //         return $this->postSubcategory->parent->name;
+    //     }
+
+    //     return null;
+    // }
     
 
 }

@@ -139,7 +139,7 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
 
         Route::controller(PostCategoryController::class)->group(function () {
     
-            Route::get('/posts/{user:username}/{post:slug}/category', 'index')->name('posts.categories'); //Here we show: all methods, methods grouped, methods not grouped
+            Route::get('/posts/{user:username}/{post:slug}/category', 'index')->name('posts.categories');
             Route::get('/posts/{user:username}/{post:slug}/category/create', 'create')->name('posts.categories.create');
             Route::put('/posts/{user:username}/{post:slug}/category/store', 'store')->name('posts.categories.store');
             Route::get('/posts/{user:username}/{post:slug}/category/edit', 'edit')->name('posts.categories.edit');
@@ -149,7 +149,7 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
 
         Route::controller(PostSubcategoryController::class)->group(function () {
     
-            Route::get('/posts/{user:username}/{post:slug}/subcategory', 'index')->name('posts.subcategories'); //Here we show: all methods, methods grouped, methods not grouped
+            Route::get('/posts/{user:username}/{post:slug}/subcategory', 'index')->name('posts.subcategories');
             Route::get('/posts/{user:username}/{post:slug}/subcategory/create', 'create')->name('posts.subcategories.create');
             Route::put('/posts/{user:username}/{post:slug}/subcategory/store', 'store')->name('posts.subcategories.store');
             Route::get('/posts/{user:username}/{post:slug}/subcategory/edit', 'edit')->name('posts.subcategories.edit');

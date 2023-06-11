@@ -18,8 +18,9 @@ class PostCategoryController extends Controller
     public function index(User $user, Post $post)
     {
 
-        $category = $post->postCategory->name;
-        $subcategory = $post->postSubcategoryName;
+        // $category = $post->postCategory->name;
+        // $subcategory = $post->postSubcategory;
+        // dd($category);
 
         $categories = PostCategory::get();
 
@@ -27,8 +28,8 @@ class PostCategoryController extends Controller
         return view('posts.categories.index', 
                     compact(
                             'post',
-                            'category',
-                            'subcategory',
+                            // 'category',
+                            // 'subcategory',
                             'categories',
                             ));
     }
@@ -51,7 +52,9 @@ class PostCategoryController extends Controller
      */
     public function store(Request $request, User $user, Post $post)
     {
-        //TODO: Check if category_id is in the category table.
+        //TODO: Check if category_id exists in the category table.
+        //TODO: Check if user is admin.
+        // dd($request->category);
 
         $request->user()->posts()->first()->update([
             'category_id' => $request->category,

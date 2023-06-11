@@ -6,6 +6,7 @@
     </x-slot>
     
     @include('partials._success-banner')
+    @include('partials._error-banner')
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex justify-between">
@@ -20,6 +21,19 @@
                     :active="request()->routeIs('posts.create')" 
                     :text=" __('+ Add blog category')">
                 </x-a-link>
+
+                <x-a-link 
+                    :href="route('posts.create', auth()->user())" 
+                    :active="request()->routeIs('posts.create')" 
+                    :text=" __('+ Add blog subcategory')">
+                </x-a-link>
+
+                <x-a-link 
+                    :href="route('posts.create', auth()->user())" 
+                    :active="request()->routeIs('posts.create')" 
+                    :text=" __('+ Add blog tag')">
+                </x-a-link>
+
                 <x-a-link class="bg-red-500"
                     :href="route('posts.create', auth()->user())" 
                     :active="request()->routeIs('posts.create')" 
@@ -138,9 +152,8 @@
                         :text=" __('Edit Category')">
                     </x-a-link>
                     @endif
-
                     
-                    @if (is_null($post->postSubcategoryName))
+                    @if (is_null($post->subcategory_id))
                     <x-a-link 
                         :href="route('posts.subcategories', [auth()->user(), $post->slug])"
                         :active="request()->routeIs('posts.subcategories')" 
@@ -154,12 +167,19 @@
                     </x-a-link>
                     @endif
                     
-
+                    @if (is_null($post->subcategory_id))
+                    <x-a-link 
+                        :href="route('posts.images.edit', [auth()->user(), $post->slug])"
+                        :active="request()->routeIs('posts.images.edit')" 
+                        :text=" __('Add tags')">
+                    </x-a-link>
+                    @else
                     <x-a-link 
                         :href="route('posts.images.edit', [auth()->user(), $post->slug])"
                         :active="request()->routeIs('posts.images.edit')" 
                         :text=" __('Edit tags')">
                     </x-a-link>
+                    @endif
 
                 </div>
                 
