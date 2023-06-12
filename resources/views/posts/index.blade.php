@@ -167,9 +167,9 @@
                     </x-a-link>
                     @endif
                     
-                    @if (is_null($post->subcategory_id))
+                    @if ($post->postTags()->count() == 0)
                     <x-a-link 
-                        :href="route('posts.images.edit', [auth()->user(), $post->slug])"
+                        :href="route('posts.tags.index', [auth()->user(), $post->slug])"
                         :active="request()->routeIs('posts.images.edit')" 
                         :text=" __('Add tags')">
                     </x-a-link>

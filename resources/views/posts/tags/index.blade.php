@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Choose Subcategory to the post: ') }}
+            {{ __('Choose Tag for the post: ') }}
             <u>{{ $post->title }}</u> 
         </h2>
     </x-slot>
@@ -16,31 +16,43 @@
             <div class="flex bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 flex justify-center flex-auto"> 
                         <div class="flex-1">
-                            <h3>{{ __('Category selected') }}</h3>
-                            <p><b>{{ $post->postCategory->name }}</b></p>
+                            <h3><b>{{ __('Tag selected:') }}</b></h3>
+                            <ul>
+                                @forelse($postTags as $postTag)
+                                <li>{{ $postTag->name }}</li>
+                                @empty
+                                <li>{{ __('No tags selected yet') }}
+                                @endforelse
+                            </ul>
                         </div>
                         <div class="flex-1"> 
-                            <h3>{{ __('Choose Subategory') }}</h3>
+                            <h3>{{ __('Choose Tag') }}</h3>
                             <form method="POST" action="{{ route('posts.subcategories.store', [auth()->user(), $post]) }}">
                                 @csrf
                                 @method('PUT')
 
                                 {{-- <div class="relative"> --}}
-                                <select name="subcategory" class="block appearance-none w-full bg-white border border-gray-300 rounded-md py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                <select name="tag" class="block appearance-none w-full bg-white border border-gray-300 rounded-md py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                     <option value="">{{ '---' }}{{ __(' Select ') }}{{ '---' }}</option>
-                                    @forelse($subcategories as $subcategory)
-                                    <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                    @forelse($tags as $tag)
+                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                                     @empty
-                                    <option value="">{{ __('This blog doesn\'t have any category yet') }}</option>
+                                    <option value="">{{ __('This blog doesn\'t have any tag yet') }}</option>
                                     @endforelse
                                 </select>
-                                <x-input-error :messages="$errors->get('subcategory')" class="mt-2" />
-                                {{-- </div> --}}
-                                <div class="flex items-center justify-end mt-4">
-                                    <x-primary-button class="ml-3">
-                                        {{ __('Add') }}
-                                    </x-primary-button>  
-                                </div>
+
+                                @if ($tags->count() === 0)
+                                    {{ __('Add link here to go to add blog tag section') }}
+                                @else
+                                    <x-input-error :messages="$errors->get('tag')" class="mt-2" />
+                                        {{-- </div> --}}
+                                    <div class="flex items-center justify-end mt-4">
+                                        <x-primary-button class="ml-3">
+                                            {{ __('Add') }}
+                                        </x-primary-button>  
+                                    </div>
+                                @endif
+                                
                             </form> 
                         </div>  
                     </div>

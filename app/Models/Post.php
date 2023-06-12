@@ -59,8 +59,10 @@ class Post extends Model
 
     public function postTags() {
         return $this->hasManyThrough(
-            PostTag::class, 
             Tag::class,
+            PostTag::class,
+            'post_id',//Foreign key post_tags table
+            'id',// Local key on tags table (we must do that because it'll pick 'post_tag_id' instead)
         );
     }
 

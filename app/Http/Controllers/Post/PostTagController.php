@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Post;
 
-use App\Http\Controllers\Controller;
+use App\Models\Tag;
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PostTagController extends Controller
 {
@@ -12,9 +15,18 @@ class PostTagController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user, Post $post)
     {
-        //
+
+        $tags = Tag::get();
+        $postTags = $post->postTags()->get();
+
+        return view('posts.tags.index',
+                    compact(
+                            'post',
+                            'tags',
+                            'postTags',
+                        ));
     }
 
     /**
@@ -33,9 +45,13 @@ class PostTagController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, User $user, Post $post)
     {
-        //
+        $request->validate([
+            'tag' => 'required|integer'
+        ]);
+
+        
     }
 
     /**

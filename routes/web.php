@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Post\PostController;
+use App\Http\Controllers\Post\PostTagController;
 use App\Http\Controllers\Post\PostImageController;
 use App\Http\Controllers\Post\PostMethodController;
 use App\Http\Controllers\Post\PostCategoryController;
@@ -154,6 +155,16 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
             Route::put('/posts/{user:username}/{post:slug}/subcategory/store', 'store')->name('posts.subcategories.store');
             Route::get('/posts/{user:username}/{post:slug}/subcategory/edit', 'edit')->name('posts.subcategories.edit');
             Route::put('/posts/{user:username}/{post:slug}/subcategory/update', 'update')->name('posts.subcategories.update');
+            
+        });
+
+        Route::controller(PostTagController::class)->group(function () {
+    
+            Route::get('/posts/{user:username}/{post:slug}/tag', 'index')->name('posts.tags.index');
+            Route::get('/posts/{user:username}/{post:slug}/tag/create', 'create')->name('posts.tags.create');
+            Route::put('/posts/{user:username}/{post:slug}/tag/store', 'store')->name('posts.tags.store');
+            Route::get('/posts/{user:username}/{post:slug}/tag/edit', 'edit')->name('posts.tags.edit');
+            Route::put('/posts/{user:username}/{post:slug}/tag/update', 'update')->name('posts.tags.update');
             
         });
         
