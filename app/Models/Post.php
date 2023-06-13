@@ -59,12 +59,26 @@ class Post extends Model
 
     public function postTags() {
         return $this->hasManyThrough(
-            Tag::class,
-            PostTag::class,
-            'post_id',//Foreign key post_tags table
-            'id',// Local key on tags table (we must do that because it'll pick 'post_tag_id' instead)
+            PostTag::class,//Final table
+            Tag::class,//middle table
+            
+            // 'post_id',//Foreign key post_tags table
+            // 'id',// Local key on tags table (we must do that because it'll pick 'post_tag_id' instead)
+
+            'id', // Foreign key on the intermediate model (PostTag table)
+            'post_id', // Foreign key on the target model (tags table)
+            'id', // Local key on the source model (posts table)
+            'id' // Local key on the intermediate model (PostTag table)
         );
     }
+
+    
+
+    // public function postTags2() {
+    //     return $this->hasMany(PostTag::class, 'post_id');
+    // }
+
+    
 
     // public function postSubcategory() {
     //     return $this->hasOneThrough(

@@ -11,15 +11,20 @@
         
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            {{-- @include('partials._success-banner') --}}
-            
+            @include('partials._success-banner')
             <div class="flex bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 flex justify-center flex-auto"> 
                         <div class="flex-1">
+                            
                             <h3><b>{{ __('Tag selected:') }}</b></h3>
                             <ul>
                                 @forelse($postTags as $postTag)
-                                <li>{{ $postTag->name }}</li>
+                                <li class="flex justify-between items-center">
+                                    <span class="">
+                                        {{ $postTag->tags->first()->name }}
+                                    </span> 
+                                    @include('posts.tags.modals.delete-tag-form')   
+                                </li>
                                 @empty
                                 <li>{{ __('No tags selected yet') }}
                                 @endforelse
@@ -27,13 +32,14 @@
                         </div>
                         <div class="flex-1"> 
                             <h3>{{ __('Choose Tag') }}</h3>
-                            <form method="POST" action="{{ route('posts.subcategories.store', [auth()->user(), $post]) }}">
+                            <form method="POST" action="{{ route('posts.tags.store', [auth()->user(), $post]) }}">
                                 @csrf
-                                @method('PUT')
+                                @method('POST')
 
                                 {{-- <div class="relative"> --}}
                                 <select name="tag" class="block appearance-none w-full bg-white border border-gray-300 rounded-md py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                     <option value="">{{ '---' }}{{ __(' Select ') }}{{ '---' }}</option>
+                                    {{-- //TODO: don't display only tags are already selected for the post --}}
                                     @forelse($tags as $tag)
                                     <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                                     @empty
@@ -56,9 +62,6 @@
                             </form> 
                         </div>  
                     </div>
-
-
-
 
             </div>
         </div>

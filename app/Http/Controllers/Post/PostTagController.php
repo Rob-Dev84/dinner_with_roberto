@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Post;
 use App\Models\Tag;
 use App\Models\Post;
 use App\Models\User;
+use App\Rules\UniqueTag;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -19,7 +20,8 @@ class PostTagController extends Controller
     {
 
         $tags = Tag::get();
-        $postTags = $post->postTags()->get();
+        $postTags = $post->postTags()->with('tags')->get();
+        // dd($postTags);
 
         return view('posts.tags.index',
                     compact(
@@ -45,13 +47,26 @@ class PostTagController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, User $user, Post $post)
+    public function store(request $request, User $user, Post $post)
     {
+
         $request->validate([
-            'tag' => 'required|integer'
+            'tag' => [
+                'required',
+                'integer',
+                new UniqueTag($post->id), // Pass the post ID to the rule
+            ],
+            // other validation rules...
         ]);
 
-        
+        //Insert tag
+        $post->postTags()->create([
+            'tag_id' => $request->tag,
+            'post_id' => $post->id,
+        ]);
+
+        return back()->with('success', 'Tag successfully inserted.');
+
     }
 
     /**
@@ -94,8 +109,14 @@ class PostTagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user, Post $post, $tag)
     {
-        //
+        //TODO: add user permission
+
+        $post->postTags()->where('post_id', $post->id)
+                        ->where('tag_id', $tag)
+                        ->first()->delete();
+
+        return back()->with('success', 'Tag successfully deleted.');
     }
 }

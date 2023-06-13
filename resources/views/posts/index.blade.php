@@ -167,21 +167,31 @@
                     </x-a-link>
                     @endif
                     
-                    @if ($post->postTags()->count() == 0)
+                    {{-- @if ($post->postTags()->count() == 0) --}}
                     <x-a-link 
                         :href="route('posts.tags.index', [auth()->user(), $post->slug])"
                         :active="request()->routeIs('posts.images.edit')" 
-                        :text=" __('Add tags')">
+                        :text=" __('Manage tags')">
                     </x-a-link>
-                    @else
+                    {{-- @else
                     <x-a-link 
                         :href="route('posts.images.edit', [auth()->user(), $post->slug])"
                         :active="request()->routeIs('posts.images.edit')" 
                         :text=" __('Edit tags')">
                     </x-a-link>
-                    @endif
+                    @endif --}}
 
                 </div>
+
+                <form method="POST" action="{{ route('posts.softDelete', [auth()->user(), $post]) }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="flex items-center justify-end mt-4">
+                        <x-danger-button class="ml-3">
+                            {{ __('Public') }}
+                        </x-danger-button>
+                    </div>
+                </form>
                 
                 <form method="POST" action="{{ route('posts.softDelete', [auth()->user(), $post]) }}">
                     @csrf
