@@ -6,6 +6,7 @@ use App\Http\Controllers\Post\PostController;
 use App\Http\Controllers\Post\PostTagController;
 use App\Http\Controllers\Post\PostImageController;
 use App\Http\Controllers\Post\PostMethodController;
+use App\Http\Controllers\Post\PostRecipeController;
 use App\Http\Controllers\Post\PostCategoryController;
 use App\Http\Controllers\Post\PostIngredientController;
 use App\Http\Controllers\Post\PostMethodGroupController;
@@ -52,7 +53,7 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
             Route::post('/posts/{user:username}', 'store')->name('posts.store');
 
             Route::get('/posts/{user:username}/{post:slug}', 'edit')->name('posts.edit');//form to modify post title
-            Route::put('/posts/{user:nausernameme}/{post:slug}', 'update')->name('posts.update');//TODO: update post info 
+            Route::put('/posts/{user:username}/{post:slug}', 'update')->name('posts.update');//TODO: update post info 
             Route::put('/posts/{user:username}/{post:title}/softDelete', 'softDelete')->name('posts.softDelete');
 
 
@@ -171,7 +172,13 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
 
     });
 
+    Route::controller(PostRecipeController::class)->group(function () {
     
+        Route::get('/recipes', 'index')->name('posts.recipes.index');
+
+        Route::get('/recipes/{post:slug}', 'show')->name('posts.recipes.show');
+        
+    });
 
 
 
@@ -185,9 +192,9 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
         return view('about');
     })->name('about');
 
-    Route::get('/recipes', function () {
-        return view('recipes');
-    })->name('recipes');
+    // Route::get('/recipes', function () {
+    //     return view('recipes');
+    // })->name('recipes');
 
     Route::get('/tips', function () {
         return view('tips');

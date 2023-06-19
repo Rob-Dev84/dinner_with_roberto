@@ -113,6 +113,12 @@ class PostImageController extends Controller
                             
                     $slug = $fileNameWithoutExtension . '-' .$position;
 
+                    //TODO: install intervention/image and store images width and height
+                    // $image = Image::make($request->file('image'));
+
+                    // $width = $image->width();
+                    // $height = $image->height();
+
                     
                 }
 
@@ -124,6 +130,8 @@ class PostImageController extends Controller
                 'alt' => $request->input('alt_'.$index),
                 'figcaption' => $request->input('figcaption_'.$index),
                 'position' => $position,
+                // 'width' => $width,
+                // 'height' => $height,
              ]);
 
              

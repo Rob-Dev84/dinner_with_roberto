@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\PostImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\UpdatePostRecipeRquest;
 
 class PostController extends Controller
 {
@@ -113,17 +114,17 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user, Post $post)
+    public function update(UpdatePostRecipeRquest $request, User $user, Post $post)
     {
 
         //TODO move update validation
-        $request->validate([
-            'title' => 'required|unique:posts|max:100|regex:/^[\pL\s]+$/u',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
-            'meta_title' => 'max:100',
-            'meta_description' => 'max:200',
-            'intro' => 'regex:/^[\pL\s\-]+$/u',
-            'note' => 'regex:/^[\pL\s\-]+$/u',
-        ]);
+        // $request->validate([
+        //     'title' => 'required|unique:posts|max:100|regex:/^[\pL\s]+$/u',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
+        //     'meta_title' => 'max:100',
+        //     'meta_description' => 'max:200',
+        //     'intro' => 'regex:/^[\pL\s\-]+$/u',
+        //     'note' => 'regex:/^[\pL\s\-]+$/u',
+        // ]);
 
         $slug = str_replace(' ','-', $request->title);
         $slug = strtolower($slug);
