@@ -58,7 +58,13 @@
                             
                                 <div class="p-4 text-gray-900">
                                     <h3 class="uppercase"><b>{{ __('Overview') }}</b></h3>
-                                    <p>{!! nl2br(e($post->intro)) !!}</p>
+                                    {{-- <p>{{ $post->intro }}</p> --}}
+
+                                    @forelse ($post->getIntroParagraphs() as $paragraph)
+                                        <p class="mt-4">{{ $paragraph }}</p>
+                                    @empty
+                                        <p class="mt-4">{{ __("Post hasn't main image yet") }}</p>
+                                    @endforelse
                                 </div>
                             </div>
 
@@ -128,11 +134,60 @@
 
                                     <ul>
                                     @forelse ($ingredients as $ingredient)
-                                        <li class="capitalize">{{ $ingredient->name }}</li>
+                                        <li class="mt-4"><strong class="capitalize">{{ $ingredient->name . ': '}}</strong>{{ $ingredient->description }}</li>
                                     @empty
-                                        
+                                        <li class="mt-4"><strong class="capitalize">{{ __('Recipe doesn\'t have ingredients yet') }}</strong></li>
                                     @endforelse
                                     </ul>
+                                </div>
+                            </div>
+
+                
+                        </div>
+
+                        <div class="flex justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <div class="lg:w-8/12">
+                                <div class="p-4 pt-0 text-gray-900">
+                                        
+                                    @forelse ($post->postImages as $image)
+                                    
+                                        @if ($image->position === 'intro')
+                                            <img class="" 
+                                                src="{{ asset($image->path) }}" 
+                                                alt="{{ $image->alt }}"
+                                            />
+                                        @endif
+                
+                                    @empty
+                                        {{ __("Post hasn't main image yet") }}
+                                    @endforelse
+    
+                                </div>
+                            
+                                <div class="p-4 text-gray-900">
+                                    <h3 class="uppercase"><strong>{{ $post->title . ' - ' . __('Method') }}</strong></h3>              
+
+                                    <ol>
+                                    @forelse ($postMethodsGroups as $postMethodsGroup)
+                                        <h4 class="mt-4"><strong class="capitalize">{{ $postMethodsGroup->title . ': '}}</strong></h4>
+                                        @forelse ($post->getMethodParagraphs() as $paragraph)
+                                            @if (trim($paragraph) !== ''){{-- trim here otherwise you get an extra dot after each paragraph --}}
+                                                <li class="mt-4">
+                                                    <strong>{{ Str::before($paragraph, '.') . '.' }}</strong>
+                                                    {{ Str::after($paragraph, '.') }}
+                                                </li>
+                                            @endif   
+                                        @empty
+                                            <li class="mt-4">
+                                                {{ __("Post hasn't methods image yet") }}
+                                            </li>
+                                        @endforelse
+                                    @empty
+                                        <li class="mt-4">
+                                            {{ __("Post hasn't title methods yet") }}
+                                        </li>
+                                    @endforelse
+                                    </ol>
                                 </div>
                             </div>
 

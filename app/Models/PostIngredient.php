@@ -15,6 +15,7 @@ class PostIngredient extends Model
         'quantity',
         'unit',
         'name',
+        'description',
     ];
     
 

@@ -50,6 +50,13 @@
                                 <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" />
                                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
                             </div>
+
+                            {{-- description --}}
+                            <div class="mt-4">
+                                <x-input-label for="description" :value="__('Description')" />
+                                <textarea id="description" class="block mt-1 w-full" name="description" type="text">{{ old('description') }}</textarea>
+                                <x-input-error :messages="$errors->get('description')" class="mt-2" />
+                            </div>
                         </div>
                         
 

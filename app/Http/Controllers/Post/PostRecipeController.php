@@ -58,12 +58,28 @@ class PostRecipeController extends Controller
 
         $ingredients = $post->postIngredients;
 
-        // dd($ingredients);
+        //TODO: hasManyThrough or eager loading?
+        // $methods = $post->postMethodsRecipe;
+
+        //eager loading
+        // $methods = Post::with('postMethods', 'postMethodsGroups')->get();
+
+
+        $postMethods = $post->postMethods()->get();
+
+        $postMethodsGroups = $post->postMethodsGroups()->get();
+
+
+
+        // dd($methods);
         return view('posts.recipes.show',
                 compact('post',
                         'metaPublishedTime',
                         'metaUpdatedTime',
                         'ingredients',
+                        // 'methods',
+                        'postMethods',
+                        'postMethodsGroups',
                 ));
     }
 

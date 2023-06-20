@@ -13,11 +13,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                                                        {{-- posts.ingredients.update --}}
+                                
                     <form method="POST" action="{{ route('posts.ingredients.update', [$ingredient, auth()->user(), $post]) }}">
                         @csrf
                         @method('PUT')
-
+                        <h3>{{ __('If the ingredient doesn\'t have a quantity or unit, leave them, empty') }}</h3>
                         <div class="flex justify-between">
                             {{-- Quantity --}}
                             <div class="mt-4">
@@ -29,7 +29,7 @@
                             <div class="mt-4">{{-- //TODO select unit from database --}}
                                 <x-input-label for="unit" :value="__('Unit')" />
                                 <select name="unit" id="unit">
-                                    {{-- <option value="">{{ __('Select Unit') }}</option> --}}
+                                    <option value="">{{ __('Empty') }}</option>
                                 
                                     <option :value="{{ 'g'}}" {{ $ingredient->unit === 'g' ? 'selected' : '' }}>{{ __('g') }}</option>
                                     <option :value="{{ 'ml'}}" {{ $ingredient->unit === 'ml' ? 'selected' : '' }}>{{ __('ml') }}</option>
@@ -47,6 +47,14 @@
                                 <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="$ingredient->name" required />
                                 <x-input-error :messages="$errors->get('title')" class="mt-2" />
                             </div>
+
+                            {{-- description --}}
+                            <div class="mt-4">
+                                <x-input-label for="description" :value="__('Description')" />
+                                <textarea id="description" class="block mt-1 w-full" name="description" type="text">{{ $post->description }}</textarea>
+                                <x-input-error :messages="$errors->get('description')" class="mt-2" />
+                            </div>
+
                         </div>
 
                         <div class="flex items-center justify-end mt-4">

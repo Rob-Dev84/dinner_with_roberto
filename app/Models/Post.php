@@ -45,6 +45,28 @@ class Post extends Model
         return $this->hasMany(PostMethodGroup::class);
     }
 
+    // public function postMethodsRecipe()
+    // {
+    //     return $this->hasManyThrough(
+    //         PostMethod::class, // Target model
+    //         PostMethodGroup::class, // Intermediate model
+    //         'post_id', // Foreign key on intermediate model
+    //         'post_method_group_id', // Foreign key on target model
+    //         'id', // Local key on source model
+    //         'id' // Local key on intermediate model
+    //     );
+    // }
+
+    public function getMethodParagraphs()//Here $this->postMethods access to the postMethods() method above
+    {
+        return explode("\n", $this->postMethods->first()->method);
+    }
+
+    public function getIntroParagraphs()
+    {
+        return explode("\n", $this->intro);
+    }
+
     public function postImages() {
         return $this->hasMany(PostImage::class);
     }

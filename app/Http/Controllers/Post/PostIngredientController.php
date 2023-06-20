@@ -53,18 +53,20 @@ class PostIngredientController extends Controller
         
 
         $request->validate([
-            'quantity' => 'nullable|regex:/^[0-9]+$/|integer|between:1,999',// only numbers
+            'quantity' => 'nullable|integer|regex:/^[0-9]+$/|integer|between:1,999',// only numbers
             // 'quantity' => 'integer|between:0,999',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
             'unit' => 'max:100',
             'name' => 'required|max:25',
+            'description' => 'string',
         ]);
 
-        // dd($request->quantity);
+        
 
         $post->postIngredients()->create([
-            'quantity' => $request->quantity,
-            'unit' => $request->unit,
+            'quantity' => $request->quantity ? : null,
+            'unit' => $request->unit ? : null,
             'name' => $request->name,
+            'description' => $request->description,
          ]);
 
          return back();
@@ -113,17 +115,21 @@ class PostIngredientController extends Controller
         //TODO policy - check if user is admin
         //TODO policy - check if id ingrediet is correct
 
+        
+
         $request->validate([
-            'quantity' => 'nullable|regex:/^[0-9]+$/|integer|between:1,999',// only numbers
+            'quantity' => 'nullable|integer|regex:/^[0-9]+$/|integer|between:1,999',// only numbers
             // 'quantity' => 'integer|between:0,999',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
-            'unit' => 'max:100',
+            'unit' => 'nullable|max:100',
             'name' => 'required|max:25',
+            'description' => 'string',
         ]);
 
         $post->postIngredients()->where('id', $ingredient->id)->first()->update([
-            'quantity' => $request->quantity,
-            'unit' => $request->unit,
+            'quantity' => $request->quantity ? : null,
+            'unit' => $request->unit ? : null,
             'name' => $request->name,
+            'description' => $request->description,
          ]);
 
          return redirect()->route('posts.ingredients', [$user, $post]);
