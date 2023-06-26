@@ -170,6 +170,63 @@
                                     <ol>
                                     @forelse ($postMethodsGroups as $postMethodsGroup)
                                         <h4 class="mt-4"><strong class="capitalize">{{ $postMethodsGroup->title . ': '}}</strong></h4>
+                                       
+                                        @forelse ($post->getMethodParagraphs() as $index => $paragraph)
+                                            @if (trim($paragraph) !== ''){{-- trim here otherwise you get an extra dot after each paragraph --}}
+                                                <li class="mt-4" id="instruction-step-{{ floor($index / 2) + 1 }}">
+                                                    <strong>{{ Str::before($paragraph, '.') . '.' }}</strong>
+                                                    {{ Str::after($paragraph, '.') }}
+                                                </li>
+                                            @endif   
+                                        @empty
+                                            <li class="mt-4">
+                                                {{ __("Post hasn't methods image yet") }}
+                                            </li>
+                                        @endforelse
+                                    @empty
+                                        <li class="mt-4">
+                                            {{ __("Post hasn't title methods yet") }}
+                                        </li>
+                                    @endforelse
+                                    </ol>
+                                </div>
+                            </div>
+
+                
+                        </div>
+
+
+
+
+
+
+
+
+                        <div class="flex justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <div class="lg:w-8/12">
+                                <div class="p-4 pt-0 text-gray-900">
+                                        
+                                    @forelse ($post->postImages as $image)
+                                    
+                                        @if ($image->position === 'intro')
+                                            <img class="" 
+                                                src="{{ asset($image->path) }}" 
+                                                alt="{{ $image->alt }}"
+                                            />
+                                        @endif
+                
+                                    @empty
+                                        {{ __("Post hasn't main image yet") }}
+                                    @endforelse
+    
+                                </div>
+                            
+                                <div class="p-4 text-gray-900">
+                                    <h3 class="uppercase"><strong>{{ $post->title . ' - ' . __('Notes') }}</strong></h3>              
+
+                                    <ol>
+                                    @forelse ($postMethodsGroups as $postMethodsGroup)
+                                        <h4 class="mt-4"><strong class="capitalize">{{ $postMethodsGroup->title . ': '}}</strong></h4>
                                         @forelse ($post->getMethodParagraphs() as $paragraph)
                                             @if (trim($paragraph) !== ''){{-- trim here otherwise you get an extra dot after each paragraph --}}
                                                 <li class="mt-4">
@@ -193,6 +250,12 @@
 
                 
                         </div>
+
+
+
+
+
+
                       
                     </div>
                 </div>

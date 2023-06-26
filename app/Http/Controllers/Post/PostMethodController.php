@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\PostMethod;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 
 class PostMethodController extends Controller
@@ -53,11 +54,28 @@ class PostMethodController extends Controller
         
 
         $request->validate([
-            'method' => 'required|max:65535|regex:/^[\pL\s\-]+$/u',
+            // 'method' => 'required|max:65535|string', // regex:/^[\pL\s\-]+$/u
+            // 'method_recipe_card' => 'required|max:65535|string',
+
+            'method' => [
+                Rule::requiredIf(function () use ($request) {
+                    return empty($request->method) && empty($request->method_recipe_card);
+                }),
+                'string',
+                'max:65535',
+            ],
+            'method_recipe_card' => [
+                Rule::requiredIf(function () use ($request) {
+                    return empty($request->method) && empty($request->method_recipe_card);
+                }),
+                'string',
+                'max:65535',
+            ],
         ]);
 
         $post->postMethods()->create([
             'method' => $request->method,
+            'method_recipe_card' => $request->method_recipe_card,
          ]);
 
          return back();
@@ -111,6 +129,7 @@ class PostMethodController extends Controller
 
         $post->postMethods()->where('id', $method->id)->first()->update([
             'method' => $request->method,
+            'method_recipe_card' => $request->method_recipe_card,
          ]);
 
          return redirect()->route('posts.methods', [$user, $post]);

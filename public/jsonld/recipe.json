@@ -1,0 +1,28 @@
+{
+    "recipeInstructions": [
+        {
+            "@type": "HowToStep",
+            "name": "Salt and water.",
+            "text": " In a bowl, dissolve all the salt in water. The water has to be warm, 26\u00b0C is perfect. If the temperature goes more then 37\u00b0C it'll kill the enzymes in the yeast, responsible for the rising process.",
+            "url": "http:\/\/localhost\/recipes\/focaccia-tomato\/instruction-step-1"
+        },
+        {
+            "@type": "HowToStep",
+            "name": "The yeast.",
+            "text": " Since the salt it's not visible anymore we can add the yeast. If you are using the fresh one, dissolve it using your fingertips. And the olive oil.",
+            "url": "http:\/\/localhost\/recipes\/focaccia-tomato\/instruction-step-2"
+        },
+        {
+            "@type": "HowToStep",
+            "name": "The dough, step 1.",
+            "text": " Add gradually the flour in the mixture using a rigid spatula. Because it's a very hydrate dough it looks not consistent. Fold the dough to get some of the air and cover the bowl. Rise for 30 minutes hours.",
+            "url": "http:\/\/localhost\/recipes\/focaccia-tomato\/instruction-step-3"
+        },
+        {
+            "@type": "HowToStep",
+            "name": "The dough, step 2.",
+            "text": " Using a spatula, fold the dough, cover again and rise for 2 hours. You might notice the dough has more strength.",
+            "url": "http:\/\/localhost\/recipes\/focaccia-tomato\/instruction-step-4"
+        }
+    ]
+}

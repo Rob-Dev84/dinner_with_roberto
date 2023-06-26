@@ -58,3 +58,10 @@
 @section('meta_canonical')
     {{ url('/recipes/'.$post->slug) }}
 @endsection
+
+{{-- JSON-LD --}}
+@section('jsonld')
+    <script type="application/ld+json">
+        {!! $jsonLd !!}
+    </script>
+@endsection

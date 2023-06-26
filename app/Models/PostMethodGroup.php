@@ -20,4 +20,5 @@ class PostMethodGroup extends Model
     // public function postMethod() {
     //     return $this->BelongsTo(PostMethod::class);
     // }
+    
 }

@@ -1,12 +1,19 @@
 <x-app-layout>
     
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
- 
-            {{ __('Modify title group for: ') }}
-            {{ $post->title }}
-            
-        </h2>
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+    
+                {{ __('Modify title group for: ') }}
+                {{ $post->title }}
+                
+            </h2>
+            <x-a-link 
+                    :href="route('posts.methods', [auth()->user(), $post->slug])"
+                    :active="request()->routeIs('posts.methods')" 
+                    :text=" __('Back')">
+            </x-a-link>
+        </div>
     </x-slot>
 
     <div class="py-12">

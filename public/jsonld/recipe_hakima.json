@@ -1,0 +1,403 @@
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "Article",
+            "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#article",
+            "isPartOf": {
+                "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/"
+            },
+            "author": {
+                "name": "Hakima",
+                "@id": "https://siftwithkima.com/#/schema/person/359e1aaede4a082077d7e4087e03ebd2"
+            },
+            "headline": "Raspberry Cheesecake Brioche Buns",
+            "datePublished": "2023-04-30T19:58:31+00:00",
+            "dateModified": "2023-04-30T19:57:34+00:00",
+            "wordCount": 1951,
+            "commentCount": 0,
+            "publisher": {
+                "@id": "https://siftwithkima.com/#/schema/person/359e1aaede4a082077d7e4087e03ebd2"
+            },
+            "image": {
+                "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#primaryimage"
+            },
+            "thumbnailUrl": "https://i0.wp.com/siftwithkima.com/wp-content/uploads/2023/04/IMG_2907-1.jpg?fit=1200%2C1200&ssl=1",
+            "articleSection": [
+                "Bread",
+                "Brioche",
+                "Recipes"
+            ],
+            "inLanguage": "en-US",
+            "potentialAction": [
+                {
+                    "@type": "CommentAction",
+                    "name": "Comment",
+                    "target": [
+                        "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#respond"
+                    ]
+                }
+            ]
+        },
+        {
+            "@type": [
+                "WebPage",
+                "FAQPage"
+            ],
+            "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/",
+            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/",
+            "name": "Raspberry Cheesecake Brioche Buns | Sift With Kima",
+            "isPartOf": {
+                "@id": "https://siftwithkima.com/#website"
+            },
+            "primaryImageOfPage": {
+                "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#primaryimage"
+            },
+            "image": {
+                "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#primaryimage"
+            },
+            "thumbnailUrl": "https://i0.wp.com/siftwithkima.com/wp-content/uploads/2023/04/IMG_2907-1.jpg?fit=1200%2C1200&ssl=1",
+            "datePublished": "2023-04-30T19:58:31+00:00",
+            "dateModified": "2023-04-30T19:57:34+00:00",
+            "description": "These Raspberry Cheesecake Brioche Buns are filled with raspberry cheesecake filling, topped with raspberry preserves and powdered sugar.",
+            "breadcrumb": {
+                "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#breadcrumb"
+            },
+            "mainEntity": [
+                {
+                    "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#faq-question-1658401249599"
+                },
+                {
+                    "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#faq-question-1682883342744"
+                },
+                {
+                    "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#faq-question-1682883601811"
+                },
+                {
+                    "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#faq-question-1682883695921"
+                }
+            ],
+            "inLanguage": "en-US",
+            "potentialAction": [
+                {
+                    "@type": "ReadAction",
+                    "target": [
+                        "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/"
+                    ]
+                }
+            ]
+        },
+        {
+            "@type": "ImageObject",
+            "inLanguage": "en-US",
+            "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#primaryimage",
+            "url": "https://i0.wp.com/siftwithkima.com/wp-content/uploads/2023/04/IMG_2907-1.jpg?fit=1200%2C1200&ssl=1",
+            "contentUrl": "https://i0.wp.com/siftwithkima.com/wp-content/uploads/2023/04/IMG_2907-1.jpg?fit=1200%2C1200&ssl=1",
+            "width": 1200,
+            "height": 1200,
+            "caption": "raspberry cheesecake brioche buns on a wooden board"
+        },
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://siftwithkima.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Recipes",
+                    "item": "https://siftwithkima.com/category/all-recipes/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Bread",
+                    "item": "https://siftwithkima.com/category/all-recipes/bread/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 4,
+                    "name": "Raspberry Cheesecake Brioche Buns"
+                }
+            ]
+        },
+        {
+            "@type": "WebSite",
+            "@id": "https://siftwithkima.com/#website",
+            "url": "https://siftwithkima.com/",
+            "name": "Sift with Kima",
+            "description": "A Baker&#039;s Sweet Corner",
+            "publisher": {
+                "@id": "https://siftwithkima.com/#/schema/person/359e1aaede4a082077d7e4087e03ebd2"
+            },
+            "potentialAction": [
+                {
+                    "@type": "SearchAction",
+                    "target": {
+                        "@type": "EntryPoint",
+                        "urlTemplate": "https://siftwithkima.com/?s={search_term_string}"
+                    },
+                    "query-input": "required name=search_term_string"
+                }
+            ],
+            "inLanguage": "en-US"
+        },
+        {
+            "@type": [
+                "Person",
+                "Organization"
+            ],
+            "@id": "https://siftwithkima.com/#/schema/person/359e1aaede4a082077d7e4087e03ebd2",
+            "name": "Hakima",
+            "image": {
+                "@type": "ImageObject",
+                "inLanguage": "en-US",
+                "@id": "https://siftwithkima.com/#/schema/person/image/",
+                "url": "https://i0.wp.com/siftwithkima.com/wp-content/uploads/2023/04/Black-Minimal-Cake-Logo.png?fit=500%2C500&ssl=1",
+                "contentUrl": "https://i0.wp.com/siftwithkima.com/wp-content/uploads/2023/04/Black-Minimal-Cake-Logo.png?fit=500%2C500&ssl=1",
+                "width": 500,
+                "height": 500,
+                "caption": "Hakima"
+            },
+            "logo": {
+                "@id": "https://siftwithkima.com/#/schema/person/image/"
+            },
+            "sameAs": [
+                "https://siftwithkima.com/about/"
+            ]
+        },
+        {
+            "@type": "Question",
+            "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#faq-question-1658401249599",
+            "position": 1,
+            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#faq-question-1658401249599",
+            "name": "Why is Brioche Buns Recipe different?",
+            "answerCount": 1,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Brioche Buns recipe or Brioche bread recipes are different than regular dough recipes because of the amount of fat it contains. A regular bread recipe typically contains flour, yeast, water, salt. A brioche bread recipe is an enriched recipe that contains milk, eggs, and butter. My Brioche Buns recipe contain 1/4 cup of sugar to give it an extra hint of sweetness, which is not typical in a regular bread recipe.",
+                "inLanguage": "en-US"
+            },
+            "inLanguage": "en-US"
+        },
+        {
+            "@type": "Question",
+            "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#faq-question-1682883342744",
+            "position": 2,
+            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#faq-question-1682883342744",
+            "name": "Can I use this Brioche Buns Recipe for Other Recipes?",
+            "answerCount": 1,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Absolutely! This Brioche Buns Recipe can be a base for so many bread recipes. You can top it with whatever you desire, sweet or savory. I have a few other Brioche Buns recipes on my blog for ideas.",
+                "inLanguage": "en-US"
+            },
+            "inLanguage": "en-US"
+        },
+        {
+            "@type": "Question",
+            "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#faq-question-1682883601811",
+            "position": 3,
+            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#faq-question-1682883601811",
+            "name": "Can I Make These Raspberry Cheesecake Brioche Buns Ahead?",
+            "answerCount": 1,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "You can absolutely make this recipe ahead of time by letting the dough proof in the refrigerator overnight for the first rise. When you're ready to use, remove from the refrigerator and continue with the recipe. You won't need to let the dough come to room temperature because you'll still need to proof a second time, so it will have plenty of time.",
+                "inLanguage": "en-US"
+            },
+            "inLanguage": "en-US"
+        },
+        {
+            "@type": "Question",
+            "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#faq-question-1682883695921",
+            "position": 4,
+            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#faq-question-1682883695921",
+            "name": "Does my milk have to be exactly 110 degrees?",
+            "answerCount": 1,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "My milk temperature is a guide so that you don’t use too hot of milk (could kill the yeast) or too cold of milk (won’t activate the yeast). Milk temperature between 105-115 degrees F. will do the trick and yield best results.",
+                "inLanguage": "en-US"
+            },
+            "inLanguage": "en-US"
+        },
+        {
+            "@type": "Recipe",
+            "name": "Raspberry Cheesecake Brioche Buns",
+            "author": {
+                "@type": "Person",
+                "name": "Hakima"
+            },
+            "description": "These Sweet Brioche Buns are filled in the center with a raspberry cheesecake filling, then topped with raspberry jam and powdered sugar.",
+            "datePublished": "2023-04-30T14:58:31+00:00",
+            "image": [
+                "https://siftwithkima.com/wp-content/uploads/2023/04/IMG_2907-1.jpg",
+                "https://siftwithkima.com/wp-content/uploads/2023/04/IMG_2907-1-500x500.jpg",
+                "https://siftwithkima.com/wp-content/uploads/2023/04/IMG_2907-1-500x375.jpg",
+                "https://siftwithkima.com/wp-content/uploads/2023/04/IMG_2907-1-480x270.jpg"
+            ],
+            "recipeYield": [
+                "8"
+            ],
+            "prepTime": "PT30M",
+            "cookTime": "PT20M",
+            "totalTime": "PT155M",
+            "recipeIngredient": [
+                "1 cup warm milk (110°)",
+                "1 package active dry yeast",
+                "1 tsp granulated sugar",
+                "3 cups (360g) bread flour",
+                "¼ cup (50g) granulated sugar",
+                "¾ tsp salt",
+                "2  egg yolks",
+                "2 tsp vanilla extract",
+                "6 tbsp unsalted butter (softened)",
+                "1 8 oz Package cream cheese (softened to room temperature)",
+                "¼ cup (50g) granulated sugar",
+                "¼ cup Raspberry preserves",
+                "1 tsp Vanilla extract",
+                "egg or milk",
+                "Raspberry preserves",
+                "Powdered sugar",
+                "Fresh raspberries"
+            ],
+            "recipeInstructions": [
+                {
+                    "@type": "HowToSection",
+                    "name": "Sweet Brioche Dough",
+                    "itemListElement": [
+                        {
+                            "@type": "HowToStep",
+                            "text": "In a small bowl, combine the warm milk, packet of yeast and a tsp of sugar and let sit and foam for about 5 minutes.",
+                            "name": "In a small bowl, combine the warm milk, packet of yeast and a tsp of sugar and let sit and foam for about 5 minutes.",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-0-0"
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "text": "In a bowl of a stand mixer fitted with a hook attachment, add flour, sugar, salt, 2 egg yolks, vanilla extract, and the activated yeast mixture and let knead for at least 10 minutes until the dough comes away from the bowl and forms a sort of ball.",
+                            "name": "In a bowl of a stand mixer fitted with a hook attachment, add flour, sugar, salt, 2 egg yolks, vanilla extract, and the activated yeast mixture and let knead for at least 10 minutes until the dough comes away from the bowl and forms a sort of ball.",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-0-1"
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "text": "Start adding the softened butter slowly until all is incorporated and knead for an additional 12-15 minutes until the dough forms a smooth ball and does not stick to the sides of the bowl. When touching with your finger, the dough should not stick at all. The dough will be tacky and a lot smoother/silkier than a regular dough.",
+                            "name": "Start adding the softened butter slowly until all is incorporated and knead for an additional 12-15 minutes until the dough forms a smooth ball and does not stick to the sides of the bowl. When touching with your finger, the dough should not stick at all. The dough will be tacky and a lot smoother/silkier than a regular dough.",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-0-2"
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "text": "Place the dough in an oiled bowl and cover and let rise for at least an hour.",
+                            "name": "Place the dough in an oiled bowl and cover and let rise for at least an hour.",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-0-3"
+                        }
+                    ]
+                },
+                {
+                    "@type": "HowToSection",
+                    "name": "Raspberry Cheesecake Filling",
+                    "itemListElement": [
+                        {
+                            "@type": "HowToStep",
+                            "text": "In a bowl, combine cream cheese, raspberry preserves, sugar, and vanilla extract and beat using a hand mixer until completely smooth.",
+                            "name": "In a bowl, combine cream cheese, raspberry preserves, sugar, and vanilla extract and beat using a hand mixer until completely smooth.",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-1-0"
+                        }
+                    ]
+                },
+                {
+                    "@type": "HowToSection",
+                    "name": "Shaping the Sweet Brioche Buns",
+                    "itemListElement": [
+                        {
+                            "@type": "HowToStep",
+                            "text": "Prepare a large baking sheet lined with parchment paper.",
+                            "name": "Prepare a large baking sheet lined with parchment paper.",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-2-0"
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "text": "Once dough has risen, remove from bowl and divide into 8 equal pieces using a kitchen scale. Roll each piece into a ball, then using your fingers press into the center of each ball, forming a center indent, which creates a soft of disc that has a  hole where we will fill them with the sweet cream cheese.",
+                            "name": "Once dough has risen, remove from bowl and divide into 8 equal pieces using a kitchen scale. Roll each piece into a ball, then using your fingers press into the center of each ball, forming a center indent, which creates a soft of disc that has a  hole where we will fill them with the sweet cream cheese.",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-2-1"
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "text": "Once all have been formed, transfer them to a baking sheet, cover with saran wrap and let rise for 30-45 minutes. Try to make sure there is enough space between them so that they aren&#39;t touching when rising.",
+                            "name": "Once all have been formed, transfer them to a baking sheet, cover with saran wrap and let rise for 30-45 minutes. Try to make sure there is enough space between them so that they aren&#39;t touching when rising.",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-2-2"
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "text": "Preheat oven to 375°",
+                            "name": "Preheat oven to 375°",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-2-3"
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "text": "After 30-45 minutes, the buns should now be doubled in size. Take a cup or a small bowl (make sure it&#39;s floured so it doesn&#39;t stick) and create an even larger indent in the center (I used a 1/4 cup initially, but found that a 1/3 cup was better).",
+                            "name": "After 30-45 minutes, the buns should now be doubled in size. Take a cup or a small bowl (make sure it&#39;s floured so it doesn&#39;t stick) and create an even larger indent in the center (I used a 1/4 cup initially, but found that a 1/3 cup was better).",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-2-4"
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "text": "Add the raspberry cheesecake filling to each bun.",
+                            "name": "Add the raspberry cheesecake filling to each bun.",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-2-5"
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "text": "Brush the sides of each bun with egg wash. This will create a deeper color.",
+                            "name": "Brush the sides of each bun with egg wash. This will create a deeper color.",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-2-6"
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "text": "Bake for 15-20 minutes until the buns become golden brown.",
+                            "name": "Bake for 15-20 minutes until the buns become golden brown.",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-2-7"
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "text": "Remove from the oven and let cool for at least 5 minutes, then top with raspberry preserves and powdered sugar.",
+                            "name": "Remove from the oven and let cool for at least 5 minutes, then top with raspberry preserves and powdered sugar.",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-2-8"
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "text": "These Sweet Brioche Buns are delicious warm, but taste great at room temperature as well.",
+                            "name": "These Sweet Brioche Buns are delicious warm, but taste great at room temperature as well.",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-2-9"
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "text": "Store any leftovers in an airtight container.",
+                            "name": "Store any leftovers in an airtight container.",
+                            "url": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#wprm-recipe-4092-step-2-10"
+                        }
+                    ]
+                }
+            ],
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "5",
+                "ratingCount": "3"
+            },
+            "recipeCategory": [
+                "Breakfast",
+                "Dessert"
+            ],
+            "keywords": "raspberry cheesecake, raspberry cheesecake brioche buns, sweet brioche buns, sweet cream cheese",
+            "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#recipe",
+            "isPartOf": {
+                "@id": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/#article"
+            },
+            "mainEntityOfPage": "https://siftwithkima.com/raspberry-cheesecake-brioche-buns/"
+        }
+    ]
+}

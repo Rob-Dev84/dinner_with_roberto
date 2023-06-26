@@ -25,6 +25,13 @@
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <!-- Scripts -->
+
+        <!-- JSON-LD code -->
+        @yield('jsonld')
+        {{-- <script type="application/ld+json">var jsonLdData = {!! $jsonLd !!};</script> --}}
+        {{-- <script type="application/ld+json" src="{{ asset('jsonld/recipe.json') }}">{!! $jsonLd !!}</script> --}}
+
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
