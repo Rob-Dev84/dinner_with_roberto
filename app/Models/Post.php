@@ -94,6 +94,11 @@ class Post extends Model
         );
     }
 
+    public function getNoteParagraphs()
+    {
+        return explode("\n", $this->note);
+    }
+
     
 
     // public function postTags2() {

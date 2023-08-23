@@ -223,28 +223,13 @@
                             
                                 <div class="p-4 text-gray-900">
                                     <h3 class="uppercase"><strong>{{ $post->title . ' - ' . __('Notes') }}</strong></h3>              
-
-                                    <ol>
-                                    @forelse ($postMethodsGroups as $postMethodsGroup)
-                                        <h4 class="mt-4"><strong class="capitalize">{{ $postMethodsGroup->title . ': '}}</strong></h4>
-                                        @forelse ($post->getMethodParagraphs() as $paragraph)
-                                            @if (trim($paragraph) !== ''){{-- trim here otherwise you get an extra dot after each paragraph --}}
-                                                <li class="mt-4">
-                                                    <strong>{{ Str::before($paragraph, '.') . '.' }}</strong>
-                                                    {{ Str::after($paragraph, '.') }}
-                                                </li>
-                                            @endif   
+    
+                                        @forelse ($post->getNoteParagraphs() as $note)
+                                            <p class="mt-4">{{ $note }}</p>
                                         @empty
-                                            <li class="mt-4">
-                                                {{ __("Post hasn't methods image yet") }}
-                                            </li>
+                                            <p class="mt-4">{{ __("Post hasn't main image yet") }}</p>
                                         @endforelse
-                                    @empty
-                                        <li class="mt-4">
-                                            {{ __("Post hasn't title methods yet") }}
-                                        </li>
-                                    @endforelse
-                                    </ol>
+                                    
                                 </div>
                             </div>
 
