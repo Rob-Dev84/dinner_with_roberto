@@ -13,7 +13,7 @@
             <a href="#recipe-comments">{{ __('Comments') }}</a>
         </div>
         <h2 class="font-semibold text-xl text-gray-800 leading-tight text-center">
-            <em>{{ __('A Mediterranean Twist on Classic Focaccia') }}</em>
+            <em>{{ $post->subtitle }}</em>
         </h2>
     </x-slot>
     

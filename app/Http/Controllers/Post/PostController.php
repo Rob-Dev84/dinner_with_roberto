@@ -57,6 +57,7 @@ class PostController extends Controller
 
         $request->validate([
             'title' => 'required|unique:posts|max:100|regex:/^[\pL\s]+$/u',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
+            'subtitle' => 'required|unique:posts|max:100|regex:/^[\pL\s]+$/u',// to accept hypen -> regex:/^[\pL\s\-]+$/u'
             'meta_title' => 'max:100',
             'meta_description' => 'max:200',
             'intro' => 'regex:/^[\pL\s\-]+$/u',
@@ -70,6 +71,7 @@ class PostController extends Controller
         $request->user()->posts()->create([
            'title' => $request->title,
            'slug' => $slug,
+           'subtitle' => $request->subtitle,
            'meta_title' => $request->meta_title,
            'meta_description' => $request->meta_description,
            'intro' => $request->intro,
@@ -132,6 +134,7 @@ class PostController extends Controller
         $request->user()->posts()->first()->update([
            'title' => $request->title,
            'slug' => $slug,
+           'subtitle' => $request->subtitle,
            'meta_title' => $request->meta_title,
            'meta_description' => $request->meta_description,
            'intro' => $request->intro,

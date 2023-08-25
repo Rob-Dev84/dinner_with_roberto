@@ -23,6 +23,13 @@
                             <x-input-error :messages="$errors->get('title')" class="mt-2" />
                         </div>
 
+                        <!-- Subitle -->
+                        <div class="mt-4">
+                            <x-input-label for="subtitle" :value="__('Subtitle')" />
+                            <x-text-input id="subtitle" class="block mt-1 w-full" type="text" name="subtitle" :value="old('subtitle')" required autofocus />
+                            <x-input-error :messages="$errors->get('subtitle')" class="mt-2" />
+                        </div>
+
                         <!-- Visible Only for Admin -->
                         <div class="mt-4">
                             <x-input-label for="meta title" :value="__('Meta Tile')" />
