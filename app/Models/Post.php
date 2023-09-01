@@ -42,6 +42,10 @@ class Post extends Model
         return $this->hasMany(PostMethod::class);
     }
 
+    // public function postMethod() {
+    //     return $this->hasOne(PostMethod::class);
+    // }
+
     public function postMethodsGroups() {
         return $this->hasMany(PostMethodGroup::class);
     }
@@ -62,6 +66,35 @@ class Post extends Model
     {
         return explode("\n", $this->postMethods->first()->method);
     }
+
+    public function getMethodRecipeCardParagraphs()//Here $this->postMethods access to the postMethods() method above
+    {
+        return explode("\n", $this->postMethods->first()->method_recipe_card);
+    }
+
+    public function getGroupedMethodRecipeCardParagraphs()
+    {
+        
+        $paragraphs = [];
+
+        foreach ($this->postMethods as $postMethod) {
+            $groupId = $postMethod->post_method_group_id;
+            $paragraphs[$groupId] = explode("\n", $postMethod->method_recipe_card);
+        }
+        
+        return $paragraphs;
+    }
+
+    public function hasNonGroupedMethods()//check if we have not grouped methods //TODO: use this function on post edit method(e.g. exlamation mark)
+    {
+        foreach ($this->postMethods as $postMethod) {
+            if (is_null($postMethod->post_method_group_id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public function getIntroParagraphs()
     {

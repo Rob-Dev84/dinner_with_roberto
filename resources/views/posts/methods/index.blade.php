@@ -90,8 +90,9 @@
                                     <p>{{ __('This recipe doesn\'t have methods yet') }}</p>
                                 @endforelse
 
-                                {{-- //TODO: improve if statement --}}
-                                @if ($methodsInserted->where('post_method_group_id', NULL)->count() > 1)
+                                {{-- TODO: improve if statement --}}
+                                {{-- {{ dd($methodsInserted) }} --}}
+                                @if ($methodsInserted->where('post_method_group_id', NULL)->count() > 0)
                                     {{-- <x-nav-link :href="route('posts.methods.groups', [auth()->user(), $post->slug])" :active="request()->routeIs('posts.methods.groups')">
                                         {{ __('Group methods') }}
                                     </x-nav-link> --}}
