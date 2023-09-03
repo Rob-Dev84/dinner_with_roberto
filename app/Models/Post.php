@@ -23,6 +23,7 @@ class Post extends Model
         'meta_title',
         'meta_description',
         'intro',
+        'description',
         'note',
     ];
 
@@ -67,7 +68,7 @@ class Post extends Model
         return explode("\n", $this->postMethods->first()->method);
     }
 
-    public function getMethodRecipeCardParagraphs()//Here $this->postMethods access to the postMethods() method above
+    public function getMethodRecipeCardParagraphs()//This will be called when methods are not grouped
     {
         return explode("\n", $this->postMethods->first()->method_recipe_card);
     }
@@ -100,6 +101,7 @@ class Post extends Model
     {
         return explode("\n", $this->intro);
     }
+    
 
     public function postImages() {
         return $this->hasMany(PostImage::class);
@@ -128,7 +130,12 @@ class Post extends Model
         );
     }
 
-    public function getNoteParagraphs()
+    // public function getNoteParagraphs()
+    // {
+    //     return explode("\n", $this->note);
+    // }
+
+    public function getNoteParagraphs()//This will be called when methods are not grouped
     {
         return explode("\n", $this->note);
     }

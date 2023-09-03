@@ -35,6 +35,7 @@ class UpdatePostRecipeRquest extends FormRequest
             'meta_title' => 'max:100',
             'meta_description' => 'max:200',
             'intro' => 'string',
+            'description' => 'string',
             'note' => 'string',
             // 'intro' => 'regex:/^[\pL\s\-]+$/u',
             // 'note' => 'regex:/^[\pL\s\-]+$/u',

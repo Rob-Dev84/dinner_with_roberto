@@ -58,6 +58,14 @@
 
                         <!-- Visible Only for Admin -->
                         <div class="mt-4">
+                            <x-input-label for="description" :value="__('Description')" />
+                            {{-- <x-textarea id="summary" class="block mt-1 w-full" name="intro" type="text">{{ $post->summary }}</x-textarea> --}}
+                            <textarea id="description" title="{{ __('This goes to the recipe card') }}" class="block mt-1 w-full" name="description" type="text">{{ $post->description }}</textarea>
+                            <x-input-error :messages="$errors->get('description')" class="mt-2" />
+                        </div>
+
+                        <!-- Visible Only for Admin -->
+                        <div class="mt-4">
                             <x-input-label for="note" :value="__('Note')" />
                             {{-- <x-textarea id="summary" class="block mt-1 w-full" name="intro" type="text">{{ $post->summary }}</x-textarea> --}}
                             <textarea id="note" class="block mt-1 w-full" name="note" type="text">{{ $post->note }}</textarea>

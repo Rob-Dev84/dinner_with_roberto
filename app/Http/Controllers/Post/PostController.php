@@ -61,6 +61,7 @@ class PostController extends Controller
             'meta_title' => 'max:100',
             'meta_description' => 'max:200',
             'intro' => 'regex:/^[\pL\s\-]+$/u',
+            'description' => 'regex:/^[\pL\s\-]+$/u',
             'note' => 'regex:/^[\pL\s\-]+$/u',
         ]);
 
@@ -138,6 +139,7 @@ class PostController extends Controller
            'meta_title' => $request->meta_title,
            'meta_description' => $request->meta_description,
            'intro' => $request->intro,
+           'description' => $request->description,
            'note' => $request->note,
         ]);
 

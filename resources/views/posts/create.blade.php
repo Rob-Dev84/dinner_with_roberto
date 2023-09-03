@@ -54,6 +54,13 @@
 
                         <!-- Visible Only for Admin -->
                         <div class="mt-4">
+                            <x-input-label for="description" :value="__('Description')" />
+                            <textarea id="description" class="block mt-1 w-full" name="intro" type="text">{{ old('description') }}</textarea>
+                            <x-input-error :messages="$errors->get('description')" class="mt-2" />
+                        </div>
+
+                        <!-- Visible Only for Admin -->
+                        <div class="mt-4">
                             <x-input-label for="note" :value="__('Notes')" />
                             <textarea id="note" class="block mt-1 w-full" name="note" type="text">{{ old('note') }}</textarea>
                             <x-input-error :messages="$errors->get('summary')" class="mt-2" />

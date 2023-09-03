@@ -25,7 +25,7 @@
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <!-- Scripts -->
-
+        {{-- <script src="{{ asset('js/main.js') }}"></script> --}}
         <!-- JSON-LD code -->
         @yield('jsonld')
         {{-- <script type="application/ld+json">var jsonLdData = {!! $jsonLd !!};</script> --}}
@@ -56,6 +56,6 @@
             <main>
                 {{ $slot }}
             </main>
-        </div>
+        </div>      
     </body>
 </html>

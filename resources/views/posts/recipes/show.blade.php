@@ -254,9 +254,9 @@
                                 <div class="p-4 pt-0 text-gray-900">
                                     
                                     
-                                    <div class="border-double border-4 flex flex-col justify-between">{{-- Container --}}
+                                    <div class="border-primary-200 border-4 flex flex-col justify-between">{{-- Container --}}
 
-                                        <div class="flex p-6">{{-- Head recipe card --}}
+                                        <div class="flex p-6" style="background-color:#e8edf0">{{-- Head recipe card --}}
 
                                             <div class="">
                                                 <h3 class="uppercase"><strong>{{ $post->title }}</strong></h3>
@@ -264,30 +264,49 @@
                                                 <ul class="flex flex-wrap">
                                                     <li class="flex items-center flex-grow">
                                                         <span>{{ __('Author:') }}</span>
-                                                        <span>{{ __('Roberto') }}</span>
+                                                        <span>&nbsp;<a href=""><strong><em><u>{{ __('Roberto Manna') }}</u></em></strong></a></span>
                                                     </li>
+
+                                                    <li class="flex items-center flex-grow">
+                                                        <img class="" src="{{ asset('icons/stove.svg') }}" alt="Clock Icon" />
+                                                        <span class="ml-1">{{ __('Cooking method:') }}</span>
+                                                        <span class="ml-1"><b>{{ __('Oven') }}</b></span>
+                                                    </li>
+
                                                     <li class="flex items-center flex-grow">
                                                         <img class="" src="{{ asset('icons/clock.svg') }}" alt="Clock Icon" />
-                                                        <span>{{ __('Prep time:') }}</span>
-                                                        <span><b>{{ __('5 min') }}</b></span>
+                                                        <span class="ml-1">{{ __('Prep time:') }}</span>
+                                                        <span class="ml-1"><b>{{ __('5 min') }}</b></span>
                                                     </li>
 
                                                     <li class="flex items-center flex-grow">
                                                         <img src="{{ asset('icons/clock.svg') }}" alt="Clock Icon" />
-                                                        <span>{{ __('Cooking time:') }}</span>
-                                                        <span><b>{{ __('25 min') }}</b></span>
+                                                        <span class="ml-1">{{ __('Cooking time:') }}</span>
+                                                        <span class="ml-1"><b>{{ __('25 min') }}</b></span>
                                                     </li>
 
                                                     <li class="flex items-center flex-grow">
                                                         <img src="{{ asset('icons/clock.svg') }}" alt="Clock Icon" />
-                                                        <span>{{ __('Total time:') }}</span>
-                                                        <span><b>{{ __('30 min') }}</b></span>
+                                                        <span class="ml-1">{{ __('Total time:') }}</span>
+                                                        <span class="ml-1"><b>{{ __('30 min') }}</b></span>
                                                     </li>
 
                                                     <li class="flex items-center flex-grow">
                                                         <img src="{{ asset('icons/catlery.svg') }}" alt="Catlery Icon" />
-                                                        <span>{{ __('Number serving:') }}</span>
-                                                        <span><b>{{ __('4') }}</b></span>
+                                                        <span class="ml-1">{{ __('Yield:') }}</span>
+                                                        <span class="ml-1"><b>{{ __('4') }}</b></span>
+                                                    </li>
+
+                                                    <li class="flex items-center flex-grow">
+                                                        <img src="{{ asset('icons/category.svg') }}" alt="Category Icon" />
+                                                        <span class="ml-1">{{ __('Category:') }}</span>
+                                                        <span class="ml-1"><b>{{ __('Bread') }}</b></span>
+                                                    </li>
+
+                                                    <li class="flex items-center flex-grow">
+                                                        <img src="{{ asset('icons/flag.svg') }}" alt="Cuisine Icon" />
+                                                        <span class="ml-1">{{ __('Cuisine:') }}</span>
+                                                        <span class="ml-1"><b>{{ __('Italian') }}</b></span>
                                                     </li>
                                                     
                                                     
@@ -298,7 +317,7 @@
                                                         @csrf
                                                         @method('PUT') --}}
                                                         <div class="flex items-center justify-end mt-4 ml-[-1rem]">
-                                                            <x-primary-button class="ml-3">
+                                                            <x-primary-button class="ml-3 bg-primary-500 text-primary-900">
                                                                 {{ __('Print recipe') }}
                                                             </x-primary-button>
                                                         </div>
@@ -308,7 +327,7 @@
                                                         @csrf
                                                         @method('PUT') --}}
                                                         <div class="flex items-center justify-end mt-4">
-                                                            <x-primary-button class="ml-3">
+                                                            <x-primary-button class="ml-3 bg-primary-500">
                                                                 {{ __('Save recipe') }}
                                                             </x-primary-button>
                                                         </div>
@@ -336,14 +355,14 @@
 
                                         </div>
 
-                                        <div class="border-double border-t-4 p-6">
+                                        <div class="border-primary-200 border-t-4 p-6">
                                             <h3 class="uppercase"><strong>{{ __('description') }}</strong></h3>
-                                            <p class="">{{ __('Add description here....') }}</p>
+                                            <p class="mt-4">{{ $post->description }}</p>
                                         </div>
 
-                                        <div class="border-double border-t-4 p-6">
+                                        <div class="border-primary-200 border-t-4 p-6">
                                             <h3 class="uppercase"><strong>{{ __('ingredients') }}</strong></h3>
-                                            <ul>
+                                            <ul class="list-disc">
                                                 {{-- @forelse ($ingredients as $ingredient)
                                                     <li class="mt-4"><strong class="capitalize">{{ $ingredient->name . ': '}}</strong>{{ $ingredient->description }}</li>
                                                 @empty
@@ -359,7 +378,7 @@
                                                         {{-- TODO: loop ingrediens here --}}
 
                                                         @if ($postIngredientsGroup->id === $ingredient->post_ingredient_group_id)
-                                                            <li class="mt-4" id="">
+                                                            <li class="mt-4 ml-4" id="">
                                                                 {{ $ingredient->quantity }}
                                                                 {{ $ingredient->unit }}
                                                                 {{ $ingredient->name }}
@@ -372,6 +391,11 @@
                                                             {{ __("Post hasn't ingredients yet") }}
                                                         </li>
                                                     @endforelse
+
+                                                    {{-- /TODO: plcace the toggle that prevents screen going dark --}}
+                                                    
+                                                    
+                                                   
 
                                                 @empty
                                                     
@@ -397,15 +421,15 @@
                                             </ul>
                                         </div>
 
-                                        <div class="border-double border-t-4 p-6">
+                                        <div class="border-primary-200 border-t-4 p-6">
 
                                             <h3 class="uppercase"><strong>{{ __('method') }}</strong></h3>
-                                            <ul>
+                                            <ol class="list-decimal">
                                        
                                                 @forelse ($postMethodsGroups as $postMethodsGroup){{-- check for grouped methods --}}
                                                
                                                     @foreach ($postMethods as $postMethod){{-- check for methods --}}
-                                                      
+                                 
                                                         {{-- check if there are groups created but ungroped && the group id matches the method --}}
                                                         @if (!is_null($postMethod->post_method_group_id) && $postMethod->post_method_group_id === $postMethodsGroup->id)
                                                             <h4 class="mt-4"><strong class="capitalize">{{ $postMethodsGroup->title . ': '}}</strong></h4>
@@ -415,7 +439,8 @@
 
                                                                     @foreach ($paragraphs as $paragraph)
                                                                         @if (trim($paragraph) !== '' && $index === $postMethodsGroup->id){{-- trim here otherwise you get an extra dot after each paragraph --}}
-                                                                            <li class="mt-4" id="instruction-step-{{ floor($index / 2) + 1 }}">
+                                                                            {{-- <li class="mt-4 relative z-10 before:w-5 before:h-5 before:absolute before:bg-primary-500 before:left-[-22px] before:top-[3px] before:z-[-1] before:rounded-full" id="instruction-step-{{ floor($index / 2) + 1 }}"> --}}
+                                                                            <li class="mt-4 ml-4" id="instruction-step-{{ floor($index / 2) + 1 }}">
                                                                                 <strong>{{ Str::before($paragraph, '.') . '.' }}</strong>
                                                                                 {{ Str::after($paragraph, '.') }}
                                                                             </li>
@@ -444,19 +469,56 @@
                                                 
                                                 {{-- If we have not grouped methods, weìll get a message --}}
                                                 @if ($post->hasNonGroupedMethods())
-                                                    <li class="mt-4 text-red-500">
-                                                        {{ __("Some methods are hidden because not grouped") }}
-                                                    </li>
+                                                    <strong>
+                                                        <p class="mt-4 text-red-500">
+                                                            {{ __("Some methods are hidden because not grouped") }}
+                                                        </p>
+                                                    </strong>
                                                 @endif
 
-                                            </ul>
+                                            </ol>
                                         </div>
 
-                                        <div class="border-double border-t-4 p-6">
-                                            <h3 class="uppercase"><strong>{{ __('notes') }}</strong></h3>
-                                            <p class="">{{ __('Add description here....') }}</p>
+                                        @if ($post->note)
+                                            <div class="border-primary-200 border-t-4 p-6">
+                                                <h3 class="uppercase"><strong>{{ __('notes') }}</strong></h3>
+                                             
+                                                <ul class="list-disc">            
+                                                    @foreach ($post->getNoteParagraphs() as $note)
+                                                        @if (trim($note) !== ''){{-- trim here otherwise you get an extra dot after each paragraph --}}
+                                                            <li class="mt-4">
+                                                                <strong>{{ Str::before($note, '.') . '.' }}</strong>
+                                                                {{ Str::after($note, '.') }}
+                                                            </li>
+                                                        @endif
+                                                    @endforeach
+                                                </ul>
+                  
+                                            </div>
+                                        @endif
+
+                                        {{-- instagram banner --}}
+                                        <div class="bg-primary-500 p-6">
+                                            <div class="flex items-center justify-between">
+                                            
+                                                <img class="w-10 mr-5" src="{{ asset('icons/social/instagram.svg') }}" alt="Instagram Icon" />
+                                                {{-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                    <use xlink:href="{{ asset('icons/social/instagram.svg') }}"></use>
+                                                </svg> --}}
+                                                <div>
+                                                <h3 class="uppercase text-xl"><strong>{{ __('Let me know if you made this recipe!') }}</strong></h3>
+                                            
+                                                <div class="">
+                                                    <p class="text-sm">
+                                                        {{ __('Tag ') }}<a href="https://www.instagram.com/dinner_with_roberto" target="_blank" rel="noreferrer noopener"><strong>&#64;dinner_with_roberto</strong></a>  
+                                                        {{ __('on Instagram and hashtag it ') }}<a href="https://www.instagram.com/explore/tags/dinner_with_roberto" target="_blank" rel="noreferrer noopener"><strong>&#35;dinner_with_roberto</strong></a>
+                                                    </p> 
+                                                </div>
+                                            </div>
+                                            
+                                        
+              
                                         </div>
-                                                       
 
                                     </div>
                      
