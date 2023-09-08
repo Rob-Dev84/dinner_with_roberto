@@ -7,6 +7,7 @@ use App\Http\Controllers\Post\PostTagController;
 use App\Http\Controllers\Post\PostImageController;
 use App\Http\Controllers\Post\PostMethodController;
 use App\Http\Controllers\Post\PostRecipeController;
+use App\Http\Controllers\Post\PostCommentController;
 use App\Http\Controllers\Post\PostCategoryController;
 use App\Http\Controllers\Post\PostIngredientController;
 use App\Http\Controllers\Post\PostMethodGroupController;
@@ -177,6 +178,15 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
         Route::get('/recipes', 'index')->name('posts.recipes.index');
 
         Route::get('/recipes/{post:slug}', 'show')->name('posts.recipes.show');
+        
+    });
+
+    Route::controller(PostCommentController::class)->group(function () {
+    
+        // Route::get('/recipes', 'index')->name('posts.recipes.index');
+
+        Route::post('/recipes/{post:slug}/comment', 'store')->name('posts.comments.store');
+        Route::post('/recipes/{post:slug}/{comment}/commentReply', 'reply')->name('posts.comments.storeReply');
         
     });
 

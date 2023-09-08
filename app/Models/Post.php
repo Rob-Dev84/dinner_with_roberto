@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Models\PostMethod;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Post\PostComment;
 // use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Post\PostCommentStatus;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
@@ -174,6 +176,18 @@ class Post extends Model
 
     //     return null;
     // }
+
+    public function postComments() {
+        return $this->hasManyThrough(
+            PostComment::class,//Final table
+            PostCommentStatus::class,//middle table
+           
+            'id', // Foreign key on the intermediate model (PostComment table)
+            'post_id', // Foreign key on the target model (PostCommentStatus table)
+            'id', // Local key on the source model (PostCommentStatus table)
+            'id' // Local key on the intermediate model (PostComment table)
+        );
+    }
     
 
 }

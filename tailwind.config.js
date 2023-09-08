@@ -13,6 +13,9 @@ module.exports = {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
+            variants: {
+              fill: ['hover', 'focus'], // this line does the trick
+            },
             colors: {
                 "primary": {
                   50: "#F4F6FB",
@@ -52,6 +55,9 @@ module.exports = {
                   800: "#546B1E",
                   900: "#29340F",
                   950: "#161C08"
+                },
+                "star": {
+                  400: "#f2b955",
                 }
               },
         },

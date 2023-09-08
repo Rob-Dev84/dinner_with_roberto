@@ -33,42 +33,37 @@
 
                         <!-- Visible Only for Admin -->
                         <div class="mt-4">
-                            {{ $post->meta_description }}
+                            {{-- {{ $post->meta_description }} --}}
                             <x-input-label for="meta title" :value="__('Meta Title')" />
-                            {{-- <x-textarea id="meta_title" class="block mt-1 w-full" name="meta_title" type="text">{{ old('meta_title' ?? $post->meta_title) }}</x-textarea> --}}
-                            <textarea id="meta_title" class="block mt-1 w-full" name="meta_title" type="text">{{ $post->meta_title }}</textarea>
+                            <x-textarea-input id="meta_title" name="meta_title" :value="$post->meta_title" />
                             <x-input-error :messages="$errors->get('meta_title')" class="mt-2" />
                         </div>
 
                         <!-- Visible Only for Admin -->
                         <div class="mt-4">
                             <x-input-label for="meta_description title" :value="__('Meta Description')" />
-                            {{-- <x-textarea id="meta_description" class="block mt-1 w-full" name="meta_description">{{ old('meta_description' ?? $post->meta_title) }}</x-textarea> --}}
-                            <textarea id="meta_title" class="block mt-1 w-full" name="meta_description" type="text">{{ $post->meta_description }}</textarea>
+                            <x-textarea-input id="intro" name="intro" :value="$post->meta_description" />
                             <x-input-error :messages="$errors->get('meta_description')" class="mt-2" />
                         </div>
 
                         <!-- Visible Only for Admin -->
                         <div class="mt-4">
                             <x-input-label for="intro" :value="__('Intro')" />
-                            {{-- <x-textarea id="summary" class="block mt-1 w-full" name="intro" type="text">{{ $post->summary }}</x-textarea> --}}
-                            <textarea id="intro" class="block mt-1 w-full" name="intro" type="text">{{ $post->intro }}</textarea>
+                            <x-textarea-input id="intro" name="intro" :value="$post->intro" rows="8" cols="45" />
                             <x-input-error :messages="$errors->get('intro')" class="mt-2" />
                         </div>
 
                         <!-- Visible Only for Admin -->
                         <div class="mt-4">
                             <x-input-label for="description" :value="__('Description')" />
-                            {{-- <x-textarea id="summary" class="block mt-1 w-full" name="intro" type="text">{{ $post->summary }}</x-textarea> --}}
-                            <textarea id="description" title="{{ __('This goes to the recipe card') }}" class="block mt-1 w-full" name="description" type="text">{{ $post->description }}</textarea>
+                            <x-textarea-input id="description" name="description" :value="$post->description" rows="8" cols="45" />
                             <x-input-error :messages="$errors->get('description')" class="mt-2" />
                         </div>
 
                         <!-- Visible Only for Admin -->
                         <div class="mt-4">
                             <x-input-label for="note" :value="__('Note')" />
-                            {{-- <x-textarea id="summary" class="block mt-1 w-full" name="intro" type="text">{{ $post->summary }}</x-textarea> --}}
-                            <textarea id="note" class="block mt-1 w-full" name="note" type="text">{{ $post->note }}</textarea>
+                            <x-textarea-input id="note" name="note" :value="$post->note" rows="8" cols="45" />
                             <x-input-error :messages="$errors->get('note')" class="mt-2" />
                         </div>
 

@@ -27,7 +27,7 @@
                     </h2>
                 </div> --}}
             
-            {{-- @include('partials._success-banner') --}}
+                {{-- @include('partials._success-banner') --}}
             
 
                 
@@ -256,7 +256,7 @@
                                     
                                     <div class="border-primary-200 border-4 flex flex-col justify-between">{{-- Container --}}
 
-                                        <div class="flex p-6" style="background-color:#e8edf0">{{-- Head recipe card --}}
+                                        <div class="flex p-6 bg-primary-100">{{-- Head recipe card --}}
 
                                             <div class="">
                                                 <h3 class="uppercase"><strong>{{ $post->title }}</strong></h3>
@@ -506,37 +506,607 @@
                                                     <use xlink:href="{{ asset('icons/social/instagram.svg') }}"></use>
                                                 </svg> --}}
                                                 <div>
-                                                <h3 class="uppercase text-xl"><strong>{{ __('Let me know if you made this recipe!') }}</strong></h3>
-                                            
-                                                <div class="">
-                                                    <p class="text-sm">
-                                                        {{ __('Tag ') }}<a href="https://www.instagram.com/dinner_with_roberto" target="_blank" rel="noreferrer noopener"><strong>&#64;dinner_with_roberto</strong></a>  
-                                                        {{ __('on Instagram and hashtag it ') }}<a href="https://www.instagram.com/explore/tags/dinner_with_roberto" target="_blank" rel="noreferrer noopener"><strong>&#35;dinner_with_roberto</strong></a>
-                                                    </p> 
-                                                </div>
+                                                    <h3 class="uppercase text-xl"><strong>{{ __('Let me know if you made this recipe!') }}</strong></h3>
+                                                
+                                                    <div class="">
+                                                        <p class="text-sm">
+                                                            {{ __('Tag ') }}<a href="https://www.instagram.com/dinner_with_roberto" target="_blank" rel="noreferrer noopener"><strong>&#64;dinner_with_roberto</strong></a>  
+                                                            {{ __('on Instagram and hashtag it ') }}<a href="https://www.instagram.com/explore/tags/dinner_with_roberto" target="_blank" rel="noreferrer noopener"><strong>&#35;dinner_with_roberto</strong></a>
+                                                        </p> 
+                                                    </div>
+                                                </div>     
                                             </div>
-                                            
-                                        
-              
                                         </div>
+                                    </div>
+                                </div>       
+                            </div>
+                        </div>
+
+
+
+
+                        {{-- Comment Form --}}
+                        <div id="comment-form" class="flex justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <div class="lg:w-8/12">
+                                <div class="p-4 pt-0 text-gray-900">          
+                                    
+
+                                            {{-- Async request --}}
+                                            <div x-data="{ showReplyForm: false, commentId: null }">
+                                                <div class="p-6 bg-primary-200 border-primary-200 border-4 flex flex-col justify-between">
+                                                <form action="{{ route('posts.comments.store', $post) }}" method="POST" x-show="!showReplyForm"
+                                                    x-data="
+                                                        {
+                                                            formData: {
+                                                                rating: '',
+                                                                name: '',
+                                                                email: '',
+                                                                comment: '',
+                                                                link: '',
+                                                                cookies_consent: false,
+                                                            },
+                                                            errors: {},
+                                                            successMessage: '',
+                                                            submitForm(event) {
+                                                                this.successMessage = '';
+                                                                this.errors = {};
+                                                                
+                                                                    fetch(`{{ route("posts.comments.store", $post) }}`, {
+                                                                        method: 'POST',
+                                                                        headers: {
+                                                                            'Content-Type': 'application/json',
+                                                                            'X-Requested-With': 'XMLHttpRequest',
+                                                                            'X-CSRF-TOKEN': document.querySelector(`meta[name='csrf-token']`).getAttribute('content'),
+                                                                        },
+                                                                        body: JSON.stringify(this.formData)
+                                                                    })
+                                                                    .then(response => {
+                                                                        if (response.status === 200) {
+                                                                            return response.json();
+                                                                        }
+                                                                        throw response;
+                                                                    })
+                                                                    .then(result => {
+                                                                        this.formData = {
+                                                                            rating: '',
+                                                                            name: '',
+                                                                            email: '',
+                                                                            comment: '',
+                                                                            link: '',
+                                                                            cookies_consent: false,
+                                                                        };
+                                                                        this.successMessage = '{{ __("Thank you for leaving the comment. If the message is approved, I will be shortly displayed!") }}';
+                                                                    })
+                                                                    .catch(async (response) => {
+                                                                        const res = await response.json();
+                                                                        if (response.status === 422) {
+                                                                            this.errors = res.errors;
+                                                                        }
+                                                                        //console.log(res);
+                                                                    })
+                                                                    
+                                                            }
+                                                        }
+                                        
+                                                    "
+                                                    x-on:submit.prevent="submitForm"
+                                                    >
+                                                
+
+                                                    <div class="" x-data="{ rating: 0 }">
+                                                        <legend>{{ __("Rate the recipe") }}</legend>
+
+                                                        <div class="w-full flex justify-start">
+                                                            
+                                                            <div x-data="
+                                                                {
+                                                                    rating: 0,
+                                                                    hoverRating: 0,
+                                                                    ratings: [{'amount': 1, 'label':'{{ __("Terrible") }}'}, {'amount': 2, 'label':'{{ __("Bad") }}'}, {'amount': 3, 'label':'{{ __("Okay") }}'}, {'amount': 4, 'label':'{{ __("Good") }}'}, {'amount': 5, 'label':'{{ __("Great") }}'}],
+                                                                    rate(amount) {
+                                                                        if (this.rating == amount) {
+                                                                    this.rating = 0;
+                                                                }
+                                                                        else this.rating = amount;
+                                                                        this.formData.rating = this.rating;
+                                                                    },
+                                                                currentLabel() {
+                                                                let r = this.rating;
+                                                                if (this.hoverRating != this.rating) r = this.hoverRating;
+                                                                let i = this.ratings.findIndex(e => e.amount == r);
+                                                                if (i >=0) {return this.ratings[i].label;} else {return ''};     
+                                                                }
+                                                                }
+                                                                " class="flex flex-col w-full">
+                                                                <div class="flex -ml-3">
+                                                                    
+                                                                    <template x-for="(star, index) in ratings" :key="index">
+                                                                        <button @click.prevent="rate(star.amount)" @mouseover="hoverRating = star.amount" @mouseleave="hoverRating = rating"
+                                                                            aria-hidden="true"
+                                                                            :title="star.label"
+                                                                            class="rounded-sm text-gray-400 fill-current focus:outline-none focus:shadow-outline p-1 w-12 m-0 cursor-pointer"
+                                                                            :class="{'text-gray-600': hoverRating >= star.amount, 'text-yellow-400': rating >= star.amount && hoverRating >= star.amount}">
+                                                                            <svg class="w-15 transition duration-150" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                                            </svg>
+                                                                        </button>  
+
+                                                                    </template>
+                                                                </div>
+                                                                <div class="">
+                                                                    <template x-if="rating || hoverRating">
+                                                                        <p x-text="currentLabel()"></p>
+                                                                    </template>
+                                                                    <template x-if="!rating && !hoverRating">
+                                                                        <p class="h-6"></p>
+                                                                    </template>
+                                                                    <input class="hidden" type="number" name="rating" x-model="rating">
+
+                                                                    <div class="mt-4">
+                                                                        <div class="flex align-items">
+                                                                            <x-input-label for="comment" :value="__('Comment')" />
+                                                                            <span class="-mb-1" x-show="rating != 5">&nbsp;*</span>
+                                                                        </div>
+                                                    
+                                                                        <x-textarea-input id="comment" name="comment" :value="old('comment')" rows="8" cols="45" maxlength="65525" x-model="formData.comment" ::class="errors.comment ? 'border-red-500 focus:border-red-500' : ''" />
+                                                                            <template x-if="errors.comment">
+                                                                                <div x-text="errors.comment[0]" class="text-red-500"></div>
+                                                                            </template>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="mt-4">
+                                                        <x-input-label for="name" :value="__('Name *')" />
+                                                        <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" x-model="formData.name" ::class="errors.name ? 'border-red-500' : ''" autocomplete  />
+                                                        <template x-if="errors.name">
+                                                            <div x-text="errors.name[0]" class="text-red-500"></div>
+                                                        </template>
+                                                    </div>
+
+                                                    <div class="mt-4">
+                                                        <x-input-label for="email" :value="__('Email *')" />
+                                                        <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" maxlength="100" :value="old('email')" x-model="formData.email" ::class="errors.email ? 'border-red-500' : ''" autocomplete  />
+                                                        <template x-if="errors.email">
+                                                            <div x-text="errors.email[0]" class="text-red-500"></div>
+                                                        </template>
+                                                    </div>
+
+                                                    <div class="mt-4">
+                                                        <x-input-label for="link" :value="__('Link')" />
+                                                        <x-text-input id="link" class="block mt-1 w-full" type="text" name="link" maxlength="200" :value="old('link')" x-model="formData.link" ::class="errors.link ? 'border-red-500' : ''" />
+                                                        <template x-if="errors.link">
+                                                            <div x-text="errors.link[0]" class="text-red-500"></div>
+                                                        </template>
+                                                    </div>
+
+                                                    
+                                                    <div class="mt-4">
+                                                        <x-checkbox-input name="cookies_consent" :value="old('cookies_consent')" x-model="formData.cookies_consent">
+                                                            <span>{{ __("Save my name, email in this browser for the next time I comment.") }}</span>
+                                                        </x-checkbox-input>
+                                                    </div>
+
+                                                    <div class="flex items-center justify-end mt-4">
+                                                        <x-primary-button class="ml-3 bg-primary-500">
+                                                            {{ __('Comment recipe') }}
+                                                        </x-primary-button>
+                                                    </div>
+
+                                                    <template x-if="successMessage">
+                                                        <div x-text="successMessage" class="py-4 px-6 bg-green-600 text-zinc-100 mb-4">{{ __("Thank you for leaving the comment. If the message is approved, I will be shortly displayed") }}</div>
+                                                    </template>
+
+                                                </form>
+                                                </div>{{-- bg color first form --}}
+
+                                               
+                                                @if ($post->postComments->count() > 0)
+                                                    <h3 class="my-10"><strong>{{ $post->postComments->count() }}&nbsp;{{ __('Comments') }}&nbsp;<q>{{ $post->title }}</q></strong></h3>
+                                                @endif
+                                                
+                                                
+                                                @forelse ($post->postComments as $comment)
+                                                    <div class="bg-white">
+                                                        <div class="border-primary-200 border-2 p-5 grid grid-cols-2 gap-2 grid-rows-3">
+                                                            <div class="col-span-2 row-span-1 flex items-center">
+                                                                {{-- Check link --}}
+                                                                @if ($comment->link)
+                                                                    <a class="uppercase" href="{{ $comment->link }}" target="_blank" rel="noreferrer noopener">
+                                                                        <u><strong>
+                                                                            {{ $comment->name }}
+                                                                        </strong></u>
+                                                                    </a>
+                                                                    {{-- <a rel="nofollow" class="" @click.prevent="showReplyForm = !showReplyForm" href="#comment-871554" data-commentid="871554" data-postid="46877" data-belowelement="comment-871554" data-respondelement="respond" data-replyto="{{ __('Reply to ') . $comment->name }}" aria-label="Reply to Marcia Sewall">{{ __('Reply') }}</a>     --}}  
+                                                                @else
+                                                                    <div>
+                                                                        <strong>
+                                                                            {{ $comment->name }}
+                                                                        </strong>
+                                                                    </div>
+                                                                @endif
+
+                                                                 
+                                                                <div class="col-span-1 row-span-1">
+                                                                    &dash;
+                                                                    <time pubdate="" datetime="{{ \Carbon\Carbon::parse($comment->created_at)->format('F j, Y @ g:i A') }}">
+                                                                        {{ $comment->created_at->format('F j, Y @ g:i A') }}
+                                                                    </time>
+                                                                </div>
+                                                            </div>
+                                                          
+                                                                
+                                                                <!-- Reply button -->
+                                                                {{-- <button @click="showReplyForm = !showReplyForm">Reply</button> --}}
+
+                                                            <div class="">
+                                                                <button @click="showReplyForm = !showReplyForm; commentId = {{ $comment->id }}">{{ __("Reply") }}</button>
+                                                            </div>
+
+                                                            <div class="col-span-2">
+                                                                <p>{{ $comment->comment }}</p>
+                                                            </div>
+
+                                                            <div class="col-span-3 row-span-3">
+                                                                <!-- Third row content here (blank div for now) -->
+                                                               
+                                                                <div class="flex">
+                                                                    @if (!is_null($comment->recipe_rating) && $comment->recipe_rating > 0)
+                                                                        @for ($i = 1; $i <= $comment->recipe_rating; $i++)
+                                                                        
+                                                                            <svg class="w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#f2b955">
+                                                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                                            </svg>
+                                                                    
+                                                                        @endfor
+                                                                    @endif
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                            <!-- Reply Comment Form -->
+                                                                
+                                                                {{-- <a rel="nofollow" class="comment-reply-link" href="#comment-802885" data-commentid="802885" data-postid="46877" data-belowelement="comment-802885" data-respondelement="respond" data-replyto="Reply to Deborah Dewar" aria-label="Reply to Deborah Dewar">Reply</a> --}}
+                                                           
+                                                            
+                                                            <form action="{{ route('posts.comments.storeReply', [$post, $comment]) }}" method="POST" x-show="showReplyForm && commentId === {{ $comment->id }}"
+                                                                x-data="
+                                                                    {
+                                                                        formData: {
+                                                                            rating: '',
+                                                                            name: '',
+                                                                            email: '',
+                                                                            comment: '',
+                                                                            link: '',
+                                                                            cookies_consent: false,
+                                                                        },
+                                                                        errors: {},
+                                                                        successMessage: '',
+                                                                        submitForm(event) {
+                                                                            this.successMessage = '';
+                                                                            this.errors = {};
+                                                                            
+                                                                                fetch(`{{ route("posts.comments.store", [$post, $comment]) }}`, {
+                                                                                    method: 'POST',
+                                                                                    headers: {
+                                                                                        'Content-Type': 'application/json',
+                                                                                        'X-Requested-With': 'XMLHttpRequest',
+                                                                                        'X-CSRF-TOKEN': document.querySelector(`meta[name='csrf-token']`).getAttribute('content'),
+                                                                                    },
+                                                                                    body: JSON.stringify(this.formData)
+                                                                                })
+                                                                                .then(response => {
+                                                                                    if (response.status === 200) {
+                                                                                        return response.json();
+                                                                                    }
+                                                                                    throw response;
+                                                                                })
+                                                                                .then(result => {
+                                                                                    this.formData = {
+                                                                                        rating: '',
+                                                                                        name: '',
+                                                                                        email: '',
+                                                                                        comment: '',
+                                                                                        link: '',
+                                                                                        cookies_consent: false,
+                                                                                    };
+                                                                                    this.successMessage = '{{ __("Thank you for leaving the comment. If the message is approved, I will be shortly displayed!") }}';
+                                                                                })
+                                                                                .catch(async (response) => {
+                                                                                    const res = await response.json();
+                                                                                    if (response.status === 422) {
+                                                                                        this.errors = res.errors;
+                                                                                    }
+                                                                                    //console.log(res);
+                                                                                })
+                                                                                
+                                                                        }
+                                                                    }
+                                                    
+                                                                "
+                                                                x-on:submit.prevent="submitForm"
+                                                                >
+                                                                
+
+                                                                <h3 class="uppercase my-8"><strong>{{ __("reply to ") . $comment->name }}</strong></h3>
+
+                                                                <p class=""><em>{{ __("Your email address will not be published. Required fields are marked*") }}</em></p>
+
+                                                                <div class="mt-5" x-data="{ rating: 0 }">
+                                                                    <legend><strong>{{ __("Rate the recipe") }}</strong></legend>
+
+                                                                    <div class="w-full flex justify-start">
+                                                                        
+                                                                        <div x-data="
+                                                                            {
+                                                                                rating: 0,
+                                                                                hoverRating: 0,
+                                                                                ratings: [{'amount': 1, 'label':'{{ __("Terrible") }}'}, {'amount': 2, 'label':'{{ __("Bad") }}'}, {'amount': 3, 'label':'{{ __("Okay") }}'}, {'amount': 4, 'label':'{{ __("Good") }}'}, {'amount': 5, 'label':'{{ __("Great") }}'}],
+                                                                                rate(amount) {
+                                                                                    if (this.rating == amount) {
+                                                                                this.rating = 0;
+                                                                            }
+                                                                                    else this.rating = amount;
+                                                                                    this.formData.rating = this.rating;
+                                                                                },
+                                                                            currentLabel() {
+                                                                            let r = this.rating;
+                                                                            if (this.hoverRating != this.rating) r = this.hoverRating;
+                                                                            let i = this.ratings.findIndex(e => e.amount == r);
+                                                                            if (i >=0) {return this.ratings[i].label;} else {return ''};     
+                                                                            }
+                                                                            }
+                                                                            " class="flex flex-col w-full">
+                                                                            <div class="flex -ml-3">
+                                                                                
+                                                                                <template x-for="(star, index) in ratings" :key="index">
+                                                                                    <button @click.prevent="rate(star.amount)" @mouseover="hoverRating = star.amount" @mouseleave="hoverRating = rating"
+                                                                                        aria-hidden="true"
+                                                                                        :title="star.label"
+                                                                                        class="rounded-sm text-gray-400 fill-current focus:outline-none focus:shadow-outline p-1 w-12 m-0 cursor-pointer"
+                                                                                        :class="{'text-gray-600': hoverRating >= star.amount, 'text-yellow-400': rating >= star.amount && hoverRating >= star.amount}">
+                                                                                        <svg class="w-15 transition duration-150" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                                                        </svg>
+                                                                                    </button>  
+
+                                                                                </template>
+                                                                            </div>
+                                                                            <div class="">
+                                                                                <template x-if="rating || hoverRating">
+                                                                                    <p x-text="currentLabel()"></p>
+                                                                                </template>
+                                                                                <template x-if="!rating && !hoverRating">
+                                                                                    <p class="h-6"></p>
+                                                                                </template>
+                                                                                <input class="hidden" type="number" name="rating" x-model="rating">
+
+                                                                                <div class="mt-4">
+                                                                                    <div class="flex align-items">
+                                                                                        <x-input-label for="comment" :value="__('Comment')" />
+                                                                                        <span class="-mb-1" x-show="rating != 5">&nbsp;*</span>
+                                                                                    </div>
+                                                                
+                                                                                    <x-textarea-input id="comment" name="comment" :value="old('comment')" rows="8" cols="45" maxlength="65525" x-model="formData.comment" ::class="errors.comment ? 'border-red-500 focus:border-red-500' : ''" />
+                                                                                        <template x-if="errors.comment">
+                                                                                            <div x-text="errors.comment[0]" class="text-red-500"></div>
+                                                                                        </template>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="mt-4">
+                                                                    <x-input-label for="name" :value="__('Name *')" />
+                                                                    <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" x-model="formData.name" ::class="errors.name ? 'border-red-500' : ''" autocomplete  />
+                                                                    <template x-if="errors.name">
+                                                                        <div x-text="errors.name[0]" class="text-red-500"></div>
+                                                                    </template>
+                                                                </div>
+
+                                                                <div class="mt-4">
+                                                                    <x-input-label for="email" :value="__('Email *')" />
+                                                                    <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" maxlength="100" :value="old('email')" x-model="formData.email" ::class="errors.email ? 'border-red-500' : ''" autocomplete  />
+                                                                    <template x-if="errors.email">
+                                                                        <div x-text="errors.email[0]" class="text-red-500"></div>
+                                                                    </template>
+                                                                </div>
+
+                                                                <div class="mt-4">
+                                                                    <x-input-label for="link" :value="__('Link')" />
+                                                                    <x-text-input id="link" class="block mt-1 w-full" type="text" name="link" maxlength="200" :value="old('link')" x-model="formData.link" ::class="errors.link ? 'border-red-500' : ''" />
+                                                                    <template x-if="errors.link">
+                                                                        <div x-text="errors.link[0]" class="text-red-500"></div>
+                                                                    </template>
+                                                                </div>
+
+                                                                
+                                                                <div class="mt-4">
+                                                                    <x-checkbox-input name="cookies_consent" :value="old('cookies_consent')" x-model="formData.cookies_consent">
+                                                                        <span>{{ __("Save my name, email in this browser for the next time I comment.") }}</span>
+                                                                    </x-checkbox-input>
+                                                                </div>
+
+                                                                <div class="flex items-center justify-end mt-4">
+                                                                    <x-primary-button class="ml-3 bg-primary-500">
+                                                                        {{ __('Comment recipe') }}
+                                                                    </x-primary-button>
+                                                                </div>
+
+                                                                <template x-if="successMessage">
+                                                                    <div x-text="successMessage" class="py-4 px-6 bg-green-600 text-zinc-100 mb-4">{{ __("Thank you for leaving the comment. If the message is approved, I will be shortly displayed") }}</div>
+                                                                </template>
+
+                                                            </form>
+
+                                                        {{-- </div> --}}
+
+                                                    </div>
+                                                @empty
+                                                    {{ __("Post doesn't have comments yet") }}
+                                                @endforelse
+                                            </div>
+                                           
+
+
+
+                                            </div><!-- Comments area -->
+                                            
+                                            
+
+
+
+                                            
+
+
+
+
+
+                                            {{-- <form method="POST" action="{{ route('posts.comments.create', $post) }}">
+                                                @csrf
+                                                @method('POST')
+
+                                                <div class="" x-data="{ rating: 0 }">
+                                                    <legend>{{ __("Rate the recipe") }}</legend>
+
+                                                    <div class="w-full flex justify-start">
+                                                        
+                                                        <div x-data="
+                                                            {
+                                                                rating: 0,
+                                                                hoverRating: 0,
+                                                                ratings: [{'amount': 1, 'label':'{{ __("Terrible") }}'}, {'amount': 2, 'label':'{{ __("Bad") }}'}, {'amount': 3, 'label':'{{ __("Okay") }}'}, {'amount': 4, 'label':'{{ __("Good") }}'}, {'amount': 5, 'label':'{{ __("Great") }}'}],
+                                                                rate(amount) {
+                                                                    if (this.rating == amount) {
+                                                                this.rating = 0;
+                                                            }
+                                                                    else this.rating = amount;
+                                                                },
+                                                            currentLabel() {
+                                                            let r = this.rating;
+                                                            if (this.hoverRating != this.rating) r = this.hoverRating;
+                                                            let i = this.ratings.findIndex(e => e.amount == r);
+                                                            if (i >=0) {return this.ratings[i].label;} else {return ''};     
+                                                            }
+                                                            }
+                                                            " class="flex flex-col w-full">
+                                                            <div class="flex -ml-3">
+                                                                
+                                                                <template x-for="(star, index) in ratings" :key="index">
+                                                                    <button @click.prevent="rate(star.amount)" @mouseover="hoverRating = star.amount" @mouseleave="hoverRating = rating"
+                                                                        aria-hidden="true"
+                                                                        :title="star.label"
+                                                                        class="rounded-sm text-gray-400 fill-current focus:outline-none focus:shadow-outline p-1 w-12 m-0 cursor-pointer"
+                                                                        :class="{'text-gray-600': hoverRating >= star.amount, 'text-yellow-400': rating >= star.amount && hoverRating >= star.amount}">
+                                                                        <svg class="w-15 transition duration-150" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                                        </svg>
+                                                                    </button>  
+
+                                                                </template>
+                                                            </div>
+                                                            <div class="">
+                                                                <template x-if="rating || hoverRating">
+                                                                    <p x-text="currentLabel()"></p>
+                                                                </template>
+                                                                <template x-if="!rating && !hoverRating">
+                                                                    <p class="h-6"></p>
+                                                                </template>
+                                                                <input class="hidden" type="number" name="rating" x-model="rating">
+
+                                                                <div class="mt-4">
+                                                                    <div class="flex align-items">
+                                                                        <x-input-label for="comment" :value="__('Comment')" />
+                                                                        <span class="-mb-1" x-show="rating != 5">&nbsp;*</span>
+                                                                    </div>
+                                                
+                                                                    <x-textarea-input id="comment" name="comment" :value="old('comment')" rows="8" cols="45" maxlength="65525" />
+                                                                    <x-input-error :messages="$errors->get('comment')" class="mt-2" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="mt-4">
+                                                    <x-input-label for="name" :value="__('Name *')" />
+                                                    <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" />
+                                                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                                                </div>
+
+                                                <div class="mt-4">
+                                                    <x-input-label for="email" :value="__('Email *')" />
+                                                    <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" />
+                                                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                                </div>
+
+                                                <div class="mt-4">
+                                                    <x-input-label for="link" :value="__('Link')" />
+                                                    <x-text-input id="link" class="block mt-1 w-full" type="text" name="link" :value="old('link')" />
+                                                    <x-input-error :messages="$errors->get('link')" class="mt-2" />
+                                                </div>
+
+                                                
+                                                <div class="mt-4">
+                                                    <x-checkbox-input name="cookies_consent" value="1">
+                                                        <span>{{ __("Save my name, email in this browser for the next time I comment.") }}</span>
+                                                    </x-checkbox-input>
+                                                </div>
+
+                                                
+
+                                                <div class="flex items-center justify-end mt-4">
+                                                    <x-primary-button class="ml-3 bg-primary-500">
+                                                        {{ __('Comment recipe') }}
+                                                    </x-primary-button>
+                                                </div>
+                                            </form> --}}
+
+                                        </div>                
+    
+                                    </div>
+
+                                </div>       
+                            </div>
+                        </div>
+
+                        {{-- next section here --}}
+
+                        <div id="comments" class="flex justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <div class="lg:w-8/12">
+                                <div class="p-4 pt-0 text-gray-900">          
+                                    <div class="border-primary-200 border-4 flex flex-col justify-between">{{-- Container --}}
+
+                                        {{-- @foreach ($comments as $comment)
+                                        <div class="comment">
+                                            <!-- Display comment information here -->
+                                            {{ $comment->name }}: {{ $comment->comment }}
+                                    
+                                            <!-- Recursively display child comments -->
+                                            @include('comments.comment', ['comments' => $comment->children])
+                                            </div>
+                                        @endforeach --}}
+                                        
 
                                     </div>
-                     
-    
-                                </div>
 
-                            </div>       
+                                </div>       
+                            </div>
                         </div>
+
                         
-
-
-
-
-
-
-                      
                     </div>
-                </div>
                 @else
                     {{ __('Recipe is empty') }}
                 @endif
