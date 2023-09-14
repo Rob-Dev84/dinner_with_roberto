@@ -40,6 +40,7 @@ class StoreCommentRequest extends FormRequest
                 'string',
             ],
             'cookies_consent' => 'boolean',
+            'notify_on_reply' => 'boolean',
             'pinned' => 'boolean',
             'pinned_at' => 'nullable|date',
         ];

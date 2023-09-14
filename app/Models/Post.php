@@ -177,17 +177,29 @@ class Post extends Model
     //     return null;
     // }
 
-    public function postComments() {
-        return $this->hasManyThrough(
-            PostComment::class,//Final table
-            PostCommentStatus::class,//middle table
+    // public function postComments() {
+    //     return $this->hasManyThrough(
+    //         PostComment::class,//Final table
+    //         PostCommentStatus::class,//middle table
            
-            'id', // Foreign key on the intermediate model (PostComment table)
-            'post_id', // Foreign key on the target model (PostCommentStatus table)
-            'id', // Local key on the source model (PostCommentStatus table)
-            'id' // Local key on the intermediate model (PostComment table)
-        );
+    //         'id', // Foreign key on the intermediate model (PostComment table)
+    //         'post_id', // Foreign key on the target model (PostCommentStatus table)
+    //         'id', // Local key on the source model (PostCommentStatus table)
+    //         'id' // Local key on the intermediate model (PostComment table)
+    //     );
+    // }
+
+
+    public function postComments()
+    {
+        return $this->hasMany(PostComment::class);
     }
-    
+
+
+    public function postPrimaryComments()
+    {
+        return $this->hasMany(PostComment::class)->whereNull('parent_id');
+    }
+        
 
 }

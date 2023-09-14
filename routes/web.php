@@ -186,7 +186,8 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
         // Route::get('/recipes', 'index')->name('posts.recipes.index');
 
         Route::post('/recipes/{post:slug}/comment', 'store')->name('posts.comments.store');
-        Route::post('/recipes/{post:slug}/{comment}/commentReply', 'reply')->name('posts.comments.storeReply');
+        Route::post('/recipes/{post:slug}/{comment:id}/commentReply', 'reply')->name('posts.comments.reply');
+        
         
     });
 

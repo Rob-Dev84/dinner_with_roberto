@@ -10,6 +10,7 @@ class PostComment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'parent_id',
         'post_id',
         'user_id',
         'post_comment_status_id',
@@ -20,6 +21,7 @@ class PostComment extends Model
         'comment',
         'link',
         'cookies_consent',
+        'notify_on_reply',
         'pinned',
     ];
 

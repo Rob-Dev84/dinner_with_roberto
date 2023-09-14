@@ -21,7 +21,8 @@ class PostController extends Controller
 
         // $posts = Post::with(['user'])->paginate(6);
 
-        $posts = Post::with('postImages')->get();
+        // $posts = Post::with('postImages')->get();
+        $posts = Post::with(['postImages', 'postPrimaryComments.children'])->get();
         //get deleted images
         // dd($posts);
 

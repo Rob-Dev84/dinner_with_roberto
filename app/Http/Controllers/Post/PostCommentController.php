@@ -69,9 +69,14 @@ class PostCommentController extends Controller
             'link' => $request->link,
             'comment' => $request->comment,
             'cookies_consent' => $request->cookies_consent,
+            'notify_on_reply' => $request->notify_on_reply,
             'pinned' => false,
             
          ]);
+
+         if ($request->notify_on_reply == 1) {
+            //send email to the user who wrote the comment
+         }
 
         // Return a JSON response indicating success
         // return response()->json(['success' => true]);
@@ -84,29 +89,13 @@ class PostCommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function reply(StoreCommentRequest $request, Post $post, PostComment $comment)
+    public function reply(Request $request, Post $post, $id)
     {
-        // dd($request->ip());
-        // dd($post);
-        
-        if ($post->cookies_consent == 1) {
-            // dd($request->cookies_consent);
 
-            //TODO: set the cookies here
-            // Generate and set a cookie - you need to store name & email
-            // $response->cookie('cookie_name', 'cookie_value', $minutes);
-            // $response->cookie('name', 'John', 60);
-        }
-
-        //cookies
-        if ($request->cookies_consent === NULL || $request->cookies_consent != 1) {
-            // $cookies_consent = 0;
-           
-            // dd($cookies_consent);
-        }
+        dd($id);
 
         $post->postComments()->create([
-            'parent_id' => $comment->id,
+            'parent_id' => $id, // this is comment_id (parent)
             'post_id' => $post->id,
             'user_id' => auth()->user()->id,
             'post_comment_status_id' => 1,
@@ -117,9 +106,14 @@ class PostCommentController extends Controller
             'link' => $request->link,
             'comment' => $request->comment,
             'cookies_consent' => $request->cookies_consent,
+            'notify_on_reply' => $request->notify_on_reply,
             'pinned' => false,
             
          ]);
+
+         if ($request->notify_on_reply == 1) {
+            //send email to the user who wrote the comment
+         }
 
         // Return a JSON response indicating success
         // return response()->json(['success' => true]);
