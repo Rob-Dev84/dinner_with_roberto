@@ -188,9 +188,24 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
         Route::post('/recipes/{post:slug}/comment', 'store')->name('posts.comments.store');
         Route::post('/recipes/{post:slug}/{comment:id}/commentReply', 'reply')->name('posts.comments.reply');
         
-        
+    });
+    Route::get('/recipes/{post:slug}/partials/_rating-comment', function () {
+        return view('posts.recipes.partials._rating-comment');
     });
 
+    // Route::get('/recipes/{post:slug}/partials/_comment-reply-form', function () {
+    //     return view('posts.recipes.partials._comment-reply-form')->with('commentId', $commentId);
+    // });
+    
+    // Route::get('/recipes/{post:slug}/partials/_comment-reply-form/{commentId}', function ($commentId) {
+    //     return view('posts.recipes.partials._comment-reply-form', ['commentId' => $commentId]);
+    // });
+
+    Route::get('/recipes/{post:slug}/partials/_comment-reply-form/{commentId}', function ($post, $commentId) {
+        return view('posts.recipes.partials._comment-reply-form', compact('post', 'commentId', ));
+        
+    });
+    
 
 
     Route::get('/hint', function () {

@@ -89,10 +89,10 @@ class PostCommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function reply(Request $request, Post $post, $id)
+    public function reply(StoreCommentRequest $request, Post $post, $id)
     {
 
-        dd($id);
+        // dd($id);
 
         $post->postComments()->create([
             'parent_id' => $id, // this is comment_id (parent)
