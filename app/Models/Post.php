@@ -192,9 +192,8 @@ class Post extends Model
 
     public function postComments()
     {
-        return $this->hasMany(PostComment::class);
+        return $this->hasMany(PostComment::class)->with('user');
     }
-
 
     public function postPrimaryComments()
     {

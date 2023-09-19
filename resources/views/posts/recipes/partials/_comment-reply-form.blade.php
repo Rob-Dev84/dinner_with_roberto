@@ -1,9 +1,4 @@
-
-{{-- <div id="comment-id">{{ $comment->id }}</div> --}}
-{{-- <div id="comment-content">{{ $commentId }}</div> --}}
-{{-- {{ dd($post) }} --}}
-
-<div id="comment-content" x-data="{ rating: 0 }">
+<div id="reply-comment-container" x-data="">
     <form 
         id="replyForm" 
         action="{{ route('posts.comments.reply', [$post, $commentId]) }}" 
@@ -68,18 +63,20 @@
             >
                         
         <div class="flex items-center justify-between">
-            <h3 class="uppercase my-8"><strong>{{ __("reply to ") }} <span id="get_comment_name"></span></strong></h3>
+            <h3 class="uppercase my-8"><strong>{{ __("reply to ") }} <span id="get_comment_name">{{ $commentName }}</span></strong></h3>
             <!-- Button to hide the reply form and show the main comment form -->
             
-            <x-secondary-button class="h-6 bg-primary-300">
-                <a href="#main-comment-form">{{ __('Cancel Reply') }}</a>
+            <x-secondary-button 
+                id="close-comment-reply-form" 
+                class="h-6 bg-primary-300">
+                {{ __('Cancel Reply') }}
             </x-secondary-button>
         </div>
         
 
         <p class=""><em>{{ __("Your email address will not be published. Required fields are marked*") }}</em></p>
 
-        <div class="mt-5" x-data="{ rating: 10 }">
+        <div class="mt-5" x-data="">
             <legend><strong>{{ __("Rate the recipe") }}</strong></legend>
 
             <div class="w-full flex justify-start">

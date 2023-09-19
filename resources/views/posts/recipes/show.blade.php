@@ -535,7 +535,7 @@
                                         {{-- x-data="{ showReplyForm: false, commentId: null }" --}}
                                     >
                                         <div class="p-6 bg-primary-200 border-primary-200 border-4 flex flex-col justify-between">
-                                            <form id="main-comment-form" action="{{ route('posts.comments.store', $post) }}" method="POST" 
+                                            <form action="{{ route('posts.comments.store', $post) }}" method="POST" 
                                             {{-- x-show="!showReplyForm" --}}
                                                 x-data="
                                                     {
@@ -727,80 +727,54 @@
                                                                                   
                                             <div class="bg-white">
                                                 <ul id="reply-comment-form-{{ $comment->id }}" class="col-span-3 row-span-3 ml-5">
-                                                    <li class="border-primary-200 border-2 p-5 flex flex-col mb-5">
-                                                        <div class="flex items-center justify-between">       
-                                                            <div class="flex justify-between w-85">
-                                                                {{-- Check link --}}
-                                                                @if ($comment->link)
-                                                                    <a class="uppercase" href="{{ $comment->link }}" target="_blank" rel="noreferrer noopener">
-                                                                        <u><strong>
-                                                                            {{ $comment->name }}
-                                                                        </strong></u>
-                                                                    </a>
-                                                                    {{-- <a rel="nofollow" class="" @click.prevent="showReplyForm = !showReplyForm" href="#comment-871554" data-commentid="871554" data-postid="46877" data-belowelement="comment-871554" data-respondelement="respond" data-replyto="{{ __('Reply to ') . $comment->name }}" aria-label="Reply to Marcia Sewall">{{ __('Reply') }}</a>     --}}  
-                                                                @else
-                                                                    <div>
-                                                                        <strong>
-                                                                            {{ $comment->name }}
-                                                                        </strong>
-                                                                    </div>
-                                                                @endif
-                          
-                                                                &dash;
-                                                                <time pubdate="" datetime="{{ \Carbon\Carbon::parse($comment->created_at)->format('F j, Y @ g:i A') }}">
-                                                                    {{ $comment->created_at->format('F j, Y @ g:i A') }}
-                                                                </time>
-                                                            </div>
-                                                                        
-                                                            <div class="w-15 flex justify-end items-center">
-                                                                {{-- <div> --}}
-                                                                    {{-- <x-secondary-button 
-                                                                        @click="showReplyForm = !showReplyForm; 
-                                                                        setCommentId = {{ $comment->id }}"
-                                                                        
-                                                                        class="h-6 bg-primary-300">
-                                                                        <a href="#reply-comment-form-{{ $comment->id }}">{{ __('Reply') }}</a>
-                                                                    </x-secondary-button> --}}
+                                                    <li class="border-primary-200 border-2 flex flex-col mb-5">
+                                                        @if ($comment->user)
+                                                            <div class="py-5 pl-5 pr-3 m-4 {{ $comment->user->role->name === 'Admin' ? 'bg-primary-200' : '' }}">
+                                                        @else
+                                                            <div class="py-5 pl-5 pr-3 m-4">
+                                                        @endif
+                                                            <div class="flex items-center justify-between">       
+                                                                <div class="flex justify-between w-85">
+                                                                    {{-- Check link --}}
+                                                                    @if ($comment->link)
+                                                                        <a class="uppercase" href="{{ $comment->link }}" target="_blank" rel="noreferrer noopener">
+                                                                            <u><strong>
+                                                                                {{ $comment->name }}
+                                                                            </strong></u>
+                                                                        </a>
+                                                                        {{-- <a rel="nofollow" class="" @click.prevent="showReplyForm = !showReplyForm" href="#comment-871554" data-commentid="871554" data-postid="46877" data-belowelement="comment-871554" data-respondelement="respond" data-replyto="{{ __('Reply to ') . $comment->name }}" aria-label="Reply to Marcia Sewall">{{ __('Reply') }}</a>     --}}  
+                                                                    @else
+                                                                        <div>
+                                                                            <strong>
+                                                                                {{ $comment->name }}
+                                                                            </strong>
+                                                                        </div>
+                                                                    @endif
+                            
+                                                                    &dash;
+                                                                    <time pubdate="" datetime="{{ \Carbon\Carbon::parse($comment->created_at)->format('F j, Y @ g:i A') }}">
+                                                                        {{ $comment->created_at->format('F j, Y @ g:i A') }}
+                                                                    </time>
+                                                                </div>
+                                                                            
+                                                                <div class="w-15 flex justify-end items-center">
 
-                                                                    {{-- <x-secondary-button
-                                                                        @click="showReplyForm = !showReplyForm; commentId = {{ $comment->id }}"
-                                                                        class="h-6 bg-primary-300"
+                                                                    <x-secondary-button
+                                                                        class="edit h-6 bg-primary-300"
+                                                                        data-comment-id="{{$comment->id}}"
+                                                                        data-comment-name="{{$comment->name}}"
+                                                                        data-toggle-reply-form
                                                                     >
-                                                                        <a href="#reply-comment-form-{{ $comment->id }}">{{ __('Reply') }}</a>
-                                                                    </x-secondary-button> --}}
-
-                                                                {{-- </div> --}}
-
-
-
-                                                                {{-- <x-secondary-button
-                                                                    @click="setCommentId({{ $comment->id }})"
-                                                                    class="h-6 bg-primary-300"
-                                                                >
-                                                                    <a href="#reply-comment-form-{{ $comment->id }}">{{ __('Reply') }}</a>
-                                                                </x-secondary-button> --}}
-
-                                                                {{-- <button class="edit" data-id="{{$comment->id}}" >Reply Test</button> --}}
-                                                                {{-- <button class="edit" data-comment-id="{{$comment->id}}">Reply Test</button> --}}
-
-
-
-                                                                <x-secondary-button
-                                                                    class="edit h-6 bg-primary-300"
-                                                                    data-comment-id="{{$comment->id}}"
-                                                                    {{-- data-comment-name="{{$comment->name}}" --}}
-                                                                    data-toggle-reply-form
-                                                                >
-                                                                    {{ __('Reply') }}
-                                                                </x-secondary-button>
-                                                                <input type="hidden" id="comment_id" name="comment_id" value="">
-                                                                <input type="hidden" id="name" name="name" value="">
-                                                                {{-- <button class="edit" data-comment-id="{{$comment->id}}" data-toggle-reply-form>Reply Test</button> --}}
-                                                                
-                                                                
+                                                                        {{ __('Reply') }}
+                                                                    </x-secondary-button>
+                                                                    <input type="hidden" id="comment_id" name="comment_id" value="">
+                                                                    <input type="hidden" id="name" name="name" value="">
+                                                                    {{-- <button class="edit" data-comment-id="{{$comment->id}}" data-toggle-reply-form>Reply Test</button> --}}
+                                                                    
+                                                                    
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <p class="mt-4">{{ $comment->comment }}</p>     
+                                                            <p class="mt-4">{{ $comment->comment }}</p>     
                                                             <div class="flex mt-4" id="reply-comment-form-{{ $comment->id }}">
                                                                 @if (!is_null($comment->recipe_rating) && $comment->recipe_rating > 0)
                                                                     @for ($i = 1; $i <= $comment->recipe_rating; $i++)
@@ -810,55 +784,67 @@
                                                                     @endfor
                                                                 @endif      
                                                             </div>
-                                                        <div class="reply-form-container" id="replyFormContainer{{$comment->id}}">Primary</div>
+                                                        </div>
+                                                        <div class="reply-form-container" id="replyFormContainer{{$comment->id}}"></div>
                                                             
                                                         
                                                         @if ($comment->children->count())
                                                           @foreach ($comment->children as $childComment)
-                                                              <ul id="reply-child-comment-form-{{ $childComment->id }}" class="col-span-3 row-span-3 ml-5 mt-4"> {{-- full width --}}
+                                                              <ul id="reply-child-comment-form-{{ $childComment->id }}" class="col-span-3 row-span-3 ml-4 mb-4">
                                                                 <li class="flex flex-col">
-                                                                    <div class="flex items-center justify-between">   
-                                                                        <div class="flex justify-between w-85">
-                                                                            @if ($childComment->link)
-                                                                                <a class="uppercase" href="{{ $childComment->link }}" target="_blank" rel="noreferrer noopener">
-                                                                                    <u><strong>
-                                                                                        {{ $childComment->name }}
-                                                                                    </strong></u>
-                                                                                </a> 
-                                                                            @else
-                                                                                <div>
-                                                                                    <strong>
-                                                                                        {{ $childComment->name }}
-                                                                                    </strong>
-                                                                                </div>
-                                                                            @endif                     
-                                                                                &dash;
-                                                                                <time pubdate="" datetime="{{ \Carbon\Carbon::parse($childComment->created_at)->format('F j, Y @ g:i A') }}">
-                                                                                    {{ $childComment->created_at->format('F j, Y @ g:i A') }}
-                                                                                </time>   
-                                                                        </div>
+                                                                    @if ($childComment->user)
+                                                                        <div class="py-5 pl-5 pr-3 mx-4 ml-4 {{ $childComment->user->role->name === 'Admin' ? 'bg-primary-200' : '' }}">
+                                                                    @else
+                                                                        <div class="py-5 pl-5 pr-3 mx-4 ml-4">
+                                                                    @endif
+                                                                
+                                                                        <div class="flex items-center justify-between">   
+                                                                            <div class="flex justify-between w-85">
+                                                                                @if ($childComment->link)
+                                                                                    <a class="uppercase" href="{{ $childComment->link }}" target="_blank" rel="noreferrer noopener">
+                                                                                        <u><strong>
+                                                                                            {{ $childComment->name }}
+                                                                                        </strong></u>
+                                                                                    </a> 
+                                                                                @else
+                                                                                    <div>
+                                                                                        <strong>
+                                                                                            {{ $childComment->name }}
+                                                                                        </strong>
+                                                                                    </div>
+                                                                                @endif                     
+                                                                                    &dash;
+                                                                                    <time pubdate="" datetime="{{ \Carbon\Carbon::parse($childComment->created_at)->format('F j, Y @ g:i A') }}">
+                                                                                        {{ $childComment->created_at->format('F j, Y @ g:i A') }}
+                                                                                    </time>   
+                                                                            </div>
+                                                                            
                                                                         
-                                                                        <div class="w-15 flex justify-end items-center">    
-                                                                            <x-secondary-button @click="commentId = {{ $childComment->id }}" class="h-6 bg-primary-300">
-                                                                                <a href="#reply-child-comment-form-{{ $childComment->id }}">{{ __('Reply') }}</a>
-                                                                            </x-secondary-button>                  
+                                                                            <x-secondary-button
+                                                                                class="edit h-6 bg-primary-300"
+                                                                                data-comment-id="{{$childComment->id}}"
+                                                                                data-comment-parent-id="{{$comment->id}}"
+                                                                                data-comment-name="{{$childComment->name}}"
+                                                                                data-toggle-reply-form
+                                                                            >
+                                                                                {{ __('Reply') }}
+                                                                            </x-secondary-button>
                                                                         </div>
-                                                                        <button class="edit" data-comment-id="{{$childComment->id}}" data-toggle-reply-form>Reply Test</button>
-                                                                    </div>
-                                                                   
-                                                                    <p class="mt-4">{{ $childComment->comment }}</p>
                                                                     
-                                                                    <div class="flex mt-4">
-                                                                        @if (!is_null($childComment->recipe_rating) && $childComment->recipe_rating > 0)
-                                                                            @for ($i = 1; $i <= $childComment->recipe_rating; $i++)
-                                                                                <svg class="w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#f2b955">
-                                                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                                                </svg>
-                                                                            @endfor
-                                                                        @endif  
+                                                                        <p class="mt-4">{{ $childComment->comment }}</p>
+                                                                        
+                                                                        <div class="flex mt-4">
+                                                                            @if (!is_null($childComment->recipe_rating) && $childComment->recipe_rating > 0)
+                                                                                @for ($i = 1; $i <= $childComment->recipe_rating; $i++)
+                                                                                    <svg class="w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#f2b955">
+                                                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                                                    </svg>
+                                                                                @endfor
+                                                                            @endif  
+                                                                        </div>
                                                                     </div>
                                                                 </li>
-                                                                <div class="reply-form-container" id="replyFormContainer{{$childComment->id}}">Child</div> 
+                                                                <div class="reply-form-container" id="replyFormContainer{{$childComment->id}}"></div> 
                                                               </ul>
                                                           @endforeach  
                                                         @endif
@@ -880,173 +866,10 @@
                                 </div><!-- Comments area -->
                             </div>       
                         </div>{{-- closing comment section --}}
-                 
-                        
-
-                        {{-- <div id="replyFormContainer"  style="display: none;">
-                            
-                            <form id="replyForm" action="{{ route('posts.comments.reply', [$post, 'COMMENT_ID']) }}" method="POST" style="">
-                                @csrf
-                                @method('POST')
-                              <!-- Add a hidden input to store the comment ID -->
-                              <input type="hidden" id="comment_id" name="comment_id" value="">
-                              <input type="hidden" id="name" name="name" value="">
-                              <!-- Rest of your form elements -->
-
-                              <div class="flex items-center justify-end mt-4">
-                                <x-primary-button class="ml-3 bg-primary-500">
-                                    {{ __('reply comment') }}
-                                </x-primary-button>
-                              </div>
-                            </form>
-                        </div> --}}
-
-                        {{-- <div style="display: none;" x-data="{ rating: 0 }">
-                            <form 
-                                id="replyForm" 
-                                action="{{ route('posts.comments.reply', [$post, 'COMMENT_ID']) }}" 
-                                method="POST" 
-                                
-                                x-data="{
-                                    formData: {
-                                        rating: '',
-                                        name: '',
-                                        email: '',
-                                        comment: '',
-                                        link: '',
-                                        cookies_consent: false,
-                                        notify_on_reply: false,
-                                    },
-                                    errors: {},
-                                    successMessage: '',
-                                    COMMENT_ID: null,
-                                    submitForm(event) {
-                                        this.successMessage = '';
-                                        this.errors = {};
-                                        
-                                            fetch(`{{ route("posts.comments.reply", [$post, $comment->id]) }}`, {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/json',
-                                                    'X-Requested-With': 'XMLHttpRequest',
-                                                    'X-CSRF-TOKEN': document.querySelector(`meta[name='csrf-token']`).getAttribute('content'),
-                                                },
-                                                body: JSON.stringify(this.formData)
-                                            })
-                                            .then(response => {
-                                                if (response.status === 200) {
-                                                    return response.json();
-                                                }
-                                                throw response;
-                                            })
-                                            .then(result => {
-                                                this.formData = {
-                                                    rating: '',
-                                                    name: '',
-                                                    email: '',
-                                                    comment: '',
-                                                    link: '',
-                                                    cookies_consent: false,
-                                                    notify_on_reply: false,
-                                                };
-                                                this.successMessage = '{{ __("Thank you for reply this comment. If the message is approved, shortly I will be displayed!") }}';
-                                            })
-                                            .catch(async (response) => {
-                                                const res = await response.json();
-                                                if (response.status === 422) {
-                                                    this.errors = res.errors;
-                                                }
-                                                //console.log(res);
-                                            })
-                                                                
-                                            }
-                                        }
-                        
-                                    "
-                                    x-on:submit.prevent="submitForm"
-                                    >
-                                                
-                                <div class="flex items-center justify-between">
-                                    <h3 class="uppercase my-8"><strong>{{ __("reply to ") }} <span id="get_comment_name"></span></strong></h3>
-                                    <!-- Button to hide the reply form and show the main comment form -->
-                                    
-                                    <x-secondary-button class="h-6 bg-primary-300">
-                                        <a href="#main-comment-form">{{ __('Cancel Reply') }}</a>
-                                    </x-secondary-button>
-                                </div>
-                                
-
-                                <p class=""><em>{{ __("Your email address will not be published. Required fields are marked*") }}</em></p>
-
-                                <div id="rating-container"></div>
-
-                                <div class="mt-4">
-                                    <div class="flex align-items">
-                                        <x-input-label for="comment" :value="__('Comment')" />
-                                        <!-- <span class="-mb-1" x-show="rating != 5">&nbsp;*</span> -->
-                                    </div>
-                
-                                    <x-textarea-input id="comment" name="comment" :value="old('comment')" rows="8" cols="45" maxlength="65525" x-model="formData.comment" ::class="errors.comment ? 'border-red-500 focus:border-red-500' : ''" />
-                                        <template x-if="errors.comment">
-                                            <div x-text="errors.comment[0]" class="text-red-500"></div>
-                                        </template>
-                                </div>
-
-                                <input type="hidden" id="comment_id" name="comment_id" value="">
-
-                                <div class="mt-4">
-                                    <x-input-label for="name" :value="__('Name *')" />
-                                    <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" x-model="formData.name" ::class="errors.name ? 'border-red-500' : ''" autocomplete  />
-                                    <template x-if="errors.name">
-                                        <div x-text="errors.name[0]" class="text-red-500"></div>
-                                    </template>
-                                </div>
-
-                                <div class="mt-4">
-                                    <x-input-label for="email" :value="__('Email *')" />
-                                    <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" maxlength="100" :value="old('email')" x-model="formData.email" ::class="errors.email ? 'border-red-500' : ''" autocomplete  />
-                                    <template x-if="errors.email">
-                                        <div x-text="errors.email[0]" class="text-red-500"></div>
-                                    </template>
-                                </div>
-
-                                <div class="mt-4">
-                                    <x-input-label for="link" :value="__('Link')" />
-                                    <x-text-input id="link" class="block mt-1 w-full" type="text" name="link" maxlength="200" :value="old('link')" x-model="formData.link" ::class="errors.link ? 'border-red-500' : ''" />
-                                    <template x-if="errors.link">
-                                        <div x-text="errors.link[0]" class="text-red-500"></div>
-                                    </template>
-                                </div>
-
-                                
-                                <div class="mt-4">
-                                    <x-checkbox-input name="cookies_consent" :value="old('cookies_consent')" x-model="formData.cookies_consent">
-                                        <span>{{ __("Save my name, email in this browser for the next time I comment.") }}</span>
-                                    </x-checkbox-input>
-                                </div>
-
-                                <div class="mt-4">
-                                    <x-checkbox-input name="notify_on_reply" :value="old('notify_on_reply')" x-model="formData.notify_on_reply">
-                                        <span>{{ __("Notify me if Roberto replies to my comment.") }}</span>
-                                    </x-checkbox-input>
-                                </div>
-
-                                <div class="flex items-center justify-end mt-4">
-                                    <x-primary-button class="ml-3 bg-primary-500">
-                                        {{ __('reply comment') }}
-                                    </x-primary-button>
-                                </div>
-
-                                <template x-if="successMessage">
-                                    <div x-text="successMessage" class="py-4 px-6 bg-green-600 text-zinc-100 mb-4">{{ __("Thank you for leaving the comment. If the message is approved, shortly I will be displayed") }}</div>
-                                </template>
-
-                            </form>
-                        </div> --}}
-                        
+                  
                           
 
-                        {{-- next section here --}}
+                        {{-- Footer section here --}}
 
                         <div id="comments" class="flex justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div class="lg:w-8/12">

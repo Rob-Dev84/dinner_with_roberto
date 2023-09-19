@@ -6,29 +6,6 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
-// Alpine.data('commentsState', () => ({
-//     showReplyForm: {},
-//     toggleReplyForm(commentId) {
-//         this.$set(this.showReplyForm, commentId, !this.showReplyForm[commentId]);
-//     },
-//     scrollReplyForm(commentId) {
-//         const containerId = `reply-form-container-${commentId}`;
-//         const containerElement = document.getElementById(containerId);
-
-//         if (containerElement) {
-//             // Scroll to the top of the container with smooth behavior
-//             containerElement.scrollIntoView({
-//                 behavior: 'smooth',
-//                 block: 'start',
-//                 inline: 'nearest',
-//             });
-//         }
-//     },
-// }));
-
-
-
-
 
 //updated version
 //   document.addEventListener('DOMContentLoaded', function () {
@@ -123,158 +100,122 @@ Alpine.start();
 
 
 
-// document.addEventListener('DOMContentLoaded', function () {
+// Alpine.data('commentsState', () => ({
+//     showReplyForm: {},
+//     toggleReplyForm(commentId) {
+//         this.$set(this.showReplyForm, commentId, !this.showReplyForm[commentId]);
+//     },
+//     scrollReplyForm(commentId) {
+//         const containerId = `reply-form-container-${commentId}`;
+//         const containerElement = document.getElementById(containerId);
 
-
-//   var editButtons = document.querySelectorAll('[data-toggle-reply-form]');
-
-  
-
-//   // Function to handle fetching rating form
-//   async function fetchRatingForm() {
-//       const ratingContainer = document.getElementById('rating-container');
-//       const currentURL = window.location.origin + window.location.pathname;
-
-//       try {
-//           let response = await fetch(currentURL + 'partials/_comment-reply-form');
-//           let data = await response.text();
-//           ratingContainer.innerHTML = data;
-//           console.log(data);
-
-       
-//       } catch (error) {
-//           console.error(error);
-//       }
-//   }
-
-//   // Iterate through each reply button
-//   editButtons.forEach(function (button) {
-//       button.addEventListener('click', function () {
-          
-          
-         
-    
-
-//           // Call function to fetch rating form
-//           fetchRatingForm();
-//           // document.getElementById("get_comment_name").textContent = commentName;// output the comment author
-//       });
-//   });
-// });
-
-
-// document.addEventListener('DOMContentLoaded', function () {
-
-//   var editButtons = document.querySelectorAll('[data-toggle-reply-form]');
-
-// // Function to handle fetching rating form
-// async function fetchRatingForm(commentId) {
-//     const ratingContainer = document.getElementById('rating-container');
-
-//     const currentURL = window.location.origin + window.location.pathname;
-
-//     try {
-//       let response = await fetch(currentURL + 'partials/_comment-reply-form');
-//         let data = await response.text();
-
-        
-//         // Extract the comment ID from the response
-//         const parser = new DOMParser();
-//         const doc = parser.parseFromString(data, 'text/html');
-//         const commentId = doc.getElementById('comment-id').innerText;
-
-//         // Display the comment ID
-//         console.log('Comment ID:', commentId);
-
-//         ratingContainer.innerHTML = data;
-//     } catch (error) {
-//         console.error(error);
-//     }
-// }
-
-// editButtons.forEach(function (button) {
-//     button.addEventListener('click', function () {
-//         // const postId = button.getAttribute('data-post-id');
-//         const commentId = button.getAttribute('data-comment-id');
-        
-//         fetchRatingForm(commentId);
-//     });
-// });
-
-// });
-
-//GIVES THE RIGHT COMMENT ID
-// document.addEventListener('DOMContentLoaded', function () {
-//   const editButtons = document.querySelectorAll('[data-toggle-reply-form]');
-
-//   editButtons.forEach(function (button) {
-//       button.addEventListener('click', function () {
-//           const commentId = button.dataset.commentId;
-//           console.log('Comment ID:', commentId);
-//           // Now you have the commentId, you can use it as needed, e.g., send it via fetch.
-//       });
-//   });
-// });
+//         if (containerElement) {
+//             // Scroll to the top of the container with smooth behavior
+//             containerElement.scrollIntoView({
+//                 behavior: 'smooth',
+//                 block: 'start',
+//                 inline: 'nearest',
+//             });
+//         }
+//     },
+// }));
 
 
 
 
-
-// document.addEventListener('DOMContentLoaded', function () {
-//   const editButtons = document.querySelectorAll('[data-toggle-reply-form]');
-
-//   editButtons.forEach(function (button) {
-//       button.addEventListener('click', function () {
-//           const commentId = button.dataset.commentId;
-
-//           const currentURL = window.location.origin + window.location.pathname;
-//           // fetch(`/comments/reply/${commentId}`)
-//           fetch(currentURL + `partials/_comment-reply-form`)
-//               .then(response => response.text())
-//               .then(data => {
-//                   console.log('Response from /comments/reply:', data);
-//                   // Update your UI with the response data as needed
-//               })
-//               .catch(error => console.error('Error:', error));
-//       });
-//   });
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Best solution
 
 document.addEventListener('DOMContentLoaded', function () {
   const editButtons = document.querySelectorAll('[data-toggle-reply-form]');
 
   editButtons.forEach(function (button) {
-      button.addEventListener('click', function () {
-          const commentId = button.dataset.commentId;
+    button.addEventListener('click', function () {
+      const replyCommentContainer = document.getElementById('reply-comment-container');
+      
+      // Check if reply form is already open
+      //TODO: add toggle hide/show forms
+      if (replyCommentContainer) {
+        replyCommentContainer.remove();
+      }
+      
 
-          fetchCommentReplyForm(commentId);
-      });
+      var commentId = button.dataset.commentId;//I use the var because it could be reassigned
+      const commentParentId = button.dataset.commentParentId; // Check if this exists
+      const commentName = button.dataset.commentName;// grab the comment author name
+      
+      // if reply child button is cliked (only if exists)
+      if (commentParentId) {
+        var commentId = button.getAttribute('data-comment-parent-id');// reassigned the commentId (because we need to store the commentId parent)
+      }
+    
+      
+      fetchCommentReplyForm(commentId, commentName);
+    
+
+      async function fetchCommentReplyForm(commentId, commentName) {
+        const currentURL = window.location.origin + window.location.pathname;
+        const response = await fetch(`${currentURL}/partials/_comment-reply-form/${commentId}/${commentName}`);
+        
+        const data = await response.text();
+      
+        // If button has the attribute it means a reply button has bein clicked
+        if (button.hasAttribute('data-comment-parent-id')) {
+          var commentId = button.getAttribute('data-comment-id');
+        } else {
+          var commentId = button.dataset.commentId; 
+        }
+        
+        const commentReplyFormContainer = document.getElementById(`replyFormContainer${commentId}`);
+        commentReplyFormContainer.innerHTML = data;
+      
+        if (commentReplyFormContainer) {
+            // Scroll to the top of the comment container with smooth behavior
+            commentReplyFormContainer.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+                inline: 'nearest',
+            });
+        }
+      
+      
+        // Update the comment ID in the loaded content
+        const commentContent = document.getElementById('reply-comment-container');
+      
+        // Now that the content is loaded, listen for clicks on the cancel button
+        const closeCommentReplyForm = document.getElementById("close-comment-reply-form");
+      
+        if (closeCommentReplyForm) {
+          closeCommentReplyForm.addEventListener('click', function () {
+            if (commentContent) {
+              commentContent.remove();
+            }
+          });
+        }
+        
+      }
+      
+    });
   });
 });
 
-async function fetchCommentReplyForm(commentId) {
-  const currentURL = window.location.origin + window.location.pathname;
-  const response = await fetch(`${currentURL}partials/_comment-reply-form/${commentId}`);
-  const data = await response.text();
 
-  // Display the content of the _comment-reply-form in the container
-  const commentReplyFormContainer = document.getElementById(`replyFormContainer${commentId}`);
-    commentReplyFormContainer.innerHTML = data;
 
-  // Update the comment ID in the loaded content
-  const commentContent = document.getElementById('comment-content');
-  commentContent.innerHTML = data;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

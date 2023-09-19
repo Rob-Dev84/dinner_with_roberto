@@ -17,4 +17,11 @@ class Role extends Model
     ];
 
 
+    //Assuming a role can be taken by multiple users
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+
 }

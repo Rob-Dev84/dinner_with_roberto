@@ -111,6 +111,7 @@ class PostCommentController extends Controller
             
          ]);
 
+         //TODO: send email to ADMIN when user write a comment
          if ($request->notify_on_reply == 1) {
             //send email to the user who wrote the comment
          }

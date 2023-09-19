@@ -170,41 +170,38 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
         
 
 
-
-    });
-
-    Route::controller(PostRecipeController::class)->group(function () {
-    
-        Route::get('/recipes', 'index')->name('posts.recipes.index');
-
-        Route::get('/recipes/{post:slug}', 'show')->name('posts.recipes.show');
         
-    });
 
-    Route::controller(PostCommentController::class)->group(function () {
-    
-        // Route::get('/recipes', 'index')->name('posts.recipes.index');
-
-        Route::post('/recipes/{post:slug}/comment', 'store')->name('posts.comments.store');
-        Route::post('/recipes/{post:slug}/{comment:id}/commentReply', 'reply')->name('posts.comments.reply');
         
-    });
-    Route::get('/recipes/{post:slug}/partials/_rating-comment', function () {
-        return view('posts.recipes.partials._rating-comment');
+
+
     });
 
-    // Route::get('/recipes/{post:slug}/partials/_comment-reply-form', function () {
-    //     return view('posts.recipes.partials._comment-reply-form')->with('commentId', $commentId);
-    // });
-    
-    // Route::get('/recipes/{post:slug}/partials/_comment-reply-form/{commentId}', function ($commentId) {
-    //     return view('posts.recipes.partials._comment-reply-form', ['commentId' => $commentId]);
-    // });
+    Route::middleware(['redirectCanonicalUrl'])->group(function () {
 
-    Route::get('/recipes/{post:slug}/partials/_comment-reply-form/{commentId}', function ($post, $commentId) {
-        return view('posts.recipes.partials._comment-reply-form', compact('post', 'commentId', ));
+        Route::controller(PostRecipeController::class)->group(function () {
+            Route::get('/recipes', 'index')->name('posts.recipes.index');
+            Route::get('/recipes/{post:slug}', 'show')->name('posts.recipes.show');
+        });
+
+        Route::controller(PostCommentController::class)->group(function () {
+            Route::post('/recipes/{post:slug}/comment', 'store')->name('posts.comments.store');
+            Route::post('/recipes/{post:slug}/{comment:id}/commentReply', 'reply')->name('posts.comments.reply');      
+        });
         
+        Route::get('/recipes/{post:slug}/partials/_rating-comment', function () {
+            return view('posts.recipes.partials._rating-comment');
+        });
+    
+        Route::get('/recipes/{post:slug}/partials/_comment-reply-form/{commentId}/{commentName}', function ($post, $commentId, $commentName) {
+            return view('posts.recipes.partials._comment-reply-form', compact('post', 'commentId', 'commentName'));
+            
+        });
+
     });
+
+    
+    
     
 
 
