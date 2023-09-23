@@ -8,9 +8,23 @@
             {{ $post->title }}
         </b></h1>
         <div class="flex justify-center">
-            <a href="#recipe-card">{{ __('Go to recipe') }}</a>
-            {{ '-|-' }}
-            <a href="#recipe-comments">{{ __('Comments') }}</a>
+            {{-- <a href="#recipe-card">{{ __('Go to recipe') }}</a> --}}
+            <x-secondary-button
+                class="h-6 bg-primary-300 my-4 mx-2 py-4"
+                go-to-recipe-card
+            >
+            <img class="w-4 mr-2" src="{{ asset('icons/arrow-down.svg') }}" alt="Clock Icon" />
+                {{ __('Go to recipe') }}
+            </x-secondary-button>
+            {{-- {{ '-|-' }}
+            <a href="#recipe-comments">{{ __('Comments') }}</a> --}}
+            <x-secondary-button
+                class="h-6 bg-primary-300 my-4 mx-2 py-4"
+                go-to-comments
+            >
+            <img class="w-4 mr-2" src="{{ asset('icons/arrow-down.svg') }}" alt="Clock Icon" />
+                {{ __('Go to Comments') }}
+            </x-secondary-button>
         </div>
         <h2 class="font-semibold text-xl text-gray-800 leading-tight text-center">
             <em>{{ $post->subtitle }}</em>
@@ -94,7 +108,7 @@
                                         <x-a-link 
                                             :href="route('posts.recipes.index', auth()->user())" 
                                             :active="request()->routeIs('posts.recipes.index')" 
-                                            :text=" __('Continue here')">
+                                            :text=" __('More about me')">
                                         </x-a-link>
                                     </div>
 
@@ -104,10 +118,7 @@
                 
                         </div>
 
-                            
 
-                        
-                        <br>
                             
                         <div class="flex justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div class="lg:w-8/12">
@@ -580,6 +591,10 @@
                                                                         notify_on_reply: false,
                                                                     };
                                                                     this.successMessage = '{{ __("Thank you for leaving the comment. If the message is approved, I will be shortly displayed!") }}';
+                                                                    // Auto-hide the success message after 5 seconds (5000 milliseconds)
+                                                                    setTimeout(() => {
+                                                                        this.successMessage = '';
+                                                                    }, 5000);
                                                                 })
                                                                 .catch(async (response) => {
                                                                     const res = await response.json();
@@ -666,10 +681,20 @@
                                                     </div>
 
                                                 </div>
-
+{{-- {{ dd(Cookie::get('comment_author_name')) }} --}}
                                                 <div class="mt-4">
                                                     <x-input-label for="name" :value="__('Name *')" />
-                                                    <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" x-model="formData.name" ::class="errors.name ? 'border-red-500' : ''" autocomplete  />
+                                                    <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" x-model="formData.name" x-init="formData.name = '{{ Cookie::get('comment_author_name') }}'" ::class="errors.name ? 'border-red-500' : ''" autocomplete  />
+                                                    {{-- @if (auth()->check())
+                                                    <div class="flex">
+                                                        <x-text-input id="name" class="block mt-1 w-full opacity-50" title="{{ __('Your name and email are automatically filled based on your account details.')}} &#10;{{  __('Click \'Edit\' to change them.') }}" type="text" name="name" maxlength="100" :value="old('name')" x-model="formData.name" x-init="formData.name = '{{ auth()->user()->name }}'" ::class="errors.name ? 'border-red-500' : ''" disabled autocomplete />
+                                                        <button type="button" id="enable-name-comment-field" class="border-primary-500" title="{{ __('Edit') }}">
+                                                            <img class="w-5 ml-5" src="{{ asset('icons/edit.svg') }}" alt="Edit Icon" />
+                                                        </button>
+                                                    </div>  
+                                                    @else
+                                                        <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" maxlength="100" :value="old('name')" x-model="formData.name" x-init="formData.name = '{{ Cookie::get('comment_author_name') }}'" ::class="errors.name ? 'border-red-500' : ''" autocomplete  />
+                                                    @endif --}}
                                                     <template x-if="errors.name">
                                                         <div x-text="errors.name[0]" class="text-red-500"></div>
                                                     </template>
@@ -677,7 +702,18 @@
 
                                                 <div class="mt-4">
                                                     <x-input-label for="email" :value="__('Email *')" />
-                                                    <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" maxlength="100" :value="old('email')" x-model="formData.email" ::class="errors.email ? 'border-red-500' : ''" autocomplete  />
+                                                    <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" maxlength="100" :value="old('email')" x-model="formData.email" x-init="formData.email = '{{ Cookie::get('comment_author_email') }}'" ::class="errors.email ? 'border-red-500' : ''" autocomplete  />
+                                                    {{-- @if (auth()->check())
+                                                    <div class="flex">
+                                                        <x-text-input id="email" class="block mt-1 w-full opacity-50" title="{{ __('Your name and email are automatically filled based on your account details.')}} &#10;{{  __('Click \'Edit\' to change them.') }}" type="text" name="email" maxlength="100" :value="old('email')" x-model="formData.email" x-init="formData.email = '{{ auth()->user()->email }}'" ::class="errors.email ? 'border-red-500' : ''" disabled autocomplete />
+                                                        <button type="button" id="enable-email-comment-field" class="border-primary-500" title="{{ __('Edit') }}">
+                                                            <img class="w-5 ml-5" src="{{ asset('icons/edit.svg') }}" alt="Edit Icon" />
+                                                        </button>
+                                                    </div>  
+                                                    @else
+                                                        <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" maxlength="100" :value="old('email')" x-model="formData.email" x-init="formData.email = '{{ Cookie::get('comment_author_email') }}'" ::class="errors.email ? 'border-red-500' : ''" autocomplete  />
+                                                    @endif --}}
+                                                    
                                                     <template x-if="errors.email">
                                                         <div x-text="errors.email[0]" class="text-red-500"></div>
                                                     </template>
@@ -691,12 +727,14 @@
                                                     </template>
                                                 </div>
 
+                                                @if (!Cookie::get('comment_author_name') && !Cookie::get('comment_author_email'))
+                                                    <div class="mt-4">
+                                                        <x-checkbox-input name="cookies_consent" :value="old('cookies_consent')" x-model="formData.cookies_consent">
+                                                            <span>{{ __("Save my name, email in this browser for the next time I comment.") }}</span>
+                                                        </x-checkbox-input>
+                                                    </div>
+                                                @endif
                                                 
-                                                <div class="mt-4">
-                                                    <x-checkbox-input name="cookies_consent" :value="old('cookies_consent')" x-model="formData.cookies_consent">
-                                                        <span>{{ __("Save my name, email in this browser for the next time I comment.") }}</span>
-                                                    </x-checkbox-input>
-                                                </div>
 
                                                 <div class="mt-4">
                                                     <x-checkbox-input name="notify_on_reply" :value="old('notify_on_reply')" x-model="formData.notify_on_reply">
@@ -711,7 +749,7 @@
                                                 </div>
 
                                                 <template x-if="successMessage">
-                                                    <div x-text="successMessage" class="py-4 px-6 bg-green-600 text-zinc-100 mb-4">{{ __("Thank you for leaving the comment. If the message is approved, I will be shortly displayed") }}</div>
+                                                    <div x-text="successMessage" class="py-4 px-6 bg-green-600 text-zinc-100 my-4">{{ __("Thank you for leaving the comment. If the message is approved, I will be shortly displayed") }}</div>
                                                 </template>
 
                                             </form>
@@ -726,7 +764,7 @@
                                         @forelse ($post->postPrimaryComments as $comment)
                                                                                   
                                             <div class="bg-white">
-                                                <ul id="reply-comment-form-{{ $comment->id }}" class="col-span-3 row-span-3 ml-5">
+                                                <ul id="reply-comment-form-{{ $comment->id }}" class="col-span-3 row-span-3">
                                                     <li class="border-primary-200 border-2 flex flex-col mb-5">
                                                         @if ($comment->user)
                                                             <div class="py-5 pl-5 pr-3 m-4 {{ $comment->user->role->name === 'Admin' ? 'bg-primary-200' : '' }}">
@@ -785,7 +823,7 @@
                                                                 @endif      
                                                             </div>
                                                         </div>
-                                                        <div class="reply-form-container" id="replyFormContainer{{$comment->id}}"></div>
+                                                        <div class="mx-5 px-5 bg-primary-200" id="replyFormContainer{{$comment->id}}"></div>
                                                             
                                                         
                                                         @if ($comment->children->count())
@@ -876,16 +914,7 @@
                                 <div class="p-4 pt-0 text-gray-900">          
                                     <div class="border-primary-200 border-4 flex flex-col justify-between">{{-- Container --}}
 
-                                        {{-- @foreach ($comments as $comment)
-                                        <div class="comment">
-                                            <!-- Display comment information here -->
-                                            {{ $comment->name }}: {{ $comment->comment }}
-                                    
-                                            <!-- Recursively display child comments -->
-                                            @include('comments.comment', ['comments' => $comment->children])
-                                            </div>
-                                        @endforeach --}}
-                                        
+                                       
 
                                     </div>
 

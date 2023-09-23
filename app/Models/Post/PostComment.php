@@ -21,8 +21,10 @@ class PostComment extends Model
         'email',
         'comment',
         'link',
-        'cookies_consent',
+        // 'cookie_consent_id',
         'notify_on_reply',
+        'read',
+        'replied',
         'pinned',
     ];
 

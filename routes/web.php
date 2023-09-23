@@ -186,9 +186,9 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
 
         Route::controller(PostCommentController::class)->group(function () {
             Route::post('/recipes/{post:slug}/comment', 'store')->name('posts.comments.store');
-            Route::post('/recipes/{post:slug}/{comment:id}/commentReply', 'reply')->name('posts.comments.reply');      
+            Route::post('/recipes/{post:slug}/{comment}/commentReply', 'reply')->name('posts.comments.reply');      
         });
-        
+
         Route::get('/recipes/{post:slug}/partials/_rating-comment', function () {
             return view('posts.recipes.partials._rating-comment');
         });

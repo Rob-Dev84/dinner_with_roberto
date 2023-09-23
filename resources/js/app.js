@@ -126,22 +126,62 @@ Alpine.start();
 // Best solution
 
 document.addEventListener('DOMContentLoaded', function () {
+
+  
+  // scroll to recipe card
+  function srollToTarget(buttonAttribute, targetId) {
+    const button = document.querySelector(`[${buttonAttribute}]`);
+    const target = document.getElementById(targetId);
+
+    if (button && target) {
+      button.addEventListener('click', function () {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest',
+        });
+      });
+    }
+  }
+  
+  srollToTarget('go-to-recipe-card', 'recipe-card');// Scroll to recipe card
+  srollToTarget('go-to-comments', 'main-comment-section');// Scroll to comment section
+
+
+
+  function enableNameEmailCommentFields(buttonId, targetId) {
+    const button = document.getElementById(buttonId);
+    const target = document.getElementById(targetId);
+
+    if (button) {
+      button.addEventListener('click', function () {
+        target.disabled = false;
+        target.style.opacity = '1';
+      });
+    }
+  }
+
+  enableNameEmailCommentFields('enable-name-comment-field', 'name');// Enable input name
+  enableNameEmailCommentFields('enable-email-comment-field', 'email');// Enable input email
+  
+
+  // Logic to call the comment reply form
   const editButtons = document.querySelectorAll('[data-toggle-reply-form]');
 
   editButtons.forEach(function (button) {
     button.addEventListener('click', function () {
       const replyCommentContainer = document.getElementById('reply-comment-container');
       
-      // Check if reply form is already open
-      //TODO: add toggle hide/show forms
+      // If a reply form is already open, remove it
       if (replyCommentContainer) {
         replyCommentContainer.remove();
       }
       
 
-      var commentId = button.dataset.commentId;//I use the var because it could be reassigned
-      const commentParentId = button.dataset.commentParentId; // Check if this exists
-      const commentName = button.dataset.commentName;// grab the comment author name
+      var commentId = button.dataset.commentId;//I use the var because it could be reassigned = 31
+      // console.log(commentChildId) = 31 = Pane
+      const commentParentId = button.dataset.commentParentId; // Check if this exists = 30
+      const commentName = button.dataset.commentName;// grab the comment author name = Pane
       
       // if reply child button is cliked (only if exists)
       if (commentParentId) {
