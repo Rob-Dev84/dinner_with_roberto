@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('link')->nullable();
-            $table->string('comment');
+            $table->string('comment')->nullable();;
             // $table->foreignId('cookie_consent_id')->nullable()->constrained();
             $table->boolean('notify_on_reply')->default(0); // send an email to the user when I reply 
             $table->boolean('read')->default(0); // check if comment has been read

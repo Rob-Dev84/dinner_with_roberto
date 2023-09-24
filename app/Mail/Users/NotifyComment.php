@@ -3,6 +3,7 @@
 namespace App\Mail\Users;
 
 use App\Models\Post;
+use App\Models\Post\PostComment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -15,17 +16,22 @@ class NotifyComment extends Mailable
     use Queueable, SerializesModels;
     
     public $post;
-    public $comment;
+    public $commentParent;
+    public $commentChild;
+    public $newCommentId;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Post $post, $comment)
+    public function __construct(Post $post, PostComment $commentParent, PostComment $commentChild, $newCommentId)
     {
-        $this->comment = $comment;
+        
         $this->post = $post;
+        $this->commentParent = $commentParent;
+        $this->commentChild = $commentChild;
+        $this->newCommentId = $newCommentId;
     }
 
     /**

@@ -112,9 +112,14 @@ class PostCommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function reply(StoreCommentRequest $request, Post $post, PostComment $id)
+    public function reply(StoreCommentRequest $request, Post $post, PostComment $commentParent, PostComment $commentChild)
     {
-        dd($id);
+
+        // the they are the same it means we are dealing with a parent commment (it could be execute a bit better)
+        // if ($commentParent == $commentChild) {
+        //     $commentChild = null;
+        // }
+      
         $user_id = auth()->user() ? auth()->user()->id : null;
         $email = $request->email;
 
@@ -147,8 +152,8 @@ class PostCommentController extends Controller
             }
         }
 
-        $post->postComments()->create([
-            'parent_id' => $id, // this is comment_id (parent)
+        $newComment = $post->postComments()->create([
+            'parent_id' => $commentParent->id, // this is comment_id (parent)
             'post_id' => $post->id,
             'user_id' => $user_id,
             'user_ip' => $request->ip(),
@@ -160,23 +165,16 @@ class PostCommentController extends Controller
             'notify_on_reply' => $request->notify_on_reply,           
          ]);
 
-        // Getting comment object and use for sending the email to the user 
-
-        //BUG: need to check if you replying to a parent comment or a child
-        //This will work if you are replying to a parent comment
-        $comment = PostComment::where('id', $id)
-                                ->where('post_id', $post->id)
-                                ->where('notify_on_reply', 1)
-                                ->first();
-        dd($comment);
+        if (auth()->check()) {// Check if user is logged first. This is reserved to Admin for now.
          
-        if (auth()->user()->role->name === 'Admin' && $comment) {
-            
-            //send email to the user who wrote the comment
-            Mail::to(auth()->user()->email)->send(new NotifyComment($post, $comment));
+            if (auth()->user()->role->name === 'Admin' && ($commentParent)) {
+                
+                //send email to the user who wrote the comment
+                Mail::to(auth()->user()->email)->send(new NotifyComment($post, $commentParent, $commentChild, $newComment->id));
 
-            //TODO: we need to check if user read the email we sent or not
-         }
+                //TODO: we need to check if user read the email we sent or not
+            }
+        }
 
         // Return a JSON response indicating success
         // return response()->json(['success' => true]);

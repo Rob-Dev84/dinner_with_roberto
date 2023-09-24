@@ -1,7 +1,7 @@
-<div id="reply-comment-container" x-data="">
+<div id="reply-comment-container" class="pb-6" x-data="">
     <form 
         id="replyForm" 
-        action="{{ route('posts.comments.reply', [$post, $commentId]) }}" 
+        action="{{ route('posts.comments.reply', [$post, $commentParentId, $commentChildId]) }}" 
         method="POST" 
         
         x-data="{
@@ -20,7 +20,7 @@
                 this.successMessage = '';
                 this.errors = {};
                 
-                    fetch(`{{ route("posts.comments.reply", [$post, $commentId]) }}`, {
+fetch(`{{ route("posts.comments.reply", [$post, $commentParentId, $commentChildId]) }}`, {                    
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -46,6 +46,10 @@
                             notify_on_reply: false,
                         };
                         this.successMessage = '{{ __("Thank you for reply this comment. If the message is approved, shortly I will be displayed!") }}';
+                        // Auto-hide the success message after 5 seconds (5000 milliseconds)
+                        setTimeout(() => {
+                            this.successMessage = '';
+                        }, 5000);
                     })
                     .catch(async (response) => {
                         const res = await response.json();
@@ -143,11 +147,12 @@
 
         </div>
 
-        <input type="hidden" id="comment_id" name="comment_id" value="{{ $commentId }}">
+        {{-- <input type="hidden" id="comment_parent_id" name="comment_parent_id" value="{{ $commentParentId }}">
+        <input type="hidden" id="comment_child_id" name="comment_child_id" value="{{ $commentChildId }}"> --}}
 
         <div class="mt-4">
             <x-input-label for="name" :value="__('Name *')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" x-model="formData.name" ::class="errors.name ? 'border-red-500' : ''" autocomplete  />
+            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" x-model="formData.name" x-init="formData.name = '{{ Cookie::get('comment_author_name') }}'" ::class="errors.name ? 'border-red-500' : ''" autocomplete  />
             <template x-if="errors.name">
                 <div x-text="errors.name[0]" class="text-red-500"></div>
             </template>
@@ -155,7 +160,7 @@
 
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email *')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" maxlength="100" :value="old('email')" x-model="formData.email" ::class="errors.email ? 'border-red-500' : ''" autocomplete  />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" maxlength="100" :value="old('email')" x-model="formData.email" x-init="formData.email = '{{ Cookie::get('comment_author_email') }}'" ::class="errors.email ? 'border-red-500' : ''" autocomplete  />
             <template x-if="errors.email">
                 <div x-text="errors.email[0]" class="text-red-500"></div>
             </template>
@@ -169,13 +174,14 @@
             </template>
         </div>
 
-        
+        @if (!Cookie::get('comment_author_name') && !Cookie::get('comment_author_email'))
         <div class="mt-4">
             <x-checkbox-input name="cookies_consent" :value="old('cookies_consent')" x-model="formData.cookies_consent">
                 <span>{{ __("Save my name, email in this browser for the next time I comment.") }}</span>
             </x-checkbox-input>
         </div>
-
+        @endif
+        
         <div class="mt-4">
             <x-checkbox-input name="notify_on_reply" :value="old('notify_on_reply')" x-model="formData.notify_on_reply">
                 <span>{{ __("Notify me if Roberto replies to my comment.") }}</span>
@@ -189,7 +195,7 @@
         </div>
 
         <template x-if="successMessage">
-            <div x-text="successMessage" class="py-4 px-6 bg-green-600 text-zinc-100 mb-4">{{ __("Thank you for leaving the comment. If the message is approved, shortly I will be displayed") }}</div>
+            <div x-text="successMessage" class="py-4 px-6 bg-green-600 text-zinc-100 my-4">{{ __("Thank you for leaving the comment. If the message is approved, shortly I will be displayed") }}</div>
         </template>
 
     </form>

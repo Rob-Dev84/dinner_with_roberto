@@ -799,7 +799,7 @@
 
                                                                     <x-secondary-button
                                                                         class="edit h-6 bg-primary-300"
-                                                                        data-comment-id="{{$comment->id}}"
+                                                                        data-comment-parent-id="{{$comment->id}}"
                                                                         data-comment-name="{{$comment->name}}"
                                                                         data-toggle-reply-form
                                                                     >
@@ -860,7 +860,8 @@
                                                                         
                                                                             <x-secondary-button
                                                                                 class="edit h-6 bg-primary-300"
-                                                                                data-comment-id="{{$childComment->id}}"
+                                                                                {{-- data-comment-id="{{$childComment->id}}" --}}
+                                                                                data-comment-child-id="{{$childComment->id}}"
                                                                                 data-comment-parent-id="{{$comment->id}}"
                                                                                 data-comment-name="{{$childComment->name}}"
                                                                                 data-toggle-reply-form
@@ -882,7 +883,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </li>
-                                                                <div class="reply-form-container" id="replyFormContainer{{$childComment->id}}"></div> 
+                                                                <div class="mx-4 px-5 bg-primary-200" id="replyFormContainer{{$childComment->id}}"></div> 
                                                               </ul>
                                                           @endforeach  
                                                         @endif

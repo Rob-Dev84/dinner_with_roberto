@@ -186,15 +186,15 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
 
         Route::controller(PostCommentController::class)->group(function () {
             Route::post('/recipes/{post:slug}/comment', 'store')->name('posts.comments.store');
-            Route::post('/recipes/{post:slug}/{comment}/commentReply', 'reply')->name('posts.comments.reply');      
+            Route::post('/recipes/{post:slug}/{commentParent}/{commentChild}/commentReply', 'reply')->name('posts.comments.reply');      
         });
 
-        Route::get('/recipes/{post:slug}/partials/_rating-comment', function () {
-            return view('posts.recipes.partials._rating-comment');
-        });
+        // Route::get('/recipes/{post:slug}/partials/_rating-comment', function () {
+        //     return view('posts.recipes.partials._rating-comment');
+        // });
     
-        Route::get('/recipes/{post:slug}/partials/_comment-reply-form/{commentId}/{commentName}', function ($post, $commentId, $commentName) {
-            return view('posts.recipes.partials._comment-reply-form', compact('post', 'commentId', 'commentName'));
+        Route::get('/recipes/{post:slug}/partials/_comment-reply-form/{commentParentId}/{commentChildId}/{commentName}', function ($post, $commentParentId, $commentChildId, $commentName) {
+            return view('posts.recipes.partials._comment-reply-form', compact('post', 'commentParentId', 'commentChildId', 'commentName'));
             
         });
 

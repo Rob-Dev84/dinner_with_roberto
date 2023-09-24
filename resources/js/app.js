@@ -177,32 +177,43 @@ document.addEventListener('DOMContentLoaded', function () {
         replyCommentContainer.remove();
       }
       
-
-      var commentId = button.dataset.commentId;//I use the var because it could be reassigned = 31
+      //TODO: INVERT COMMENT parent/child
+      // const commentParentId = button.dataset.commentId;//comment_id wrapped on reply btn (at the moment we don't kmow if it's a parent/child comment) 
       // console.log(commentChildId) = 31 = Pane
-      const commentParentId = button.dataset.commentParentId; // Check if this exists = 30
-      const commentName = button.dataset.commentName;// grab the comment author name = Pane
+      // const commentChildId = button.dataset.commentParentId; // Check if this exists = 30
+      
       
       // if reply child button is cliked (only if exists)
-      if (commentParentId) {
-        var commentId = button.getAttribute('data-comment-parent-id');// reassigned the commentId (because we need to store the commentId parent)
+      // if (commentParentId) {
+      //   var commentId = button.getAttribute('data-comment-parent-id');// reassigned the commentId (because we need to store the commentId parent)
+      // }button.dataset
+      // console.log(button.dataset);
+      //TODO: If parentChildId is null make it the same as the ParentID
+
+      if (button.hasAttribute('data-comment-child-id')) {
+        var commentParentId = button.getAttribute('data-comment-parent-id');
+        var commentChildId = button.getAttribute('data-comment-child-id');
+      } else {
+        var commentParentId = button.getAttribute('data-comment-parent-id');
+        var commentChildId = button.getAttribute('data-comment-parent-id');
       }
+      const commentName = button.dataset.commentName;// grab the comment author name = Pane
     
       
-      fetchCommentReplyForm(commentId, commentName);
+      fetchCommentReplyForm(commentParentId, commentChildId, commentName);
     
 
-      async function fetchCommentReplyForm(commentId, commentName) {
+      async function fetchCommentReplyForm(commentParentId, commentChildId, commentName) {
         const currentURL = window.location.origin + window.location.pathname;
-        const response = await fetch(`${currentURL}/partials/_comment-reply-form/${commentId}/${commentName}`);
+        const response = await fetch(`${currentURL}/partials/_comment-reply-form/${commentParentId}/${commentChildId}/${commentName}`);
         
         const data = await response.text();
       
-        // If button has the attribute it means a reply button has bein clicked
-        if (button.hasAttribute('data-comment-parent-id')) {
-          var commentId = button.getAttribute('data-comment-id');
+        // Check if clicked btn is child and assign the container id for the scroll 
+        if (button.hasAttribute('data-comment-child-id')) {// if true the reply btn will be from child comment
+          var commentId = button.getAttribute('data-comment-child-id');
         } else {
-          var commentId = button.dataset.commentId; 
+          var commentId = button.getAttribute('data-comment-parent-id');
         }
         
         const commentReplyFormContainer = document.getElementById(`replyFormContainer${commentId}`);
