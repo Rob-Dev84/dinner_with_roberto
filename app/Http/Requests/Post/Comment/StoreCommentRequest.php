@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Post\Comment;
 
+use App\Rules\Recaptcha;
 use Illuminate\Validation\Rule;
+use App\Services\RecaptchaService;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCommentRequest extends FormRequest
@@ -43,6 +45,11 @@ class StoreCommentRequest extends FormRequest
             'notify_on_reply' => 'boolean',
             'pinned' => 'boolean',
             'pinned_at' => 'nullable|date',
+            'recaptchaToken' => [
+                'required',
+                new Recaptcha(app(RecaptchaService::class)),
+            ],
+            
         ];
     }
 }

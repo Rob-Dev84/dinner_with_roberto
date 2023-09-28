@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Post\PostComment;
 use App\Mail\Users\NotifyComment;
 use App\Models\User\CookieConsent;
+use App\Services\RecaptchaService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cookie;
@@ -20,6 +21,13 @@ class PostCommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     protected $recaptchaService;
+
+     public function __construct(RecaptchaService $recaptchaService)
+     {
+         $this->recaptchaService = $recaptchaService;
+     }
     public function index()
     {
         //
@@ -43,8 +51,14 @@ class PostCommentController extends Controller
      */
     public function store(StoreCommentRequest $request, Post $post)
     {
+        // Validate the reCAPTCHA token
+        // $token = $request->input('recaptchaToken');
 
-        
+        // if (!$this->recaptchaService->verify($token)) {
+        //     return redirect()->back()->withErrors(['recaptcha' => 'reCAPTCHA verification failed.']);
+        // }
+
+    
 
         $user_id = auth()->user() ? auth()->user()->id : null;
         $email = $request->email;
@@ -114,6 +128,9 @@ class PostCommentController extends Controller
      */
     public function reply(StoreCommentRequest $request, Post $post, PostComment $commentParent, PostComment $commentChild)
     {
+        // dd($request->input('recaptchaToken'));
+
+
 
         // the they are the same it means we are dealing with a parent commment (it could be execute a bit better)
         // if ($commentParent == $commentChild) {

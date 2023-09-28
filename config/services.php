@@ -13,6 +13,11 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
+    'recaptcha' => [
+        'site_key' => env('RECAPTCHAV3_SITEKEY'),
+        'secret_key' => env('RECAPTCHAV3_SECRET'),
+        // 'score' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    ],
 
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),

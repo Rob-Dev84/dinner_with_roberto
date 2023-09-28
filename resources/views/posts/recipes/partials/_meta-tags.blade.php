@@ -1,22 +1,22 @@
 {{-- Meta recipe robots --}}
-@section('published')
+@section('article_published')
 {{-- in the published==true, next to 'follow,index' consider also placing:  
             max-image-preview:large, max-snippet:-1, max-video-preview:-1'  --}}
     {{ ($post->published ? 'follow,index' : 'noindex') }}
 @endsection
 
 {{-- Meta recipe title --}}
-@section('meta_title')
+@section('article_meta_title')
     {{ $post->title }}
 @endsection
 
 {{-- Meta recipe description --}}
-@section('meta_description')
+@section('article_meta_description')
     {{ $post->meta_description }}
 @endsection
 
 {{-- Meta url --}}
-@section('meta_url')
+@section('article_meta_url')
     {{ url('/recipes/'.$post->slug) }}
 @endsection
 
@@ -26,17 +26,17 @@
 @endsection
 
 {{-- Meta published time --}}
-@section('meta_published_time')
+@section('article_meta_published_time')
     {{ $metaPublishedTime }}
 @endsection
 
 {{-- Meta updated time --}}
-@section('meta_modified_time')
+@section('article_meta_modified_time')
     {{ $metaUpdatedTime }}
 @endsection
 
 {{-- Meta image --}}
-@section('meta_image')
+@section('article_meta_image')
     {{ url('/'.$post->postImages->first()->path) }}
 @endsection
 
@@ -55,7 +55,7 @@
 @endsection
 
 {{-- Meta canonical --}}
-@section('meta_canonical')
+@section('article_meta_canonical')
     {{ url('/recipes/'.$post->slug) }}
 @endsection
 

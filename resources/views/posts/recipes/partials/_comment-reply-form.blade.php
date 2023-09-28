@@ -13,51 +13,71 @@
                 link: '',
                 cookies_consent: false,
                 notify_on_reply: false,
+                recaptchaToken: '', // Initialize recaptcha_token here
             },
             errors: {},
             successMessage: '',
+
             submitForm(event) {
                 this.successMessage = '';
                 this.errors = {};
                 
-fetch(`{{ route("posts.comments.reply", [$post, $commentParentId, $commentChildId]) }}`, {                    
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'X-CSRF-TOKEN': document.querySelector(`meta[name='csrf-token']`).getAttribute('content'),
-                        },
-                        body: JSON.stringify(this.formData)
-                    })
-                    .then(response => {
-                        if (response.status === 200) {
-                            return response.json();
-                        }
-                        throw response;
-                    })
-                    .then(result => {
-                        this.formData = {
-                            rating: '',
-                            name: '',
-                            email: '',
-                            comment: '',
-                            link: '',
-                            cookies_consent: false,
-                            notify_on_reply: false,
-                        };
-                        this.successMessage = '{{ __("Thank you for reply this comment. If the message is approved, shortly I will be displayed!") }}';
-                        // Auto-hide the success message after 5 seconds (5000 milliseconds)
-                        setTimeout(() => {
-                            this.successMessage = '';
-                        }, 5000);
-                    })
-                    .catch(async (response) => {
-                        const res = await response.json();
-                        if (response.status === 422) {
-                            this.errors = res.errors;
-                        }
-                        //console.log(res);
-                    })
+                grecaptcha.ready(() => {
+                    grecaptcha.execute('{{ config('services.recaptcha.site_key') }}', { action: 'commentReply' }).then((token) => {
+                        this.formData.recaptchaToken = token; // Set the token in formData
+                        {{-- grecaptcha.reset(); // Reset the reCAPTCHA to get a fresh token --}}
+
+                
+                            fetch(`{{ route("posts.comments.reply", [$post, $commentParentId, $commentChildId]) }}`, {                    
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'X-CSRF-TOKEN': document.querySelector(`meta[name='csrf-token']`).getAttribute('content'),
+                                },
+                                body: JSON.stringify(this.formData)
+                            })
+                            .then(response => {
+                                if (response.status === 200) {
+                                    return response.json();
+                                }
+                                throw response;
+                            })
+                            .then(result => {
+                                this.formData = {
+                                    rating: '',
+                                    name: '',
+                                    email: '',
+                                    comment: '',
+                                    link: '',
+                                    cookies_consent: false,
+                                    notify_on_reply: false,
+                                };
+                                this.successMessage = '{{ __("Thank you for reply this comment. If the message is approved, shortly I will be displayed!") }}';
+                                // Auto-hide the success message after 5 seconds (5000 milliseconds)
+                                setTimeout(() => {
+                                    this.successMessage = '';
+                                }, 5000);
+                            })
+                            .catch(async (response) => {
+                                                                
+                                if (response.status === 422) {
+                                    const res = await response.json();
+                                    this.errors = res.errors;
+
+                                    // Check if there's a specific error for reCAPTCHA verification
+                                    if (this.errors.recaptchaToken) {
+                                        // Display the reCAPTCHA verification error
+                                        this.errors.recaptchaToken[0] = '{{ __("reCAPTCHA verification failed") }}';
+                                    }
+                                } else {
+                                    // Handle other error cases
+                                    console.error('An error occurred:', response.statusText);
+                                }
+                                //console.log(res);
+                            })
+                        });
+                    }); 
                                         
                     }
                 }
@@ -152,7 +172,17 @@ fetch(`{{ route("posts.comments.reply", [$post, $commentParentId, $commentChildI
 
         <div class="mt-4">
             <x-input-label for="name" :value="__('Name *')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" x-model="formData.name" x-init="formData.name = '{{ Cookie::get('comment_author_name') }}'" ::class="errors.name ? 'border-red-500' : ''" autocomplete  />
+            {{-- <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" x-model="formData.name" x-init="formData.name = '{{ Cookie::get('comment_author_name') }}'" ::class="errors.name ? 'border-red-500' : ''" autocomplete  /> --}}
+            @if (auth()->check())
+                <div class="flex">
+                    <x-text-input id="name" class="block mt-1 w-full" title="{{ __('Your name and email are automatically filled based on your account details.')}} &#10;{{  __('Click \'Edit\' to change them.') }}" type="text" name="name" maxlength="100" :value="old('name')" x-model="formData.name" x-init="formData.name = '{{ auth()->user()->name }}'" ::class="errors.name ? 'border-red-500' : ''" autocomplete />
+                    {{-- <button type="button" id="enable-name-comment-field" class="border-primary-500" title="{{ __('Edit') }}">
+                        <img class="w-5 ml-5" src="{{ asset('icons/edit.svg') }}" alt="Edit Icon" />
+                    </button> --}}
+                </div>  
+            @else
+                <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" maxlength="100" :value="old('name')" x-model="formData.name" x-init="formData.name = '{{ Cookie::get('comment_author_name') }}'" ::class="errors.name ? 'border-red-500' : ''" autocomplete  />
+            @endif
             <template x-if="errors.name">
                 <div x-text="errors.name[0]" class="text-red-500"></div>
             </template>
@@ -160,7 +190,17 @@ fetch(`{{ route("posts.comments.reply", [$post, $commentParentId, $commentChildI
 
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email *')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" maxlength="100" :value="old('email')" x-model="formData.email" x-init="formData.email = '{{ Cookie::get('comment_author_email') }}'" ::class="errors.email ? 'border-red-500' : ''" autocomplete  />
+            {{-- <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" maxlength="100" :value="old('email')" x-model="formData.email" x-init="formData.email = '{{ Cookie::get('comment_author_email') }}'" ::class="errors.email ? 'border-red-500' : ''" autocomplete  /> --}}
+            @if (auth()->check())
+                <div class="flex">
+                    <x-text-input id="email" class="block mt-1 w-full" title="{{ __('Your name and email are automatically filled based on your account details.')}} &#10;{{  __('Click \'Edit\' to change them.') }}" type="text" name="email" maxlength="100" :value="old('email')" x-model="formData.email" x-init="formData.email = '{{ auth()->user()->email }}'" ::class="errors.email ? 'border-red-500' : ''" autocomplete />
+                    {{-- <button type="button" id="enable-email-comment-field" class="border-primary-500" title="{{ __('Edit') }}">
+                        <img class="w-5 ml-5" src="{{ asset('icons/edit.svg') }}" alt="Edit Icon" />
+                    </button> --}}
+                </div>  
+            @else
+                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" maxlength="100" :value="old('email')" x-model="formData.email" x-init="formData.email = '{{ Cookie::get('comment_author_email') }}'" ::class="errors.email ? 'border-red-500' : ''" autocomplete  />
+            @endif
             <template x-if="errors.email">
                 <div x-text="errors.email[0]" class="text-red-500"></div>
             </template>
@@ -188,14 +228,23 @@ fetch(`{{ route("posts.comments.reply", [$post, $commentParentId, $commentChildI
             </x-checkbox-input>
         </div>
 
+        <input type="hidden" name="recaptchaToken" x-ref="recaptchaToken">
+
         <div class="flex items-center justify-end mt-4">
-            <x-primary-button class="ml-3 bg-primary-500">
+            <x-primary-button 
+            class="ml-3 bg-primary-500 g-recaptcha"
+            data-action='submit'
+            >
                 {{ __('reply comment') }}
             </x-primary-button>
         </div>
 
         <template x-if="successMessage">
             <div x-text="successMessage" class="py-4 px-6 bg-green-600 text-zinc-100 my-4">{{ __("Thank you for leaving the comment. If the message is approved, shortly I will be displayed") }}</div>
+        </template>
+
+        <template x-if="errors.recaptchaToken">
+            <div x-text="errors.recaptchaToken" class="py-4 px-6 bg-red-500 text-zinc-100 my-4">{{ __("Thank you for leaving the comment. If the message is approved, I will be shortly displayed") }}</div>
         </template>
 
     </form>

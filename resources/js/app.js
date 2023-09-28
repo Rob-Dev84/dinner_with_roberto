@@ -126,7 +126,7 @@ Alpine.start();
 // Best solution
 
 document.addEventListener('DOMContentLoaded', function () {
-
+  
   
   // scroll to recipe card
   function srollToTarget(buttonAttribute, targetId) {
