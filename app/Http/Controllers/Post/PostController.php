@@ -21,7 +21,7 @@ class PostController extends Controller
 
         // $posts = Post::with(['user'])->paginate(6);
 
-        // $posts = Post::with('postImages')->get();
+        // TODO: check if Eager Loading logic here is necessary
         $posts = Post::with(['postImages', 'postImagesTrashed', 'postRecipeSeoMetadata', 'postPrimaryComments.children'])->get();
         //get deleted images
         // dd($posts);

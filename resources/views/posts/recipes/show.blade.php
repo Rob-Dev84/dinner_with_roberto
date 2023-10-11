@@ -378,7 +378,7 @@
                                                                     <use xlink:href="{{ asset('icons/clock.svg') }}#clock"></use>
                                                                 </svg>
                                                                 <span class="ml-1">{{ __('Prep time:') }}</span>
-                                                                <span class="ml-1"><b>{{ $post->postRecipeSeoMetadata->prep_time_minutes }}</b></span>
+                                                                <span class="ml-1"><b>{{ $formattedPrepTime }}</b></span>
                                                             </li>
         
                                                             <li class="flex items-center w-full sm:w-1/2">
@@ -386,7 +386,7 @@
                                                                     <use xlink:href="{{ asset('icons/clock.svg') }}#clock"></use>
                                                                 </svg>
                                                                 <span class="ml-1">{{ __('Cooking time:') }}</span>
-                                                                <span class="ml-1"><b>{{ $post->postRecipeSeoMetadata->cooking_time_minutes }}</b></span>
+                                                                <span class="ml-1"><b>{{ $formattedCookTime }}</b></span>
                                                             </li>
         
                                                             <li class="flex items-center w-full sm:w-1/2">
@@ -394,7 +394,7 @@
                                                                     <use xlink:href="{{ asset('icons/clock.svg') }}#clock"></use>
                                                                 </svg>
                                                                 <span class="ml-1">{{ __('Total time:') }}</span>
-                                                                <span class="ml-1"><b>{{ $post->postRecipeSeoMetadata->total_time_minutes }}</b></span>
+                                                                <span class="ml-1"><b>{{ $formattedTotTime }}</b></span>
                                                             </li>
         
                                                             <li class="flex items-center w-full sm:w-1/2">

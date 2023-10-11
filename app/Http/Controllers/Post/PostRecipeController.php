@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use App\Helpers\Post\Recipe\TimeHumanConversionHelper;
 
 class PostRecipeController extends Controller
 {
@@ -18,7 +19,11 @@ class PostRecipeController extends Controller
      */
     public function index()
     {
+
+        //Collection of all the recipes
         $posts = Post::with('postImages')->get();
+        
+        // dd($posts->postRecipeSeoMetadata);
 
         return view('posts.recipes.index',
                 compact('posts',
@@ -73,7 +78,17 @@ class PostRecipeController extends Controller
 
         $postMethods = $post->postMethods()->get();
 
-        // TODO: move this to a servece (app/Services/Recipe/JsonLd/It/JsonLdService.php) 
+        $postMethods = $post->postMethods()->get();
+
+        $postSeoMetadataRecipeCard = $post->postRecipeSeoMetadata()->first();
+
+        // dd($postSeoMetadataRecipeCard);
+
+        $formattedPrepTime = TimeHumanConversionHelper::formatMinutesToHoursAndMinutes($postSeoMetadataRecipeCard->prep_time_minutes);
+        $formattedCookTime = TimeHumanConversionHelper::formatMinutesToHoursAndMinutes($postSeoMetadataRecipeCard->cooking_time_minutes);
+        $formattedTotTime = TimeHumanConversionHelper::formatMinutesToHoursAndMinutes($postSeoMetadataRecipeCard->total_time_minutes);
+
+        // TODO: move this to a sirvece (app/Services/Recipe/JsonLd/It/JsonLdService.php) 
         // Creating the JSON-LD object for the SEO
 
         $jsonLdObject = [
@@ -205,6 +220,9 @@ class PostRecipeController extends Controller
                         // 'methods',
                         'postMethods',
                         'postMethodsGroups',
+                        'formattedPrepTime',
+                        'formattedCookTime',
+                        'formattedTotTime',
                         'jsonLd',
                         'averageRatingFormatted',
                         'commentsWithRatingCount',
