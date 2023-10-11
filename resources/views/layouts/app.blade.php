@@ -25,9 +25,8 @@
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <style>
-            /* .grecaptcha-badge {
-                display: none !important;
-            } */
+            
+
         </style>
 
         <!-- Scripts -->
@@ -50,7 +49,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         
     </head>
-    <body class="font-sans antialiased">
+    <body id="body" class="font-sans antialiased">
         {{-- <div class="min-h-screen bg-gray-100"> --}}
         <div class="bg-gray-100">
             @include('layouts.navigation')
@@ -70,9 +69,10 @@
             @endif
 
             <!-- Page Content -->
-            <main>
+            <main class="min-h-screen">
                 {{ $slot }}
             </main>
+            @include('layouts.footer')
         </div>      
     </body>
 </html>

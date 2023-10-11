@@ -22,16 +22,16 @@ class PostController extends Controller
         // $posts = Post::with(['user'])->paginate(6);
 
         // $posts = Post::with('postImages')->get();
-        $posts = Post::with(['postImages', 'postPrimaryComments.children'])->get();
+        $posts = Post::with(['postImages', 'postImagesTrashed', 'postRecipeSeoMetadata', 'postPrimaryComments.children'])->get();
         //get deleted images
         // dd($posts);
 
-        $trasedImages = PostImage::onlyTrashed()->count();
+        // $trasedImages = PostImage::onlyTrashed()->where('post_id', )->count();
         // dd($trasedimages);
 
         return view('posts.index', [
             'posts' => $posts,
-            'trasedImages' => $trasedImages,
+            // 'trasedImages' => $trasedImages,
         ]);
     }
 

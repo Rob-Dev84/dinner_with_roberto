@@ -7,11 +7,13 @@
                 {{ $post->title }}
                 
             </h2>
-            <x-a-link 
+            <x-a-link-call-to-action 
                 :href="route('posts',)" 
                 :active="request()->routeIs('posts')" 
-                :text=" __('Back')">
-            </x-a-link>
+                :text=" __('Back')"
+                :title=" __('Back')"
+            >
+            </x-a-link-call-to-action>
         </div>
     </x-slot>
 
@@ -36,11 +38,13 @@
 
                                         <div class="flex justify-center items-center">
                                                                    
-                                            <x-a-link 
+                                            <x-a-link-call-to-action 
                                                 :href="route('posts.methods.edit', [$method, auth()->user(), $post->slug])" 
                                                 :active="request()->routeIs('posts.methods.edit')" 
-                                                :text=" __('Mod')">
-                                            </x-a-link>
+                                                :text=" __('Mod')"
+                                                :title=" __('Mod')"
+                                            >
+                                            </x-a-link-call-to-action>
 
                                 
                                             @include('posts.methods.modals.delete-method-form')
@@ -97,11 +101,13 @@
                                         {{ __('Group methods') }}
                                     </x-nav-link> --}}
 
-                                    <x-a-link 
+                                    <x-a-link-call-to-action 
                                         :href="route('posts.methods.groups', [auth()->user(), $post->slug])" 
                                         :active="request()->routeIs('posts.methods.groups')" 
-                                        :text=" __('Group methods')">
-                                    </x-a-link>
+                                        :text=" __('Group methods')"
+                                        :title=" __('Mod')"
+                                        >
+                                    </x-a-link-call-to-action>
                                 @else
                                     <span class="opacity-20" title="You need at least two methods to group them">{{ __('Group methods') }}</span>
                                     
@@ -142,11 +148,13 @@
                                                 {{ __('mod') }}
                                             </x-nav-link> --}}
 
-                                            <x-a-link 
+                                            <x-a-link-call-to-action 
                                                 :href="route('posts.methods.groups.edit', [$methodGrouped, auth()->user(), $post->slug])" 
                                                 :active="request()->routeIs('posts.methods.groups.edit')" 
-                                                :text=" __('Mod')">
-                                            </x-a-link>
+                                                :text=" __('Mod')"
+                                                :title=" __('Mod')"
+                                            >
+                                            </x-a-link-call-to-action>
 
                                             @include('posts.methods.modals.delete-grouped-method-form')
 

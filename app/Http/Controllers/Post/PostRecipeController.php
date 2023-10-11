@@ -73,6 +73,7 @@ class PostRecipeController extends Controller
 
         $postMethods = $post->postMethods()->get();
 
+        // TODO: move this to a servece (app/Services/Recipe/JsonLd/It/JsonLdService.php) 
         // Creating the JSON-LD object for the SEO
 
         $jsonLdObject = [
@@ -180,6 +181,20 @@ class PostRecipeController extends Controller
             $jsonLd = json_encode($jsonLd);
         }
 
+        //Get rating recipe  
+        $averageRating = $post->postComments->avg('recipe_rating');
+        $averageRatingFormatted  = number_format($averageRating, 1);// 4.1
+
+        //Get 
+        $commentsWithRatingCount = $post->postComments->filter(function ($comment) {
+            return !is_null($comment->recipe_rating);
+        })->count();
+
+        // $commentsWithRatingCount = $post->postComments->where('recipe_rating', !null)->count();
+        
+        $commentsWithRatingCount = $post->postComments->whereNotNull('recipe_rating')->count();
+
+        // dd($commentsWithRatingCount);
 
         // dd($methods);
         return view('posts.recipes.show',
@@ -191,6 +206,8 @@ class PostRecipeController extends Controller
                         'postMethods',
                         'postMethodsGroups',
                         'jsonLd',
+                        'averageRatingFormatted',
+                        'commentsWithRatingCount',
                 ));
     }
 

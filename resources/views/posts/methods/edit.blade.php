@@ -8,11 +8,13 @@
                 {{ $post->title }}
                 
             </h2>
-            <x-a-link 
+            <x-a-link-call-to-action 
                 :href="route('posts.methods', [auth()->user(), $post->slug])"
                 :active="request()->routeIs('posts.methods')" 
-                :text=" __('Back')">
-            </x-a-link>
+                :text=" __('Back')"
+                :title=" __('Back')"
+            >
+            </x-a-link-call-to-action>
         </div>
     </x-slot>
 

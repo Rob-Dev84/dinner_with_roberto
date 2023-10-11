@@ -146,6 +146,8 @@ document.addEventListener('DOMContentLoaded', function () {
   
   srollToTarget('go-to-recipe-card', 'recipe-card');// Scroll to recipe card
   srollToTarget('go-to-comments', 'main-comment-section');// Scroll to comment section
+  srollToTarget('back-to-top', 'body');// back to top
+
 
 
 

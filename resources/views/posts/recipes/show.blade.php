@@ -4,29 +4,79 @@
     @include('posts.recipes.partials._meta-tags')
 
     <x-slot name="header">
-        <b><h1 class="font-semibold text-xl text-gray-800 leading-tight text-center uppercase">
+        <b>
+            <h1 class="font-semibold text-3xl text-gray-800 leading-tight text-center uppercase">
             {{ $post->title }}
-        </b></h1>
+            </h1>
+
+            {{-- TODO: ADD diet icons (Vegetarian, nut free, keto, vegan... nigella website) --}}
+        </b>
         <div class="flex justify-center">
-            {{-- <a href="#recipe-card">{{ __('Go to recipe') }}</a> --}}
             <x-secondary-button
                 class="h-6 bg-primary-300 my-4 mx-2 py-4"
                 go-to-recipe-card
             >
-            <img class="w-4 mr-2" src="{{ asset('icons/arrow-down.svg') }}" alt="Clock Icon" />
+            <svg class="w-4 h-4 mr-2 animate-icon">
+                <use xlink:href="{{ asset('icons/arrow-down.svg') }}#arrow-down"></use>
+            </svg>
                 {{ __('Go to recipe') }}
             </x-secondary-button>
-            {{-- {{ '-|-' }}
-            <a href="#recipe-comments">{{ __('Comments') }}</a> --}}
+
             <x-secondary-button
                 class="h-6 bg-primary-300 my-4 mx-2 py-4"
                 go-to-comments
             >
-            <img class="w-4 mr-2" src="{{ asset('icons/arrow-down.svg') }}" alt="Clock Icon" />
-                {{ __('Go to Comments') }}
+            <svg class="w-4 h-4 mr-2">
+                <use xlink:href="{{ asset('icons/arrow-down.svg') }}#arrow-down"></use>
+            </svg>
+                @if ($post->postComments->count() > 0)
+                    {{ __('Go to Comments') }}   
+                @else
+                    {{ __('Leave a comment') }}
+                @endif  
             </x-secondary-button>
         </div>
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight text-center">
+        <div class="flex items-center flex-col mt-2 md:flex-row md:justify-center">
+
+            @if ($post->postComments->count() > 0)
+                <span class="flex items-center">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <svg class="w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="{{ ($averageRatingFormatted >= ($i - 0.5) ? '#f2b955' : '#333' ) }}">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>                                         
+                    @endfor
+                    
+                    {{ $averageRatingFormatted }}
+                    {{ __('from') }}
+                    {{ $commentsWithRatingCount }}
+                    {{ Str::plural('review', $commentsWithRatingCount) }}
+                </span>
+                <span class="hidden md:block">
+                    &nbsp;&#47;&#47;&nbsp;
+                </span>
+            @endif
+            
+            
+            <span>
+                <em>{{ __('Posted on') }}</em>&nbsp;
+                <b><time datetime="{{ $post->created_at->format('Y-m-d') }}">{{ \Carbon\Carbon::parse($post->created_at)->format('F j, Y') }}</time></b>
+                {{ __('by') }}
+                <b>
+                    <cite>
+                        <x-a-link 
+                            :href="route('posts.recipes.index', auth()->user())" 
+                            :active="request()->routeIs('posts.recipes.index')" 
+                            :text=" __('Roberto Manna')"
+                            :title=" __('Roberto Manna')"
+                        >
+                        </x-a-link>
+                    </cite>
+                </b>
+            </span>
+
+
+        </div>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight text-center mt-4">
             <em>{{ $post->subtitle }}</em>
         </h2>
     </x-slot>
@@ -105,11 +155,13 @@
                                             }}
                                         </p>
                                         {{-- <b><a href="">{{ __("Continue here") }}</a></b> --}}
-                                        <x-a-link 
+                                        <x-a-link-call-to-action 
                                             :href="route('posts.recipes.index', auth()->user())" 
                                             :active="request()->routeIs('posts.recipes.index')" 
-                                            :text=" __('More about me')">
-                                        </x-a-link>
+                                            :text=" __('More about me')"
+                                            :title=" __('More about me')"
+                                        >
+                                        </x-a-link-call-to-action>
                                     </div>
 
 
@@ -260,7 +312,7 @@
 
 
                         {{-- Recipe card --}}
-                        <div id="recipe-card" class="flex justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div id="recipe-card" class="flex justify-between bg-white overflow-hidden shadow-sm sm:rounded-lg pt-32">
                             <div class="lg:w-8/12">
                                 <div class="p-4 pt-0 text-gray-900">
                                     
@@ -270,58 +322,107 @@
                                         <div class="flex p-6 bg-primary-100">{{-- Head recipe card --}}
 
                                             <div class="">
-                                                <h3 class="uppercase"><strong>{{ $post->title }}</strong></h3>
+                                                <div class="flex justify-center translate-y-[-9rem]">                     
+
+                                                    @forelse ($post->postImages as $image)
                                                 
-                                                <ul class="flex flex-wrap">
-                                                    <li class="flex items-center flex-grow">
-                                                        <span>{{ __('Author:') }}</span>
-                                                        <span>&nbsp;<a href=""><strong><em><u>{{ __('Roberto Manna') }}</u></em></strong></a></span>
-                                                    </li>
+                                                    @if ($image->position === 'intro')
+                                                    <div class="h-[116px] w-64 bg-white rounded-tl-full rounded-tr-full absolute"></div>
+                                                        <div class="rounded-full bg-primary-200 p-1">
+                                                            <img class="w-60 rounded-full border-white border-8 relative" 
+                                                                src="{{ asset($image->path) }}" 
+                                                                alt="{{ $image->alt }}"
+                                                            />
+                                                        </div>
+                                                    @endif
+                            
+                                                    @empty
+                                                        {{ __("Post hasn't main image yet") }}
+                                                    @endforelse
+    
+                                                </div>
 
-                                                    <li class="flex items-center flex-grow">
-                                                        <img class="" src="{{ asset('icons/stove.svg') }}" alt="Clock Icon" />
-                                                        <span class="ml-1">{{ __('Cooking method:') }}</span>
-                                                        <span class="ml-1"><b>{{ __('Oven') }}</b></span>
-                                                    </li>
 
-                                                    <li class="flex items-center flex-grow">
-                                                        <img class="" src="{{ asset('icons/clock.svg') }}" alt="Clock Icon" />
-                                                        <span class="ml-1">{{ __('Prep time:') }}</span>
-                                                        <span class="ml-1"><b>{{ __('5 min') }}</b></span>
-                                                    </li>
 
-                                                    <li class="flex items-center flex-grow">
-                                                        <img src="{{ asset('icons/clock.svg') }}" alt="Clock Icon" />
-                                                        <span class="ml-1">{{ __('Cooking time:') }}</span>
-                                                        <span class="ml-1"><b>{{ __('25 min') }}</b></span>
-                                                    </li>
-
-                                                    <li class="flex items-center flex-grow">
-                                                        <img src="{{ asset('icons/clock.svg') }}" alt="Clock Icon" />
-                                                        <span class="ml-1">{{ __('Total time:') }}</span>
-                                                        <span class="ml-1"><b>{{ __('30 min') }}</b></span>
-                                                    </li>
-
-                                                    <li class="flex items-center flex-grow">
-                                                        <img src="{{ asset('icons/catlery.svg') }}" alt="Catlery Icon" />
-                                                        <span class="ml-1">{{ __('Yield:') }}</span>
-                                                        <span class="ml-1"><b>{{ __('4') }}</b></span>
-                                                    </li>
-
-                                                    <li class="flex items-center flex-grow">
-                                                        <img src="{{ asset('icons/category.svg') }}" alt="Category Icon" />
-                                                        <span class="ml-1">{{ __('Category:') }}</span>
-                                                        <span class="ml-1"><b>{{ __('Bread') }}</b></span>
-                                                    </li>
-
-                                                    <li class="flex items-center flex-grow">
-                                                        <img src="{{ asset('icons/flag.svg') }}" alt="Cuisine Icon" />
-                                                        <span class="ml-1">{{ __('Cuisine:') }}</span>
-                                                        <span class="ml-1"><b>{{ __('Italian') }}</b></span>
-                                                    </li>
+                                                
+                                                <div class="mt-[-7rem] md:mt-[-8rem]">
+                                                    <h3 class="uppercase text-center text-xl md:text-2xl"><strong>{{ $post->title }}</strong></h3>
                                                     
-                                                    
-                                                </ul>
+                                                        <ul class="flex flex-wrap items-center justify-between mt-5">
+                                                            <li class="flex items-center w-full sm:w-1/2">
+                                                                <span>{{ __('Author:') }}</span>
+                                                                &nbsp;
+                                                                <b>
+                                                                    <cite>
+                                                                        <x-a-link 
+                                                                            :href="route('posts.recipes.index', auth()->user())" 
+                                                                            :active="request()->routeIs('posts.recipes.index')" 
+                                                                            :text=" __('Roberto Manna')"
+                                                                            :title=" __('Roberto Manna')"
+                                                                        >
+                                                                        </x-a-link>
+                                                                    </cite>
+                                                                </b>
+                                                            </li>
+        
+                                                            <li class="flex items-center w-full sm:w-1/2">
+                                                                <svg class="w-4 h-4" style="fill:#fff">
+                                                                    <use xlink:href="{{ asset('icons/stove.svg') }}#stove"></use>
+                                                                </svg>
+                                                                <span class="ml-1"> <{{ __('Cooking method:') }}</span>
+                                                                <span class="ml-1"><b>{{ $post->postRecipeSeoMetadata->cooking_method }}</b></span>
+                                                            </li>
+        
+                                                            <li class="flex items-center w-full sm:w-1/2">
+                                                                <svg class="w-4 h-4" style="fill:#fff">
+                                                                    <use xlink:href="{{ asset('icons/clock.svg') }}#clock"></use>
+                                                                </svg>
+                                                                <span class="ml-1">{{ __('Prep time:') }}</span>
+                                                                <span class="ml-1"><b>{{ $post->postRecipeSeoMetadata->prep_time_minutes }}</b></span>
+                                                            </li>
+        
+                                                            <li class="flex items-center w-full sm:w-1/2">
+                                                                <svg class="w-4 h-4" style="fill:#fff">
+                                                                    <use xlink:href="{{ asset('icons/clock.svg') }}#clock"></use>
+                                                                </svg>
+                                                                <span class="ml-1">{{ __('Cooking time:') }}</span>
+                                                                <span class="ml-1"><b>{{ $post->postRecipeSeoMetadata->cooking_time_minutes }}</b></span>
+                                                            </li>
+        
+                                                            <li class="flex items-center w-full sm:w-1/2">
+                                                                <svg class="w-4 h-4" style="fill:#fff">
+                                                                    <use xlink:href="{{ asset('icons/clock.svg') }}#clock"></use>
+                                                                </svg>
+                                                                <span class="ml-1">{{ __('Total time:') }}</span>
+                                                                <span class="ml-1"><b>{{ $post->postRecipeSeoMetadata->total_time_minutes }}</b></span>
+                                                            </li>
+        
+                                                            <li class="flex items-center w-full sm:w-1/2">
+                                                                <svg class="w-4 h-4" style="fill:#fff">
+                                                                    <use xlink:href="{{ asset('icons/catlery.svg') }}#catlery"></use>
+                                                                </svg>
+                                                                <span class="ml-1">{{ __('Yield:') }}</span>
+                                                                <span class="ml-1"><b>{{ $post->postRecipeSeoMetadata->yield }}</b></span>
+                                                            </li>
+        
+                                                            <li class="flex items-center w-full sm:w-1/2">
+                                                                <svg class="w-4 h-4" style="fill:#fff">
+                                                                    <use xlink:href="{{ asset('icons/category.svg') }}#category"></use>
+                                                                </svg>
+                                                                <span class="ml-1">{{ __('Category:') }}</span>
+                                                                <span class="ml-1"><b>{{ __('Bread') }}</b></span>
+                                                            </li>
+        
+                                                            <li class="flex items-center w-full sm:w-1/2">
+                                                                <svg class="w-4 h-4" style="fill:#fff">
+                                                                    <use xlink:href="{{ asset('icons/flag.svg') }}#flag"></use>
+                                                                </svg>
+                                                                <span class="ml-1">{{ __('Cuisine:') }}</span>
+                                                                <span class="ml-1"><b>{{ __('Italian') }}</b></span>
+                                                            </li>                                                 
+                                                        </ul>                           
+                                                </div>
+                                                
 
                                                 <div class="flex">
                                                     {{-- <form method="POST" action="{{ route() }}">
@@ -347,22 +448,7 @@
 
                                             </div>
 
-                                            <div>                     
-
-                                                @forelse ($post->postImages as $image)
                                             
-                                                @if ($image->position === 'intro')
-                                                    <img class="w-40" 
-                                                        src="{{ asset($image->path) }}" 
-                                                        alt="{{ $image->alt }}"
-                                                    />
-                                                @endif
-                        
-                                                @empty
-                                                    {{ __("Post hasn't main image yet") }}
-                                                @endforelse
-
-                                            </div>
 
                                         </div>
 
@@ -776,7 +862,7 @@
                                                 <template x-if="successMessage">
                                                     <div x-text="successMessage" class="py-4 px-6 bg-green-600 text-zinc-100 my-4">{{ __("Thank you for leaving the comment. If the message is approved, I will be shortly displayed") }}</div>
                                                 </template>
-                                                
+
                                                 <template x-if="errors.recaptchaToken">
                                                     <div x-text="errors.recaptchaToken" class="py-4 px-6 bg-red-500 text-zinc-100 my-4">{{ __("Thank you for leaving the comment. If the message is approved, I will be shortly displayed") }}</div>
                                                 </template>

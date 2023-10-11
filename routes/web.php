@@ -15,6 +15,7 @@ use App\Http\Controllers\Post\PostSubcategoryController;
 use App\Http\Controllers\Post\PostTrashedImageController;
 use App\Http\Controllers\Post\PostImageDeletionController;
 use App\Http\Controllers\Post\PostIngredientGroupController;
+use App\Http\Controllers\Post\PostRecipeSeoMetadataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -137,6 +138,15 @@ use App\Http\Controllers\Post\PostIngredientGroupController;
             Route::get('/posts/images/{user:username}/{post:slug}/trash', 'index')->name('posts.images.trash');
             Route::put('/posts/images/{post_images:slug}/{user:username}/{post:slug}/restore', 'restore')->name('posts.images.deletions.restore');
             Route::delete('/posts/images/{post_images:slug}/{user:username}/{post:slug}/forceDelete', 'forceDelete')->name('posts.images.deletions.forceDelete');
+    
+        });
+
+        Route::controller(PostRecipeSeoMetadataController::class)->group(function () {
+    
+            Route::get('/posts/recipeSeoMetadata/{user:username}/{post:slug}/create', 'create')->name('posts.recipes.metadatas.create');
+            Route::post('/posts/recipeSeoMetadata/{user:username}/{post:slug}/store', 'store')->name('posts.recipes.metadatas.store');
+            Route::get('/posts/recipeSeoMetadata/{user:username}/{post:slug}', 'edit')->name('posts.recipes.metadatas.edit');
+            Route::put('/posts/recipeSeoMetadata/{user:username}/{post:slug}/update', 'update')->name('posts.recipes.metadatas.update');
     
         });
 

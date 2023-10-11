@@ -7,6 +7,7 @@ use App\Models\Post\PostComment;
 // use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Post\PostCommentStatus;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Post\PostRecipeSeoMetadata;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
@@ -31,6 +32,10 @@ class Post extends Model
 
     public function user() {
         return $this->BelongsTo(User::class);
+    }
+
+    public function postRecipeSeoMetadata() {
+        return $this->hasOne(PostRecipeSeoMetadata::class);
     }
 
     public function postIngredients() {
@@ -107,6 +112,10 @@ class Post extends Model
 
     public function postImages() {
         return $this->hasMany(PostImage::class);
+    }
+
+    public function postImagesTrashed() {
+        return $this->hasMany(PostImage::class)->onlyTrashed();
     }
 
     public function postCategory() {

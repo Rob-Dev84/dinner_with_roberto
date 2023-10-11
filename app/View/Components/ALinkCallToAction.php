@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class ALink extends Component
+class ALinkCallToAction extends Component
 {
     /**
      * Create a new component instance.
@@ -32,6 +32,6 @@ class ALink extends Component
      */
     public function render()
     {
-        return view('components.a-link');
+        return view('components.a-link-call-to-action');
     }
 }

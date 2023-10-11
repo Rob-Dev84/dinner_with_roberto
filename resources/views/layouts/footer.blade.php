@@ -1,160 +1,93 @@
-<footer x-data="{ open: false }" class="bg-white border-b border-gray-100">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+<footer class="bg-gray-800 text-gray-200 p-4">
+    <div class="container mx-auto">
+        <div class="flex justify-evenly flex-col md:flex-row mt-5">
             <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
-                    </a>
-                </div>
-
-                <!-- Navigation Links -->
-                
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('about')" :active="request()->routeIs('about')">
-                        {{ __('About') }}
-                    </x-nav-link>
-                </div>
-                
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('posts.recipes.index')" :active="request()->routeIs('posts.recipes.index')">
-                        {{ __('Recipes') }}
-                    </x-nav-link>
-                </div>
-
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('tips')" :active="request()->routeIs('tips')">
-                        {{ __('Tips') }}
-                    </x-nav-link>
-                </div>
-
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('videos')" :active="request()->routeIs('videos')">
-                        {{ __('Videos') }}
-                    </x-nav-link>
-                </div>
-
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('contacts')" :active="request()->routeIs('contacts')">
-                        {{ __('Contacts') }}
-                    </x-nav-link>
-                </div>
-            </div>
-
-            <!-- Settings Dropdown -->
-            @auth
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->username }}</div>
-
-                            <div class="ml-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
-            @endauth
-
-            <!-- Hamburger -->
-            <div class="-mr-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                {{-- <a class="flex items-center" href="#" back-to-top>
+                    <svg class="w-4 h-4" style="fill:#fff">
+                        <use xlink:href="{{ asset('icons/arrow-up.svg') }}#arrow-up"></use>
                     </svg>
-                </button>
+                    &nbsp;
+                    {{ __('Back to top') }}
+                </a> --}}
+                <x-secondary-button
+                    class="h-6 bg-gray-800 m-0 mr-2 py-4 border-none text-gray-200 hover:bg-gray-800 focus:ring-none focus:ring-offset-0 focus:border-none"
+                    back-to-top
+                >
+                    <svg class="w-4 h-4" style="fill:#fff">
+                        <use xlink:href="{{ asset('icons/arrow-up.svg') }}#arrow-up"></use>
+                    </svg>
+                    &nbsp;
+                    {{ __('Back to top') }}
+                </x-secondary-button>
+                <nav>
+                    <ul class="flex">
+                        <li>
+                            <x-footer-nav-link :href="route('about')" :active="request()->routeIs('about')">
+                                {{ __('Home') }}
+                            </x-footer-nav-link>
+                        </li>
+                            <x-footer-nav-link :href="route('about')" :active="request()->routeIs('about')">
+                                {{ __('About') }}
+                            </x-footer-nav-link>
+                        <li>
+                            <x-footer-nav-link :href="route('posts.recipes.index')" :active="request()->routeIs('posts.recipes.index')">
+                                {{ __('Recipes') }}
+                            </x-footer-nav-link>
+                        </li>
+                    </ul>
+                </nav>     
+            </div>
+            <div class="flex items-center">
+                <p class="mr-2">{{ __('Follow Dinner with Roberto on') }}</p>
+                <ul class="flex">
+                    <li class="flex items-center">
+                        <a class="ml-3" href="https://www.instagram.com/dinner_with_roberto" target="_blank" rel="noreferrer noopener">
+                            <svg class="w-8 h-8" style="fill:#fff">
+                                <use xlink:href="{{ asset('icons/social/instagram.svg') }}#instagram"></use>
+                            </svg>
+                        </a>                    
+                    </li>
+                    <li class="flex items-center">
+                        <a class="ml-3" href="https://www.tiktok.com/@dinnerwithroberto" target="_blank" rel="noreferrer noopener">
+                            <svg class="w-8 h-8" style="fill:#fff">
+                                <use xlink:href="{{ asset('icons/social/tiktok.svg') }}#tiktok"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="flex items-center">
+                        <a class="ml-3" href="https://www.facebook.com/profile.php?id=100090001125773" target="_blank" rel="noreferrer noopener">
+                            <svg class="w-8 h-8" style="fill:#fff">
+                                <use xlink:href="{{ asset('icons/social/facebook.svg') }}#facebook"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="flex items-center">
+                        <a class="ml-3" href="https://www.youtube.com/@dinnerwithroberto/" target="_blank" rel="noreferrer noopener">
+                            <svg class="w-8 h-8" style="fill:#fff">
+                                <use xlink:href="{{ asset('icons/social/youtube.svg') }}#youtube"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    {{-- <li class="flex items-center">
+                        <a class="ml-3" href="" target="_blank" rel="noreferrer noopener">
+                            <svg class="w-8 h-8" style="fill:#fff">
+                                <use xlink:href="{{ asset('icons/social/printerest.svg') }}#printerest"></use>
+                            </svg>
+                        </a>
+                    </li> --}}
+                </ul>
             </div>
         </div>
-    </div>
-
-    <!-- Responsive Navigation Menu -->
-    @auth
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard (admin)') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Post (admin)') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <!-- Responsive Settings Options -->
         
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->username }}</div>
-                {{-- <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div> --}}
+        
+        <div class="flex flex-col items-center mt-12">
+            <div>
+                &copy;&nbsp;{{ __('Copiright') }}&nbsp;{{ date('Y') }}&nbsp;&hyphen;&nbsp;{{ __('Dinner with Roberto') }}
             </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
+            <div>
+                {{ __('Powered by') }}&nbsp;{{ __('Roberto Manna') }}&nbsp;&hyphen;&nbsp;{{ __('Privacy Policy') }}&nbsp;&hyphen;&nbsp;{{ __('Cookie Policy') }}
             </div>
         </div>
-        @endauth
+        
     </div>
 </footer>
