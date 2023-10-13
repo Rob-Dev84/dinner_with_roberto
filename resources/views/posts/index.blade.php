@@ -207,7 +207,7 @@
                     >
                     </x-a-link-call-to-action>
 
-                    @if (is_null($post->recipe_seo_metadata_id))
+                    @if (is_null($post->postRecipeSeoMetadata))
                     <x-a-link-call-to-action 
                         :href="route('posts.recipes.metadatas.create', [auth()->user(), $post->slug])"
                         :active="request()->routeIs('posts.recipes.metadatas.create')" 
@@ -217,7 +217,7 @@
                     </x-a-link-call-to-action>
                     @else
                     <x-a-link-call-to-action 
-                        :href="route('posts.recipes.metadatas.edit', [auth()->user(), $post->slug])"
+                        :href="route('posts.recipes.metadatas.edit', [auth()->user(), $post->slug, $post->postRecipeSeoMetadata])"
                         :active="request()->routeIs('posts.recipes.metadatas.edit')" 
                         :text="__('Edit SEO metadata')"
                         :title="__('Edit SEO metadata')"    

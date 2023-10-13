@@ -1,8 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Add images to your post: ') }} <u>{{ $post->title }}</u> 
-        </h2>
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Add images to your post: ') }} <u>{{ $post->title }}</u> 
+            </h2>
+            <x-a-link-call-to-action 
+                :href="route('posts')"
+                :active="request()->routeIs('posts')" 
+                :text=" __('Back')"
+                :title=" __('Back')"
+            >
+            </x-a-link-call-to-action>
+        </div>
     </x-slot>
 
     <div class="py-12">

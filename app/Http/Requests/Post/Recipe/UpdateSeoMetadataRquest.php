@@ -4,7 +4,7 @@ namespace App\Http\Requests\Post\Recipe;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSeoMetadataRequest extends FormRequest
+class UpdateSeoMetadataRquest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

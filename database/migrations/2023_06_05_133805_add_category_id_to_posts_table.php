@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('category_id')
                     ->nullable()
                     ->after('user_id')
-                    ->constrained('post_categories');
+                    ->constrained('post_categories');//I think you added the table here because you did follow Laravel convention (It should be "post_category_id")
         });
     }
 

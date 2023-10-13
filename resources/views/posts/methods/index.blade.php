@@ -8,7 +8,7 @@
                 
             </h2>
             <x-a-link-call-to-action 
-                :href="route('posts',)" 
+                :href="route('posts')" 
                 :active="request()->routeIs('posts')" 
                 :text=" __('Back')"
                 :title=" __('Back')"

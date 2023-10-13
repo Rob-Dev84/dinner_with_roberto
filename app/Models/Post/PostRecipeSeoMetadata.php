@@ -11,12 +11,16 @@ class PostRecipeSeoMetadata extends Model
 
     protected $fillable = [
         'user_id',
-        'cooking_method',
+        'post_recipe_cooking_method_id',
         'prep_time_minutes',
         'cooking_time_minutes',
         'total_time_minutes',
         'yield',
     ];
 
+
+// public function post() {
+//     return $this->belongsTo(PostRecipeCookingMethod::class);
+// }
     
 }

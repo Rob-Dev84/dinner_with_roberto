@@ -8,6 +8,8 @@ use App\Models\PostImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\UpdatePostRecipeRquest;
+// use App\Http\Requests\Post\postRecipeCookingMethods;
+
 
 class PostController extends Controller
 {
@@ -28,6 +30,7 @@ class PostController extends Controller
 
         // $trasedImages = PostImage::onlyTrashed()->where('post_id', )->count();
         // dd($trasedimages);
+
 
         return view('posts.index', [
             'posts' => $posts,

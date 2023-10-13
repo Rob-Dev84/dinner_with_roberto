@@ -17,10 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('post_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained();
-            $table->string('cooking_method')->nullable();
-            // $table->string('prep_time'); // ISO 8601 duration format
-            // $table->string('cooking_time'); // ISO 8601 duration format
-            // $table->string('total_time'); // ISO 8601 duration format
+            $table->foreignId('post_recipe_cooking_method_id')->nullable()->constrained('post_recipe_cooking_methods');// We don't need to specify the name table, but it's a good practice do it anyway
             $table->smallInteger('prep_time_minutes')->unsigned()->nullable(); //Up to 65,535. Allow cooking time to be nullable
             $table->smallInteger('cooking_time_minutes')->unsigned()->nullable(); // Allow cooking time to be nullable
             $table->smallInteger('total_time_minutes')->unsigned()->nullable(); // Allow cooking time to be nullable

@@ -145,8 +145,8 @@ use App\Http\Controllers\Post\PostRecipeSeoMetadataController;
     
             Route::get('/posts/recipeSeoMetadata/{user:username}/{post:slug}/create', 'create')->name('posts.recipes.metadatas.create');
             Route::post('/posts/recipeSeoMetadata/{user:username}/{post:slug}/store', 'store')->name('posts.recipes.metadatas.store');
-            Route::get('/posts/recipeSeoMetadata/{user:username}/{post:slug}', 'edit')->name('posts.recipes.metadatas.edit');
-            Route::put('/posts/recipeSeoMetadata/{user:username}/{post:slug}/update', 'update')->name('posts.recipes.metadatas.update');
+            Route::get('/posts/recipeSeoMetadata/{user:username}/{post:slug}/{post_recipe_seo_metadata}', 'edit')->name('posts.recipes.metadatas.edit');
+            Route::put('/posts/recipeSeoMetadata/{user:username}/{post:slug}/{post_recipe_seo_metadata}/update', 'update')->name('posts.recipes.metadatas.update');
     
         });
 
