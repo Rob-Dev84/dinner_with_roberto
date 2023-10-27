@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Post\PostController;
@@ -40,12 +41,21 @@ use App\Http\Controllers\Post\PostRecipeSeoMetadataController;
     //TODO Only admin can access to Dashboard (stats), Manage Post, New Posts from guest users (future)
     //TODO Group middleware for "is_admin"
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+  
 
 
     Route::middleware(['auth', 'verified', 'XssSanitizer', 'isAdmin'])->group(function () {
+        
+        // Route::get('/dashboard', function () {
+        //     return view('dashboard');
+        // })->middleware(['auth', 'verified'])->name('dashboard');
+
+        Route::controller(DashboardController::class)->group(function (){
+            Route::get('/dashboard/{user:username}', 'index')->name('dashboard');
+        });
+        
+        
+        
         Route::controller(PostController::class)->group(function () {
             Route::get('/posts', 'index')->name('posts');
 
@@ -71,7 +81,6 @@ use App\Http\Controllers\Post\PostRecipeSeoMetadataController;
 
             Route::get('/posts/ingredients/{user:username}/{post:slug}', 'index')->name('posts.ingredients');
             Route::post('/posts/ingredients/{user:username}/{post:slug}/store', 'store')->name('posts.ingredients.store');//add new ingredient in a post
-    
             Route::get('/posts/ingredients/{ingredient:id}/{user:username}/{post:slug}/edit', 'edit')->name('posts.ingredients.edit');//todo form to modify ingredient inserted (available from )
             Route::put('/posts/ingredients/{ingredient:id}/{user:username}/{post:slug}/update', 'update')->name('posts.ingredients.update');
     
@@ -180,19 +189,17 @@ use App\Http\Controllers\Post\PostRecipeSeoMetadataController;
         
 
 
-        
-
-        
-
-
     });
 
-    Route::middleware(['redirectCanonicalUrl'])->group(function () {
+
+    Route::middleware(['redirectCanonicalUrl'])->group(function () {// this middleware will make sure the url will end witout "/"
 
         Route::controller(PostRecipeController::class)->group(function () {
             Route::get('/recipes', 'index')->name('posts.recipes.index');
             Route::get('/recipes/{post:slug}', 'show')->name('posts.recipes.show');
         });
+
+
 
         Route::controller(PostCommentController::class)->group(function () {
             Route::post('/recipes/{post:slug}/comment', 'store')->name('posts.comments.store');
